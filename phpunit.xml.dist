@@ -16,7 +16,7 @@
         </testsuite>
     </testsuites>
     <filter>
-        <whitelist processUncoveredFilesFromWhitelist="false" addUncoveredFilesFromWhitelist="true">
+        <whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
             <directory>./DrdPlus</directory>
             <exclude>
                 <directory>./DrdPlus/Tests</directory>
