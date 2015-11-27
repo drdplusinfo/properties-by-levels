@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\PersonProperties;
+namespace DrdPlus\Tests\PersonProperties;
 
 use Drd\Genders\Female;
 use Drd\Genders\Gender;
@@ -9,9 +9,12 @@ use DrdPlus\GameCharacteristics\Combat\Attack;
 use DrdPlus\GameCharacteristics\Combat\Defense;
 use DrdPlus\GameCharacteristics\Combat\DefenseAgainstShooting;
 use DrdPlus\GameCharacteristics\Combat\Shooting;
+use DrdPlus\PersonProperties\FirstLevelProperties;
+use DrdPlus\PersonProperties\NextLevelsProperties;
+use DrdPlus\PersonProperties\PersonProperties;
 use DrdPlus\ProfessionLevels\ProfessionLevel;
 use DrdPlus\ProfessionLevels\ProfessionLevels;
-use DrdPlus\Professions\AbstractProfession;
+use DrdPlus\Professions\Profession;
 use DrdPlus\Professions\Fighter;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\Charisma;
@@ -89,7 +92,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedToughness, $properties->getToughness(), "$race $gender");
         $expectedEndurance = new Endurance(Strength::getIt($expectedStrength), Will::getIt($expectedWill));
         $this->assertEquals($expectedEndurance, $properties->getEndurance(), "$race $gender");
-        $expectedSize = Size::getIt($race->getSize($tables->getRacesTable(), $gender, $tables->getFemaleModifiersTable()) + 1); /* size bonus by strength */
+        $expectedSize = Size::getIt($race->getSize($gender, $tables) + 1); /* size bonus by strength */
         $this->assertEquals($expectedSize, $properties->getSize(), "$race $gender");
         $expectedSpeed = new Speed(Strength::getIt($expectedStrength), Agility::getIt($expectedAgility), $expectedSize);
         $this->assertEquals($expectedSpeed, $properties->getSpeed(), "$race $gender");
@@ -206,7 +209,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
         $professionLevels->shouldReceive('getFirstLevel')
             ->andReturn($firstLevel = \Mockery::mock(ProfessionLevel::class));
         $firstLevel->shouldReceive('getProfession')
-            ->andReturn($profession = \Mockery::mock(AbstractProfession::class));
+            ->andReturn($profession = \Mockery::mock(Profession::class));
         $profession->shouldReceive('getCode')
             ->andReturn(Fighter::FIGHTER);
 
