@@ -158,18 +158,36 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
     private function createExceptionalityProperties()
     {
         $exceptionalityProperties = \Mockery::mock(ExceptionalityProperties::class);
+        $exceptionalityProperties->shouldReceive('getProperty')
+            ->with(Strength::STRENGTH)
+            ->andReturn($strength = new IntegerObject(123));
         $exceptionalityProperties->shouldReceive('getStrength')
-            ->andReturn(new IntegerObject(123));
+            ->andReturn($strength);
+        $exceptionalityProperties->shouldReceive('getProperty')
+            ->with(Agility::AGILITY)
+            ->andReturn($agility = new IntegerObject(234));
         $exceptionalityProperties->shouldReceive('getAgility')
-            ->andReturn(new IntegerObject(234));
+            ->andReturn($agility);
+        $exceptionalityProperties->shouldReceive('getProperty')
+            ->with(Knack::KNACK)
+            ->andReturn($knack = new IntegerObject(345));
         $exceptionalityProperties->shouldReceive('getKnack')
-            ->andReturn(new IntegerObject(345));
+            ->andReturn($knack);
+        $exceptionalityProperties->shouldReceive('getProperty')
+            ->with(Will::WILL)
+            ->andReturn($will = new IntegerObject(456));
         $exceptionalityProperties->shouldReceive('getWill')
-            ->andReturn(new IntegerObject(456));
+            ->andReturn($will);
+        $exceptionalityProperties->shouldReceive('getProperty')
+            ->with(Intelligence::INTELLIGENCE)
+            ->andReturn($intelligence = new IntegerObject(567));
         $exceptionalityProperties->shouldReceive('getIntelligence')
-            ->andReturn(new IntegerObject(567));
+            ->andReturn($intelligence);
+        $exceptionalityProperties->shouldReceive('getProperty')
+            ->with(Charisma::CHARISMA)
+            ->andReturn($charisma = new IntegerObject(678));
         $exceptionalityProperties->shouldReceive('getCharisma')
-            ->andReturn(new IntegerObject(678));
+            ->andReturn($charisma);
 
         return $exceptionalityProperties;
     }
@@ -180,18 +198,36 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
     private function createProfessionLevels()
     {
         $professionLevels = \Mockery::mock(ProfessionLevels::class);
+        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+            ->with(Strength::STRENGTH)
+            ->andReturn($strength = 1234);
         $professionLevels->shouldReceive('getStrengthModifierForFirstProfession')
-            ->andReturn(1234);
+            ->andReturn($strength);
+        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+            ->with(Agility::AGILITY)
+            ->andReturn($agility = 2345);
         $professionLevels->shouldReceive('getAgilityModifierForFirstProfession')
-            ->andReturn(2345);
+            ->andReturn($agility);
+        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+            ->with(Knack::KNACK)
+            ->andReturn($knack = 3456);
         $professionLevels->shouldReceive('getKnackModifierForFirstProfession')
-            ->andReturn(3456);
+            ->andReturn($knack);
+        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+            ->with(Will::WILL)
+            ->andReturn($will = 3456);
         $professionLevels->shouldReceive('getWillModifierForFirstProfession')
-            ->andReturn(3456);
+            ->andReturn($will);
+        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+            ->with(Intelligence::INTELLIGENCE)
+            ->andReturn($intelligence = 5678);
         $professionLevels->shouldReceive('getIntelligenceModifierForFirstProfession')
-            ->andReturn(5678);
-        $professionLevels->shouldReceive('getCharismaModifierForFirstProfession')
-            ->andReturn(6789);
+            ->andReturn($intelligence);
+        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+            ->with(Charisma::CHARISMA)
+            ->andReturn($charisma = 6789);
+        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+            ->andReturn($charisma);
 
         $professionLevels->shouldReceive('getNextLevelsStrengthModifier')
             ->andReturn(2); // is not limited by FirstLevelProperties and has to fit to wounds table range

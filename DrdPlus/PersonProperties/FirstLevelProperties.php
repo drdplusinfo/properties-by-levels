@@ -128,76 +128,8 @@ class FirstLevelProperties extends StrictObject
     {
         return
             $race->getProperty($propertyCode, $gender, $tables)
-            + $this->getExceptionalPropertyAdjustment($propertyCode, $exceptionalityProperties)->getValue()
-            + $this->getPropertyModifierForFirstProfession($professionLevels, $propertyCode);
-    }
-
-    private function getRaceBasePropertyModifier(
-        Race $race,
-        Gender $gender,
-        Tables $tables,
-        $propertyCode
-    )
-    {
-        switch ($propertyCode) {
-            case Strength::STRENGTH :
-                return $race->getStrength($gender, $tables);
-            case Agility::AGILITY :
-                return $race->getAgility($gender, $tables);
-            case Knack::KNACK :
-                return $race->getKnack($gender, $tables);
-            case Will::WILL :
-                return $race->getWill($gender, $tables);
-            case Intelligence::INTELLIGENCE :
-                return $race->getIntelligence($gender, $tables);
-            case Charisma::CHARISMA :
-            default :
-                return $race->getCharisma($gender, $tables);
-        }
-    }
-
-    private function getPropertyModifierForFirstProfession(ProfessionLevels $professionLevels, $propertyCode)
-    {
-        switch ($propertyCode) {
-            case Strength::STRENGTH :
-                return $professionLevels->getStrengthModifierForFirstProfession();
-            case Agility::AGILITY :
-                return $professionLevels->getAgilityModifierForFirstProfession();
-            case Knack::KNACK :
-                return $professionLevels->getKnackModifierForFirstProfession();
-            case Will::WILL :
-                return $professionLevels->getWillModifierForFirstProfession();
-            case Intelligence::INTELLIGENCE :
-                return $professionLevels->getIntelligenceModifierForFirstProfession();
-            case Charisma::CHARISMA :
-            default :
-                return $professionLevels->getCharismaModifierForFirstProfession();
-        }
-    }
-
-    /**
-     * @param $propertyCode
-     * @param ExceptionalityProperties $exceptionalityProperties
-     *
-     * @return BaseProperty
-     */
-    private function getExceptionalPropertyAdjustment($propertyCode, ExceptionalityProperties $exceptionalityProperties)
-    {
-        switch ($propertyCode) {
-            case Strength::STRENGTH :
-                return $exceptionalityProperties->getStrength();
-            case Agility::AGILITY :
-                return $exceptionalityProperties->getAgility();
-            case Knack::KNACK :
-                return $exceptionalityProperties->getKnack();
-            case Will::WILL :
-                return $exceptionalityProperties->getWill();
-            case Intelligence::INTELLIGENCE :
-                return $exceptionalityProperties->getIntelligence();
-            case Charisma::CHARISMA :
-            default :
-                return $exceptionalityProperties->getCharisma();
-        }
+            + $exceptionalityProperties->getProperty($propertyCode)->getValue()
+            + $professionLevels->getPropertyModifierForFirstProfession($propertyCode);
     }
 
     /**
@@ -241,9 +173,11 @@ class FirstLevelProperties extends StrictObject
                 $this->firstLevelIntelligence = $firstLevelLimitedProperty;
                 break;
             case Charisma::CHARISMA :
-            default :
                 $this->firstLevelUnlimitedCharisma = $firstLevelUnlimitedProperty;
                 $this->firstLevelCharisma = $firstLevelLimitedProperty;
+                break;
+            default :
+                throw new \LogicException;
         }
     }
 
@@ -284,9 +218,7 @@ class FirstLevelProperties extends StrictObject
         $propertyCode
     )
     {
-        return
-            $this->getRaceBasePropertyModifier($race, $gender, $tables, $propertyCode)
-            + self::INITIAL_PROPERTY_INCREASE_LIMIT;
+        return $race->getProperty($propertyCode, $gender, $tables) + self::INITIAL_PROPERTY_INCREASE_LIMIT;
     }
 
     /**
