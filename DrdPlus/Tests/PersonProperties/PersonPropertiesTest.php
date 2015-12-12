@@ -74,7 +74,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
     )
     {
         $properties = new PersonProperties(
-            $race, $gender, $exceptionalityProperties, $professionLevels, $tables, $weightInKgAdjustment
+            $race, $gender, $exceptionalityProperties, $professionLevels, $weightInKgAdjustment, $tables
         );
 
         $this->assertInstanceOf(FirstLevelProperties::class, $properties->getFirstLevelProperties());
@@ -246,7 +246,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
             ->andReturn($firstLevel = \Mockery::mock(ProfessionLevel::class));
         $firstLevel->shouldReceive('getProfession')
             ->andReturn($profession = \Mockery::mock(Profession::class));
-        $profession->shouldReceive('getCode')
+        $profession->shouldReceive('getValue')
             ->andReturn(Fighter::FIGHTER);
 
         return $professionLevels;

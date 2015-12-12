@@ -55,8 +55,8 @@ class FirstLevelProperties extends StrictObject
         Gender $gender,
         ExceptionalityProperties $exceptionalityProperties,
         ProfessionLevels $professionLevels,
-        Tables $tables,
-        WeightInKg $weightInKgAdjustment
+        WeightInKg $weightInKgAdjustment,
+        Tables $tables
     )
     {
         $this->setUpFirstLevelProperties(
@@ -64,8 +64,8 @@ class FirstLevelProperties extends StrictObject
             $gender,
             $exceptionalityProperties,
             $professionLevels,
-            $tables,
-            $weightInKgAdjustment
+            $weightInKgAdjustment,
+            $tables
         );
     }
 
@@ -74,8 +74,8 @@ class FirstLevelProperties extends StrictObject
         Gender $gender,
         ExceptionalityProperties $exceptionalityProperties,
         ProfessionLevels $professionLevels,
-        Tables $tables,
-        WeightInKg $weightInKgAdjustment
+        WeightInKg $weightInKgAdjustment,
+        Tables $tables
     )
     {
         foreach ($this->getBaseProperties() as $propertyCode => $propertyClass) {
@@ -93,8 +93,8 @@ class FirstLevelProperties extends StrictObject
         $this->firstLevelWeightInKg = $this->createFirstLevelWeightInKg(
             $race,
             $gender,
-            $tables,
-            $weightInKgAdjustment
+            $weightInKgAdjustment,
+            $tables
         );
         $this->firstLevelSize = $this->createFirstLevelSize(
             $race,
@@ -272,8 +272,8 @@ class FirstLevelProperties extends StrictObject
     private function createFirstLevelWeightInKg(
         Race $race,
         Gender $gender,
-        Tables $tables,
-        WeightInKg $weightInKgAdjustment
+        WeightInKg $weightInKgAdjustment,
+        Tables $tables
     )
     {
         return WeightInKg::getIt($race->getWeightInKg($gender, $tables) + $weightInKgAdjustment->getValue());
