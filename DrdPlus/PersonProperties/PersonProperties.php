@@ -9,7 +9,7 @@ use DrdPlus\GameCharacteristics\Combat\Defense;
 use DrdPlus\GameCharacteristics\Combat\DefenseAgainstShooting;
 use DrdPlus\GameCharacteristics\Combat\Fight;
 use DrdPlus\GameCharacteristics\Combat\Shooting;
-use DrdPlus\ProfessionLevels\ProfessionLevels;
+use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\Charisma;
 use DrdPlus\Properties\Base\Intelligence;

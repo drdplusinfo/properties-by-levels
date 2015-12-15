@@ -2,8 +2,9 @@
 namespace DrdPlus\PersonProperties;
 
 use Drd\Genders\Gender;
+use DrdPlus\Codes\PropertyCodes;
 use DrdPlus\Exceptionalities\ExceptionalityProperties;
-use DrdPlus\ProfessionLevels\ProfessionLevels;
+use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\BaseProperty;
 use DrdPlus\Properties\Base\Charisma;
@@ -78,18 +79,7 @@ class FirstLevelProperties extends StrictObject
         Tables $tables
     )
     {
-        foreach ($this->getBaseProperties() as $propertyCode => $propertyClass) {
-            /** @var BaseProperty $propertyClass */
-            $firstLevelProperty = $propertyClass::getIt($this->calculateFirstLevelBaseProperty(
-                $propertyCode,
-                $race,
-                $gender,
-                $tables,
-                $exceptionalityProperties,
-                $professionLevels
-            ));
-            $this->setUpBaseProperty($race, $gender, $tables, $firstLevelProperty);
-        }
+        $this->setUpBaseProperties($race, $gender, $exceptionalityProperties, $professionLevels, $tables);
         $this->firstLevelWeightInKg = $this->createFirstLevelWeightInKg(
             $race,
             $gender,
@@ -105,16 +95,43 @@ class FirstLevelProperties extends StrictObject
         );
     }
 
-    private function getBaseProperties()
+    private function setUpBaseProperties(
+        Race $race,
+        Gender $gender,
+        ExceptionalityProperties $exceptionalityProperties,
+        ProfessionLevels $professionLevels,
+        Tables $tables
+    )
     {
-        return [
-            Strength::STRENGTH => Strength::class,
-            Agility::AGILITY => Agility::class,
-            Knack::KNACK => Knack::class,
-            Will::WILL => Will::class,
-            Intelligence::INTELLIGENCE => Intelligence::class,
-            Charisma::CHARISMA => Charisma::class
-        ];
+        $propertyValues = [];
+        foreach (PropertyCodes::getBasePropertyCodes() as $basePropertyCode) {
+            $propertyValues[$basePropertyCode] = $this->calculateFirstLevelBaseProperty(
+                $basePropertyCode,
+                $race,
+                $gender,
+                $tables,
+                $exceptionalityProperties,
+                $professionLevels
+            );
+        }
+
+        $this->firstLevelUnlimitedStrength = Strength::getIt($propertyValues[Strength::STRENGTH]);
+        $this->firstLevelStrength = $this->getLimitedProperty($race, $gender, $tables, $this->firstLevelUnlimitedStrength);
+
+        $this->firstLevelUnlimitedAgility = Agility::getIt($propertyValues[Agility::AGILITY]);
+        $this->firstLevelAgility = $this->getLimitedProperty($race, $gender, $tables, $this->firstLevelUnlimitedAgility);
+
+        $this->firstLevelUnlimitedKnack = Knack::getIt($propertyValues[Knack::KNACK]);
+        $this->firstLevelKnack = $this->getLimitedProperty($race, $gender, $tables, $this->firstLevelUnlimitedKnack);
+
+        $this->firstLevelUnlimitedWill = Will::getIt($propertyValues[Will::WILL]);
+        $this->firstLevelWill = $this->getLimitedProperty($race, $gender, $tables, $this->firstLevelUnlimitedWill);
+
+        $this->firstLevelUnlimitedIntelligence = Intelligence::getIt($propertyValues[Intelligence::INTELLIGENCE]);
+        $this->firstLevelIntelligence = $this->getLimitedProperty($race, $gender, $tables, $this->firstLevelUnlimitedIntelligence);
+
+        $this->firstLevelUnlimitedCharisma = Charisma::getIt($propertyValues[Charisma::CHARISMA]);
+        $this->firstLevelCharisma = $this->getLimitedProperty($race, $gender, $tables, $this->firstLevelUnlimitedCharisma);
     }
 
     private function calculateFirstLevelBaseProperty(
@@ -136,66 +153,12 @@ class FirstLevelProperties extends StrictObject
      * @param Race $race
      * @param Gender $gender
      * @param Tables $tables
-     * @param BaseProperty $firstLevelUnlimitedProperty
-     */
-    private function setUpBaseProperty(
-        Race $race,
-        Gender $gender,
-        Tables $tables,
-        BaseProperty $firstLevelUnlimitedProperty
-    )
-    {
-        $firstLevelLimitedProperty = $this->getLimitedProperty(
-            $race,
-            $gender,
-            $tables,
-            $firstLevelUnlimitedProperty
-        );
-        switch ($firstLevelUnlimitedProperty->getCode()) {
-            case Strength::STRENGTH :
-                $this->firstLevelUnlimitedStrength = $firstLevelUnlimitedProperty;
-                $this->firstLevelStrength = $firstLevelLimitedProperty;
-                break;
-            case Agility::AGILITY :
-                $this->firstLevelUnlimitedAgility = $firstLevelUnlimitedProperty;
-                $this->firstLevelAgility = $firstLevelLimitedProperty;
-                break;
-            case Knack::KNACK :
-                $this->firstLevelUnlimitedKnack = $firstLevelUnlimitedProperty;
-                $this->firstLevelKnack = $firstLevelLimitedProperty;
-                break;
-            case Will::WILL :
-                $this->firstLevelUnlimitedWill = $firstLevelUnlimitedProperty;
-                $this->firstLevelWill = $firstLevelLimitedProperty;
-                break;
-            case Intelligence::INTELLIGENCE :
-                $this->firstLevelUnlimitedIntelligence = $firstLevelUnlimitedProperty;
-                $this->firstLevelIntelligence = $firstLevelLimitedProperty;
-                break;
-            case Charisma::CHARISMA :
-                $this->firstLevelUnlimitedCharisma = $firstLevelUnlimitedProperty;
-                $this->firstLevelCharisma = $firstLevelLimitedProperty;
-                break;
-            default :
-                throw new \LogicException;
-        }
-    }
-
-    /**
-     * @param Race $race
-     * @param Gender $gender
-     * @param Tables $tables
      * @param BaseProperty $baseProperty
      * @return BaseProperty
      */
-    private function getLimitedProperty(
-        Race $race,
-        Gender $gender,
-        Tables $tables,
-        BaseProperty $baseProperty
-    )
+    private function getLimitedProperty(Race $race, Gender $gender, Tables $tables, BaseProperty $baseProperty)
     {
-        $limit = $this->calculateMaximalBasePropertyValue($race, $gender, $tables, $baseProperty->getCode());
+        $limit = $this->getBasePropertyLimit($race, $gender, $tables, $baseProperty);
         if ($baseProperty->getValue() <= $limit) {
             return $baseProperty;
         }
@@ -207,18 +170,13 @@ class FirstLevelProperties extends StrictObject
      * @param Race $race
      * @param Gender $gender
      * @param Tables $tables
-     * @param string $propertyCode
+     * @param BaseProperty $baseProperty
      *
      * @return int
      */
-    private function calculateMaximalBasePropertyValue(
-        Race $race,
-        Gender $gender,
-        Tables $tables,
-        $propertyCode
-    )
+    private function getBasePropertyLimit(Race $race, Gender $gender, Tables $tables, BaseProperty $baseProperty)
     {
-        return $race->getProperty($propertyCode, $gender, $tables) + self::INITIAL_PROPERTY_INCREASE_LIMIT;
+        return $race->getProperty($baseProperty->getCode(), $gender, $tables) + self::INITIAL_PROPERTY_INCREASE_LIMIT;
     }
 
     /**
@@ -287,13 +245,15 @@ class FirstLevelProperties extends StrictObject
         ProfessionLevels $professionLevels
     )
     {
-        return new Size($this->calculateFirstLevelSize(
+        $sizeValue = $this->calculateFirstLevelSize(
             $race,
             $gender,
             $tables,
             $exceptionalityProperties,
             $professionLevels
-        ));
+        );
+
+        return new Size($sizeValue);
     }
 
     private function calculateFirstLevelSize(
@@ -304,11 +264,11 @@ class FirstLevelProperties extends StrictObject
         ProfessionLevels $professionLevels
     )
     {
-        return
-            $race->getSize($gender, $tables)
-            + $this->getSizeModifierByStrength(
-                $this->getStrengthModifierSummary($exceptionalityProperties, $professionLevels)
-            );
+        $strengthModifierSummary = $this->getStrengthModifierSummary($exceptionalityProperties, $professionLevels);
+        $sizeModifierByStrength = $this->getSizeModifierByStrength($strengthModifierSummary);
+        $raceSize = $race->getSize($gender, $tables);
+
+        return $raceSize + $sizeModifierByStrength;
     }
 
     private function getSizeModifierByStrength($firstLevelStrengthAdjustment)
@@ -316,13 +276,15 @@ class FirstLevelProperties extends StrictObject
         if ($firstLevelStrengthAdjustment === 0) {
             return -1;
         }
-        if ($firstLevelStrengthAdjustment >= 2) {
-            return +1;
-        }
         if ($firstLevelStrengthAdjustment === 1) {
             return 0;
         }
-        throw new \LogicException('FirstLevel strength adjustment can not be lesser than zero. Given ' . $firstLevelStrengthAdjustment);
+        if ($firstLevelStrengthAdjustment >= 2) {
+            return +1;
+        }
+        throw new Exceptions\TooLowStrengthAdjustment(
+            'First level strength adjustment can not be lesser than zero. Given ' . $firstLevelStrengthAdjustment
+        );
     }
 
     private function getStrengthModifierSummary(ExceptionalityProperties $exceptionalityProperties, ProfessionLevels $professionLevels)

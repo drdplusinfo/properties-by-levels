@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\PersonProperties;
 
-use DrdPlus\ProfessionLevels\ProfessionLevels;
+use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\Charisma;
 use DrdPlus\Properties\Base\Intelligence;
