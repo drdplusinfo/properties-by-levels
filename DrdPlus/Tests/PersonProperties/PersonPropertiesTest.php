@@ -198,35 +198,35 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
     private function createProfessionLevels()
     {
         $professionLevels = \Mockery::mock(ProfessionLevels::class);
-        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
             ->with(Strength::STRENGTH)
             ->andReturn($strength = 1234);
-        $professionLevels->shouldReceive('getStrengthModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelStrengthModifier')
             ->andReturn($strength);
-        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
             ->with(Agility::AGILITY)
             ->andReturn($agility = 2345);
-        $professionLevels->shouldReceive('getAgilityModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelAgilityModifier')
             ->andReturn($agility);
-        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
             ->with(Knack::KNACK)
             ->andReturn($knack = 3456);
-        $professionLevels->shouldReceive('getKnackModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelKnackModifier')
             ->andReturn($knack);
-        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
             ->with(Will::WILL)
             ->andReturn($will = 3456);
-        $professionLevels->shouldReceive('getWillModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelWillModifier')
             ->andReturn($will);
-        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
             ->with(Intelligence::INTELLIGENCE)
             ->andReturn($intelligence = 5678);
-        $professionLevels->shouldReceive('getIntelligenceModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelIntelligenceModifier')
             ->andReturn($intelligence);
-        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
             ->with(Charisma::CHARISMA)
             ->andReturn($charisma = 6789);
-        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
             ->andReturn($charisma);
 
         $professionLevels->shouldReceive('getNextLevelsStrengthModifier')

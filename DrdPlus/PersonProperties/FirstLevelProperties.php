@@ -146,7 +146,7 @@ class FirstLevelProperties extends StrictObject
         return
             $race->getProperty($propertyCode, $gender, $tables)
             + $exceptionalityProperties->getProperty($propertyCode)->getValue()
-            + $professionLevels->getPropertyModifierForFirstProfession($propertyCode);
+            + $professionLevels->getFirstLevelPropertyModifier($propertyCode);
     }
 
     /**
@@ -291,7 +291,7 @@ class FirstLevelProperties extends StrictObject
     {
         return // the race bonus is NOT count for adjustment, doesn't count to size change respectively
             $exceptionalityProperties->getStrength()->getValue()
-            + $professionLevels->getStrengthModifierForFirstProfession();
+            + $professionLevels->getFirstLevelStrengthModifier();
     }
 
     /**

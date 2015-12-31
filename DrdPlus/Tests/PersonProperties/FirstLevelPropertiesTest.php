@@ -16,7 +16,7 @@ use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
 use DrdPlus\Races\Humans\CommonHuman;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Tools\Tests\TestWithMockery;
+use DrdPlus\Tests\Tools\TestWithMockery;
 
 class FirstLevelPropertiesTest extends TestWithMockery
 {
@@ -159,9 +159,9 @@ class FirstLevelPropertiesTest extends TestWithMockery
     private function createProfessionLevels()
     {
         $professionLevels = $this->mockery(ProfessionLevels::class);
-        $professionLevels->shouldReceive('getPropertyModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
             ->andReturn(0);
-        $professionLevels->shouldReceive('getStrengthModifierForFirstProfession')
+        $professionLevels->shouldReceive('getFirstLevelStrengthModifier')
             ->andReturn(0);
 
         return $professionLevels;
