@@ -9,7 +9,7 @@ use DrdPlus\Properties\Base\Intelligence;
 use DrdPlus\Properties\Base\Knack;
 use DrdPlus\Properties\Base\Strength;
 use DrdPlus\Properties\Base\Will;
-use DrdPlus\Tests\Tools\TestWithMockery;
+use Granam\Tests\Tools\TestWithMockery;
 
 class NextLevelsPropertiesTest extends TestWithMockery
 {

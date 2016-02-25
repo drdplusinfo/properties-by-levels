@@ -16,7 +16,7 @@ use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
 use DrdPlus\Races\Humans\CommonHuman;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Tests\Tools\TestWithMockery;
+use Granam\Tests\Tools\TestWithMockery;
 
 class FirstLevelPropertiesTest extends TestWithMockery
 {
