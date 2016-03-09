@@ -2,7 +2,7 @@
 namespace DrdPlus\Tests\PersonProperties;
 
 use Drd\Genders\Female;
-use DrdPlus\Exceptionalities\ExceptionalityProperties;
+use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\PersonProperties\FirstLevelProperties;
 use DrdPlus\Properties\Base\Agility;
@@ -52,40 +52,38 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $tables
         );
         $expectedStrength = min($strength, 3) - 1; /* female */
-        $this->assertEquals(Strength::getIt($expectedStrength), $firstLevelProperty->getFirstLevelStrength());
-        $this->assertSame(max(0, $strength - 3), $firstLevelProperty->getStrengthLossBecauseOfLimit());
+        self::assertEquals(Strength::getIt($expectedStrength), $firstLevelProperty->getFirstLevelStrength());
+        self::assertSame(max(0, $strength - 3), $firstLevelProperty->getStrengthLossBecauseOfLimit());
 
         $expectedAgility = min($agility, 3);
-        $this->assertEquals(Agility::getIt($expectedAgility), $firstLevelProperty->getFirstLevelAgility());
-        $this->assertSame(max(0, $agility - 3), $firstLevelProperty->getAgilityLossBecauseOfLimit());
+        self::assertEquals(Agility::getIt($expectedAgility), $firstLevelProperty->getFirstLevelAgility());
+        self::assertSame(max(0, $agility - 3), $firstLevelProperty->getAgilityLossBecauseOfLimit());
 
         $expectedKnack = min($knack, 3);
-        $this->assertEquals(Knack::getIt($expectedKnack), $firstLevelProperty->getFirstLevelKnack());
-        $this->assertSame(max(0, $knack - 3), $firstLevelProperty->getKnackLossBecauseOfLimit());
+        self::assertEquals(Knack::getIt($expectedKnack), $firstLevelProperty->getFirstLevelKnack());
+        self::assertSame(max(0, $knack - 3), $firstLevelProperty->getKnackLossBecauseOfLimit());
 
         $expectedWill = min($will, 3);
-        $this->assertEquals(Will::getIt($expectedWill), $firstLevelProperty->getFirstLevelWill());
-        $this->assertSame(max(0, $will - 3), $firstLevelProperty->getWillLossBecauseOfLimit());
+        self::assertEquals(Will::getIt($expectedWill), $firstLevelProperty->getFirstLevelWill());
+        self::assertSame(max(0, $will - 3), $firstLevelProperty->getWillLossBecauseOfLimit());
 
         $expectedIntelligence = min($intelligence, 3);
-        $this->assertEquals(Intelligence::getIt($expectedIntelligence), $firstLevelProperty->getFirstLevelIntelligence());
-        $this->assertSame(max(0, $intelligence - 3), $firstLevelProperty->getIntelligenceLossBecauseOfLimit());
+        self::assertEquals(Intelligence::getIt($expectedIntelligence), $firstLevelProperty->getFirstLevelIntelligence());
+        self::assertSame(max(0, $intelligence - 3), $firstLevelProperty->getIntelligenceLossBecauseOfLimit());
 
         $expectedCharisma = min($charisma, 3) + 1; /* female */
-        $this->assertEquals(Charisma::getIt($expectedCharisma), $firstLevelProperty->getFirstLevelCharisma());
-        $this->assertSame(max(0, $charisma - 3), $firstLevelProperty->getCharismaLossBecauseOfLimit());
+        self::assertEquals(Charisma::getIt($expectedCharisma), $firstLevelProperty->getFirstLevelCharisma());
+        self::assertSame(max(0, $charisma - 3), $firstLevelProperty->getCharismaLossBecauseOfLimit());
 
-        $this->assertEquals(Size::getIt(
-            ($strength === 0
-                ? -1
-                : ($strength === 1
-                    ? 0
-                    : 1
-                )
-            ) - 1 /* female */
-        ), $firstLevelProperty->getFirstLevelSize());
+        $expectedSize = -1;/* female */
+        if ($strength === 0) {
+            $expectedSize--;
+        } else if ($strength > 1) {
+            $expectedSize++;
+        }
+        self::assertEquals(Size::getIt($expectedSize), $firstLevelProperty->getFirstLevelSize());
 
-        $this->assertEquals(
+        self::assertEquals(
             WeightInKg::getIt(70 + $weightInKgAdjustment->getValue()),
             $firstLevelProperty->getFirstLevelWeightInKg()
         );

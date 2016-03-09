@@ -21,12 +21,12 @@ class NextLevelsPropertiesTest extends TestWithMockery
         $sut = new NextLevelsProperties($this->createProfessionLevels(
             $strength = 1, $agility = 2, $knack = 3, $will = 4, $intelligence = 5, $charisma = 6
         ));
-        $this->assertSame(Strength::getIt($strength), $sut->getNextLevelsStrength());
-        $this->assertSame(Agility::getIt($agility), $sut->getNextLevelsAgility());
-        $this->assertSame(Knack::getIt($knack), $sut->getNextLevelsKnack());
-        $this->assertSame(Will::getIt($will), $sut->getNextLevelsWill());
-        $this->assertSame(Intelligence::getIt($intelligence), $sut->getNextLevelsIntelligence());
-        $this->assertSame(Charisma::getIt($charisma), $sut->getNextLevelsCharisma());
+        self::assertSame(Strength::getIt($strength), $sut->getNextLevelsStrength());
+        self::assertSame(Agility::getIt($agility), $sut->getNextLevelsAgility());
+        self::assertSame(Knack::getIt($knack), $sut->getNextLevelsKnack());
+        self::assertSame(Will::getIt($will), $sut->getNextLevelsWill());
+        self::assertSame(Intelligence::getIt($intelligence), $sut->getNextLevelsIntelligence());
+        self::assertSame(Charisma::getIt($charisma), $sut->getNextLevelsCharisma());
     }
 
     /**

@@ -2,7 +2,7 @@
 namespace DrdPlus\PersonProperties;
 
 use Drd\Genders\Gender;
-use DrdPlus\Exceptionalities\ExceptionalityProperties;
+use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\GameCharacteristics\Combat\Attack;
 use DrdPlus\GameCharacteristics\Combat\BasePropertiesInterface;
 use DrdPlus\GameCharacteristics\Combat\Defense;

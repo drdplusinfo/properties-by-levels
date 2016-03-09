@@ -3,7 +3,7 @@ namespace DrdPlus\PersonProperties;
 
 use Drd\Genders\Gender;
 use DrdPlus\Codes\PropertyCodes;
-use DrdPlus\Exceptionalities\ExceptionalityProperties;
+use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\BaseProperty;
