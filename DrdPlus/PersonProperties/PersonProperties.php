@@ -16,6 +16,7 @@ use DrdPlus\Properties\Base\Intelligence;
 use DrdPlus\Properties\Base\Knack;
 use DrdPlus\Properties\Base\Strength;
 use DrdPlus\Properties\Base\Will;
+use DrdPlus\Properties\Body\Age;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
@@ -64,6 +65,9 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
 
     /** @var HeightInCm */
     private $heightInCm;
+
+    /** @var Age */
+    private $age;
 
     /** @var Toughness */
     private $toughness;
@@ -117,6 +121,7 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
         ProfessionLevels $professionLevels,
         WeightInKg $weightInKgAdjustment,
         HeightInCm $heightInCm,
+        Age $age,
         Tables $tables
     )
     {
@@ -127,6 +132,7 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
             $professionLevels,
             $weightInKgAdjustment,
             $heightInCm,
+            $age,
             $tables
         );
         $this->nextLevelsProperties = new NextLevelsProperties($professionLevels);
@@ -155,9 +161,10 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
             $this->firstLevelProperties->getFirstLevelCharisma()->getValue()
             + $this->nextLevelsProperties->getNextLevelsCharisma()->getValue()
         );
-        // there is no more weight and height adjustments than on first level
+        // there is no more weight, height and age adjustments (yet) than on first level
         $this->weightInKg = $this->firstLevelProperties->getFirstLevelWeightInKg();
         $this->heightInCm = $this->firstLevelProperties->getFirstLevelHeightInCm();
+        $this->age = $this->firstLevelProperties->getFirstLevelAge();
 
         // delivered properties
         $this->toughness = new Toughness(
@@ -266,6 +273,14 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
     public function getHeightInCm()
     {
         return $this->heightInCm;
+    }
+
+    /**
+     * @return Age
+     */
+    public function getAge()
+    {
+        return $this->age;
     }
 
     /**

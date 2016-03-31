@@ -22,6 +22,7 @@ use DrdPlus\Properties\Base\Intelligence;
 use DrdPlus\Properties\Base\Knack;
 use DrdPlus\Properties\Base\Strength;
 use DrdPlus\Properties\Base\Will;
+use DrdPlus\Properties\Body\Age;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
@@ -53,6 +54,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
      * @param Tables $tables
      * @param WeightInKg $weightInKgAdjustment
      * @param HeightInCm $heightInCm
+     * @param Age $age
      * @param int $expectedStrength
      * @param int $expectedAgility
      * @param int $expectedKnack
@@ -68,6 +70,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
         Tables $tables,
         WeightInKg $weightInKgAdjustment,
         HeightInCm $heightInCm,
+        Age $age,
         $expectedStrength,
         $expectedAgility,
         $expectedKnack,
@@ -83,6 +86,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
             $professionLevels,
             $weightInKgAdjustment,
             $heightInCm,
+            $age,
             $tables
         );
 
@@ -98,6 +102,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
 
         self::assertGreaterThan($weightInKgAdjustment->getValue(), $properties->getWeightInKg()->getValue(), "$race $gender");
         self::assertSame($heightInCm, $properties->getHeightInCm());
+        self::assertSame($age, $properties->getAge());
         $expectedToughness = new Toughness(Strength::getIt($expectedStrength), $race->getRaceCode(), $race->getSubraceCode(), $tables->getRacesTable());
         self::assertEquals($expectedToughness, $properties->getToughness(), "$race $gender");
         $expectedEndurance = new Endurance(Strength::getIt($expectedStrength), Will::getIt($expectedWill));
@@ -141,6 +146,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
         $tables = new Tables();
         $weightInKgAdjustment = WeightInKg::getIt(0.001);
         $heightInCm = HeightInCm::getIt(123.4);
+        $age = Age::getIt(15);
         $baseOfExpectedStrength = $professionLevels->getNextLevelsStrengthModifier() + 3; /* default max strength increment */
         $baseOfExpectedAgility = $professionLevels->getNextLevelsAgilityModifier() + 3; /* default max agility increment */
         $baseOfExpectedKnack = $professionLevels->getNextLevelsKnackModifier() + 3; /* default max knack increment */
@@ -151,12 +157,12 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
         return [
             [
                 $commonHuman = CommonHuman::getIt(), $male, $exceptionalityProperties, $professionLevels, $tables,
-                $weightInKgAdjustment, $heightInCm, $baseOfExpectedStrength, $baseOfExpectedAgility, $baseOfExpectedKnack,
+                $weightInKgAdjustment, $heightInCm, $age, $baseOfExpectedStrength, $baseOfExpectedAgility, $baseOfExpectedKnack,
                 $baseOfExpectedWill, $baseOfExpectedIntelligence, $baseOfExpectedCharisma,
             ],
             [
                 $commonHuman, $female, $exceptionalityProperties, $professionLevels, $tables, $weightInKgAdjustment,
-                $heightInCm,
+                $heightInCm, $age,
                 $baseOfExpectedStrength - 1 /* human female */, $baseOfExpectedAgility, $baseOfExpectedKnack,
                 $baseOfExpectedWill, $baseOfExpectedIntelligence, $baseOfExpectedCharisma + 1 /* human female */,
             ],

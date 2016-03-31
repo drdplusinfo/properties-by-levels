@@ -12,6 +12,7 @@ use DrdPlus\Properties\Base\Intelligence;
 use DrdPlus\Properties\Base\Knack;
 use DrdPlus\Properties\Base\Strength;
 use DrdPlus\Properties\Base\Will;
+use DrdPlus\Properties\Body\Age;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
@@ -43,6 +44,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
         $professionLevels = $this->createProfessionLevels();
         $weightInKgAdjustment = WeightInKg::getIt(12.3);
         $heightInCm = HeightInCm::getIt(123.45);
+        $age = Age::getIt(32);
         $tables = new Tables();
 
         $firstLevelProperty = new FirstLevelProperties(
@@ -52,6 +54,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $professionLevels,
             $weightInKgAdjustment,
             $heightInCm,
+            $age,
             $tables
         );
         $expectedStrength = min($strength, 3) - 1; /* female */
@@ -92,6 +95,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
         );
 
         self::assertSame($heightInCm, $firstLevelProperty->getFirstLevelHeightInCm());
+        self::assertSame($age, $firstLevelProperty->getFirstLevelAge());
     }
 
     public function provideBasePropertyValues()
@@ -187,6 +191,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $this->createProfessionLevels(),
             WeightInKg::getIt(0),
             HeightInCm::getIt(123),
+            Age::getIt(20),
             new Tables()
         );
     }

@@ -12,6 +12,7 @@ use DrdPlus\Properties\Base\Intelligence;
 use DrdPlus\Properties\Base\Knack;
 use DrdPlus\Properties\Base\Strength;
 use DrdPlus\Properties\Base\Will;
+use DrdPlus\Properties\Body\Age;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
@@ -53,6 +54,8 @@ class FirstLevelProperties extends StrictObject
     private $firstLevelSize;
     /** @var HeightInCm */
     private $firstLevelHeightInCm;
+    /** @var Age */
+    private $firstLevelAge;
 
     public function __construct(
         Race $race,
@@ -61,6 +64,7 @@ class FirstLevelProperties extends StrictObject
         ProfessionLevels $professionLevels,
         WeightInKg $weightInKgAdjustment,
         HeightInCm $heightInCm,
+        Age $age,
         Tables $tables
     )
     {
@@ -79,6 +83,7 @@ class FirstLevelProperties extends StrictObject
             $professionLevels
         );
         $this->firstLevelHeightInCm = $heightInCm;
+        $this->firstLevelAge = $age;
     }
 
     private function setUpBaseProperties(
@@ -351,4 +356,13 @@ class FirstLevelProperties extends StrictObject
     {
         return $this->firstLevelHeightInCm;
     }
+
+    /**
+     * @return Age
+     */
+    public function getFirstLevelAge()
+    {
+        return $this->firstLevelAge;
+    }
+
 }
