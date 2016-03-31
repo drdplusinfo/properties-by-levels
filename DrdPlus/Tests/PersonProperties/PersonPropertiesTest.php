@@ -100,6 +100,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
         self::assertSame($expectedIntelligence, $properties->getIntelligence()->getValue(), "$race $gender");
         self::assertSame($expectedCharisma, $properties->getCharisma()->getValue(), "$race $gender");
 
+        self::assertSame($weightInKgAdjustment, $properties->getWeightInKgAdjustment());
         self::assertGreaterThan($weightInKgAdjustment->getValue(), $properties->getWeightInKg()->getValue(), "$race $gender");
         self::assertSame($heightInCm, $properties->getHeightInCm());
         self::assertSame($age, $properties->getAge());

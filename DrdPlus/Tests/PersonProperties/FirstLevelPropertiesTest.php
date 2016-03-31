@@ -47,7 +47,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
         $age = Age::getIt(32);
         $tables = new Tables();
 
-        $firstLevelProperty = new FirstLevelProperties(
+        $firstLevelProperties = new FirstLevelProperties(
             $race,
             $gender,
             $exceptionalityProperties,
@@ -58,28 +58,28 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $tables
         );
         $expectedStrength = min($strength, 3) - 1; /* female */
-        self::assertEquals(Strength::getIt($expectedStrength), $firstLevelProperty->getFirstLevelStrength());
-        self::assertSame(max(0, $strength - 3), $firstLevelProperty->getStrengthLossBecauseOfLimit());
+        self::assertEquals(Strength::getIt($expectedStrength), $firstLevelProperties->getFirstLevelStrength());
+        self::assertSame(max(0, $strength - 3), $firstLevelProperties->getStrengthLossBecauseOfLimit());
 
         $expectedAgility = min($agility, 3);
-        self::assertEquals(Agility::getIt($expectedAgility), $firstLevelProperty->getFirstLevelAgility());
-        self::assertSame(max(0, $agility - 3), $firstLevelProperty->getAgilityLossBecauseOfLimit());
+        self::assertEquals(Agility::getIt($expectedAgility), $firstLevelProperties->getFirstLevelAgility());
+        self::assertSame(max(0, $agility - 3), $firstLevelProperties->getAgilityLossBecauseOfLimit());
 
         $expectedKnack = min($knack, 3);
-        self::assertEquals(Knack::getIt($expectedKnack), $firstLevelProperty->getFirstLevelKnack());
-        self::assertSame(max(0, $knack - 3), $firstLevelProperty->getKnackLossBecauseOfLimit());
+        self::assertEquals(Knack::getIt($expectedKnack), $firstLevelProperties->getFirstLevelKnack());
+        self::assertSame(max(0, $knack - 3), $firstLevelProperties->getKnackLossBecauseOfLimit());
 
         $expectedWill = min($will, 3);
-        self::assertEquals(Will::getIt($expectedWill), $firstLevelProperty->getFirstLevelWill());
-        self::assertSame(max(0, $will - 3), $firstLevelProperty->getWillLossBecauseOfLimit());
+        self::assertEquals(Will::getIt($expectedWill), $firstLevelProperties->getFirstLevelWill());
+        self::assertSame(max(0, $will - 3), $firstLevelProperties->getWillLossBecauseOfLimit());
 
         $expectedIntelligence = min($intelligence, 3);
-        self::assertEquals(Intelligence::getIt($expectedIntelligence), $firstLevelProperty->getFirstLevelIntelligence());
-        self::assertSame(max(0, $intelligence - 3), $firstLevelProperty->getIntelligenceLossBecauseOfLimit());
+        self::assertEquals(Intelligence::getIt($expectedIntelligence), $firstLevelProperties->getFirstLevelIntelligence());
+        self::assertSame(max(0, $intelligence - 3), $firstLevelProperties->getIntelligenceLossBecauseOfLimit());
 
         $expectedCharisma = min($charisma, 3) + 1; /* female */
-        self::assertEquals(Charisma::getIt($expectedCharisma), $firstLevelProperty->getFirstLevelCharisma());
-        self::assertSame(max(0, $charisma - 3), $firstLevelProperty->getCharismaLossBecauseOfLimit());
+        self::assertEquals(Charisma::getIt($expectedCharisma), $firstLevelProperties->getFirstLevelCharisma());
+        self::assertSame(max(0, $charisma - 3), $firstLevelProperties->getCharismaLossBecauseOfLimit());
 
         $expectedSize = -1;/* female */
         if ($strength === 0) {
@@ -87,15 +87,16 @@ class FirstLevelPropertiesTest extends TestWithMockery
         } else if ($strength > 1) {
             $expectedSize++;
         }
-        self::assertEquals(Size::getIt($expectedSize), $firstLevelProperty->getFirstLevelSize());
+        self::assertEquals(Size::getIt($expectedSize), $firstLevelProperties->getFirstLevelSize());
 
+        self::assertSame($weightInKgAdjustment, $firstLevelProperties->getFirstLevelWeightInKgAdjustment());
         self::assertEquals(
             WeightInKg::getIt(70 + $weightInKgAdjustment->getValue()),
-            $firstLevelProperty->getFirstLevelWeightInKg()
+            $firstLevelProperties->getFirstLevelWeightInKg()
         );
 
-        self::assertSame($heightInCm, $firstLevelProperty->getFirstLevelHeightInCm());
-        self::assertSame($age, $firstLevelProperty->getFirstLevelAge());
+        self::assertSame($heightInCm, $firstLevelProperties->getFirstLevelHeightInCm());
+        self::assertSame($age, $firstLevelProperties->getFirstLevelAge());
     }
 
     public function provideBasePropertyValues()

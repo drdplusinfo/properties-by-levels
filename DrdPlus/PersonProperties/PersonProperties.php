@@ -61,6 +61,9 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
     private $charisma;
 
     /** @var WeightInKg */
+    private $weightInKgAdjustment;
+
+    /** @var WeightInKg */
     private $weightInKg;
 
     /** @var HeightInCm */
@@ -162,6 +165,7 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
             + $this->nextLevelsProperties->getNextLevelsCharisma()->getValue()
         );
         // there is no more weight, height and age adjustments (yet) than on first level
+        $this->weightInKgAdjustment = $this->firstLevelProperties->getFirstLevelWeightInKgAdjustment();
         $this->weightInKg = $this->firstLevelProperties->getFirstLevelWeightInKg();
         $this->heightInCm = $this->firstLevelProperties->getFirstLevelHeightInCm();
         $this->age = $this->firstLevelProperties->getFirstLevelAge();
@@ -257,6 +261,14 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
     public function getCharisma()
     {
         return $this->charisma;
+    }
+
+    /**
+     * @return WeightInKg
+     */
+    public function getWeightInKgAdjustment()
+    {
+        return $this->weightInKgAdjustment;
     }
 
     /**

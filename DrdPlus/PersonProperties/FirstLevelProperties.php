@@ -49,6 +49,8 @@ class FirstLevelProperties extends StrictObject
     /** @var Charisma */
     private $firstLevelCharisma;
     /** @var WeightInKg */
+    private $firstLevelWeightInKgAdjustment;
+    /** @var WeightInKg */
     private $firstLevelWeightInKg;
     /** @var Size */
     private $firstLevelSize;
@@ -69,6 +71,7 @@ class FirstLevelProperties extends StrictObject
     )
     {
         $this->setUpBaseProperties($race, $gender, $exceptionalityProperties, $professionLevels, $tables);
+        $this->firstLevelWeightInKgAdjustment = $weightInKgAdjustment;
         $this->firstLevelWeightInKg = $this->createFirstLevelWeightInKg(
             $race,
             $gender,
@@ -331,6 +334,14 @@ class FirstLevelProperties extends StrictObject
     public function getFirstLevelCharisma()
     {
         return $this->firstLevelCharisma;
+    }
+
+    /**
+     * @return WeightInKg
+     */
+    public function getFirstLevelWeightInKgAdjustment()
+    {
+        return $this->firstLevelWeightInKgAdjustment;
     }
 
     /**
