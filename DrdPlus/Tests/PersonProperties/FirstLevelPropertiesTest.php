@@ -12,6 +12,7 @@ use DrdPlus\Properties\Base\Intelligence;
 use DrdPlus\Properties\Base\Knack;
 use DrdPlus\Properties\Base\Strength;
 use DrdPlus\Properties\Base\Will;
+use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
 use DrdPlus\Races\Humans\CommonHuman;
@@ -22,7 +23,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
 {
     /**
      * @test
-     * @dataProvider provideProperties
+     * @dataProvider provideBasePropertyValues
      * @param $strength
      * @param $agility
      * @param $knack
@@ -41,6 +42,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
         );
         $professionLevels = $this->createProfessionLevels();
         $weightInKgAdjustment = WeightInKg::getIt(12.3);
+        $heightInCm = HeightInCm::getIt(123.45);
         $tables = new Tables();
 
         $firstLevelProperty = new FirstLevelProperties(
@@ -49,6 +51,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $exceptionalityProperties,
             $professionLevels,
             $weightInKgAdjustment,
+            $heightInCm,
             $tables
         );
         $expectedStrength = min($strength, 3) - 1; /* female */
@@ -87,9 +90,11 @@ class FirstLevelPropertiesTest extends TestWithMockery
             WeightInKg::getIt(70 + $weightInKgAdjustment->getValue()),
             $firstLevelProperty->getFirstLevelWeightInKg()
         );
+
+        self::assertSame($heightInCm, $firstLevelProperty->getFirstLevelHeightInCm());
     }
 
-    public function provideProperties()
+    public function provideBasePropertyValues()
     {
         return [
             [0, 0, 0, 0, 0, 0],
@@ -171,22 +176,18 @@ class FirstLevelPropertiesTest extends TestWithMockery
      */
     public function I_can_not_get_it_with_too_low_strength()
     {
-        $race = CommonHuman::getIt();
-        $gender = Female::getIt();
         $exceptionalityProperties = $this->createExceptionalityProperties(
             -1, 0, 0, 0, 0, 0
         );
-        $professionLevels = $this->createProfessionLevels();
-        $weightInKgAdjustment = WeightInKg::getIt(0);
-        $tables = new Tables();
 
         new FirstLevelProperties(
-            $race,
-            $gender,
+            CommonHuman::getIt(),
+            Female::getIt(),
             $exceptionalityProperties,
-            $professionLevels,
-            $weightInKgAdjustment,
-            $tables
+            $this->createProfessionLevels(),
+            WeightInKg::getIt(0),
+            HeightInCm::getIt(123),
+            new Tables()
         );
     }
 

@@ -16,6 +16,7 @@ use DrdPlus\Properties\Base\Intelligence;
 use DrdPlus\Properties\Base\Knack;
 use DrdPlus\Properties\Base\Strength;
 use DrdPlus\Properties\Base\Will;
+use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
 use DrdPlus\Properties\Derived\Beauty;
@@ -60,6 +61,9 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
 
     /** @var WeightInKg */
     private $weightInKg;
+
+    /** @var HeightInCm */
+    private $heightInCm;
 
     /** @var Toughness */
     private $toughness;
@@ -112,6 +116,7 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
         ExceptionalityProperties $exceptionalityProperties,
         ProfessionLevels $professionLevels,
         WeightInKg $weightInKgAdjustment,
+        HeightInCm $heightInCm,
         Tables $tables
     )
     {
@@ -121,6 +126,7 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
             $exceptionalityProperties,
             $professionLevels,
             $weightInKgAdjustment,
+            $heightInCm,
             $tables
         );
         $this->nextLevelsProperties = new NextLevelsProperties($professionLevels);
@@ -149,8 +155,9 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
             $this->firstLevelProperties->getFirstLevelCharisma()->getValue()
             + $this->nextLevelsProperties->getNextLevelsCharisma()->getValue()
         );
-        // there is no more weight adjustment than the first level one
+        // there is no more weight and height adjustments than on first level
         $this->weightInKg = $this->firstLevelProperties->getFirstLevelWeightInKg();
+        $this->heightInCm = $this->firstLevelProperties->getFirstLevelHeightInCm();
 
         // delivered properties
         $this->toughness = new Toughness(
@@ -251,6 +258,14 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
     public function getWeightInKg()
     {
         return $this->weightInKg;
+    }
+
+    /**
+     * @return HeightInCm
+     */
+    public function getHeightInCm()
+    {
+        return $this->heightInCm;
     }
 
     /**
