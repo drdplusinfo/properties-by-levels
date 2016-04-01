@@ -189,7 +189,7 @@ class PersonProperties extends StrictObject implements BasePropertiesInterface
         $this->dangerousness = new Dangerousness($this->getStrength(), $this->getWill(), $this->getCharisma());
         $this->dignity = new Dignity($this->getIntelligence(), $this->getWill(), $this->getCharisma());
 
-        $this->fight = new Fight($professionLevels->getFirstLevel()->getProfession()->getValue(), $this, $this->getSize());
+        $this->fight = new Fight($professionLevels->getFirstLevel()->getProfession(), $this, $this->getSize());
         $this->attack = new Attack($this->getAgility());
         $this->shooting = new Shooting($this->getKnack());
         $this->defense = new Defense($this->getAgility());
