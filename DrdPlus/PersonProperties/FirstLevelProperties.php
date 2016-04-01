@@ -24,6 +24,8 @@ class FirstLevelProperties extends StrictObject
 {
     const INITIAL_PROPERTY_INCREASE_LIMIT = 3;
 
+    /** @var ExceptionalityProperties */
+    private $exceptionalityProperties;
     /** @var Strength */
     private $firstLevelUnlimitedStrength;
     /** @var Strength */
@@ -70,6 +72,7 @@ class FirstLevelProperties extends StrictObject
         Tables $tables
     )
     {
+        $this->exceptionalityProperties = $exceptionalityProperties;
         $this->setUpBaseProperties($race, $gender, $exceptionalityProperties, $professionLevels, $tables);
         $this->firstLevelWeightInKgAdjustment = $weightInKgAdjustment;
         $this->firstLevelWeightInKg = $this->createFirstLevelWeightInKg(
@@ -171,6 +174,14 @@ class FirstLevelProperties extends StrictObject
     private function getBasePropertyLimit(Race $race, Gender $gender, Tables $tables, BaseProperty $baseProperty)
     {
         return $race->getProperty($baseProperty->getCode(), $gender, $tables) + self::INITIAL_PROPERTY_INCREASE_LIMIT;
+    }
+
+    /**
+     * @return ExceptionalityProperties
+     */
+    public function getExceptionalityProperties()
+    {
+        return $this->exceptionalityProperties;
     }
 
     /**

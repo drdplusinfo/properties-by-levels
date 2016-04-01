@@ -57,6 +57,9 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $age,
             $tables
         );
+
+        self::assertSame($exceptionalityProperties, $firstLevelProperties->getExceptionalityProperties());
+
         $expectedStrength = min($strength, 3) - 1; /* female */
         self::assertEquals(Strength::getIt($expectedStrength), $firstLevelProperties->getFirstLevelStrength());
         self::assertSame(max(0, $strength - 3), $firstLevelProperties->getStrengthLossBecauseOfLimit());
