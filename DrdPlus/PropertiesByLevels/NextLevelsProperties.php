@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\PersonProperties;
+namespace DrdPlus\PropertiesByLevels;
 
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Base\Agility;

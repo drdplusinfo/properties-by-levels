@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\PersonProperties;
+namespace DrdPlus\PropertiesByLevels;
 
 use Drd\Genders\Gender;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
@@ -33,7 +33,7 @@ use DrdPlus\Races\Race;
 use DrdPlus\Tables\Tables;
 use Granam\Strict\Object\StrictObject;
 
-class PersonProperties extends StrictObject implements BasePropertiesInterface
+class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
 {
 
     /** @var FirstLevelProperties */

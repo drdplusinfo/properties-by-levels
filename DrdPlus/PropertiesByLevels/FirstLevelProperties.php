@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\PersonProperties;
+namespace DrdPlus\PropertiesByLevels;
 
 use Drd\Genders\Gender;
 use DrdPlus\Codes\PropertyCodes;

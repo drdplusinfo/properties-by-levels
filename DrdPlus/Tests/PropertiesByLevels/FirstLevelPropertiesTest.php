@@ -1,10 +1,10 @@
 <?php
-namespace DrdPlus\Tests\PersonProperties;
+namespace DrdPlus\Tests\PropertiesByLevels;
 
 use Drd\Genders\Female;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
-use DrdPlus\PersonProperties\FirstLevelProperties;
+use DrdPlus\PropertiesByLevels\FirstLevelProperties;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\BaseProperty;
 use DrdPlus\Properties\Base\Charisma;
@@ -180,7 +180,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\PersonProperties\Exceptions\TooLowStrengthAdjustment
+     * @expectedException \DrdPlus\PropertiesByLevels\Exceptions\TooLowStrengthAdjustment
      */
     public function I_can_not_get_it_with_too_low_strength()
     {

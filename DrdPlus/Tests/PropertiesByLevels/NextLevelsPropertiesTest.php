@@ -1,8 +1,8 @@
 <?php
-namespace DrdPlus\Tests\PersonProperties;
+namespace DrdPlus\Tests\PropertiesByLevels;
 
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
-use DrdPlus\PersonProperties\NextLevelsProperties;
+use DrdPlus\PropertiesByLevels\NextLevelsProperties;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\Charisma;
 use DrdPlus\Properties\Base\Intelligence;

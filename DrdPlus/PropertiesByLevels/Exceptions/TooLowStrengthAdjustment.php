@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\PersonProperties\Exceptions;
+namespace DrdPlus\PropertiesByLevels\Exceptions;
 
 class TooLowStrengthAdjustment extends \LogicException implements Logic
 {

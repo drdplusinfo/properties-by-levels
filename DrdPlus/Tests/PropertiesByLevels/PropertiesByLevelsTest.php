@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Tests\PersonProperties;
+namespace DrdPlus\Tests\PropertiesByLevels;
 
 use Drd\Genders\Female;
 use Drd\Genders\Gender;
@@ -11,9 +11,9 @@ use DrdPlus\GameCharacteristics\Combat\DefenseAgainstShooting;
 use DrdPlus\GameCharacteristics\Combat\Shooting;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevel;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
-use DrdPlus\PersonProperties\FirstLevelProperties;
-use DrdPlus\PersonProperties\NextLevelsProperties;
-use DrdPlus\PersonProperties\PersonProperties;
+use DrdPlus\PropertiesByLevels\FirstLevelProperties;
+use DrdPlus\PropertiesByLevels\NextLevelsProperties;
+use DrdPlus\PropertiesByLevels\PropertiesByLevels;
 use DrdPlus\Professions\Profession;
 use DrdPlus\Professions\Fighter;
 use DrdPlus\Properties\Base\Agility;
@@ -41,7 +41,7 @@ use DrdPlus\Tables\Tables;
 use DrdPlus\Tools\Calculations\SumAndRound;
 use Granam\Integer\IntegerObject;
 
-class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
+class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -79,7 +79,7 @@ class PersonPropertiesTest extends \PHPUnit_Framework_TestCase
         $expectedCharisma
     )
     {
-        $properties = new PersonProperties(
+        $properties = new PropertiesByLevels(
             $race,
             $gender,
             $exceptionalityProperties,

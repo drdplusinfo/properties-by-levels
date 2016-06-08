@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Tests\PersonProperties;
+namespace DrdPlus\Tests\PropertiesByLevels;
 
 use Granam\Tests\Exceptions\Tools\AbstractExceptionsHierarchyTest;
 
