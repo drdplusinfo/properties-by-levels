@@ -24,11 +24,11 @@ use DrdPlus\Properties\Derived\Beauty;
 use DrdPlus\Properties\Derived\Dangerousness;
 use DrdPlus\Properties\Derived\Dignity;
 use DrdPlus\Properties\Derived\Endurance;
-use DrdPlus\Properties\Derived\FatigueLimit;
+use DrdPlus\Properties\Derived\FatigueBoundary;
 use DrdPlus\Properties\Derived\Senses;
 use DrdPlus\Properties\Derived\Speed;
 use DrdPlus\Properties\Derived\Toughness;
-use DrdPlus\Properties\Derived\WoundsLimit;
+use DrdPlus\Properties\Derived\WoundBoundary;
 use DrdPlus\Races\Race;
 use DrdPlus\Tables\Tables;
 use Granam\Strict\Object\StrictObject;
@@ -111,10 +111,10 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     /** @var DefenseAgainstShooting */
     private $defenseAgainstShooting;
 
-    /** @var WoundsLimit */
+    /** @var WoundBoundary */
     private $woundsLimit;
 
-    /** @var FatigueLimit */
+    /** @var FatigueBoundary */
     private $fatigueLimit;
 
     public function __construct(
@@ -195,8 +195,8 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
         $this->defense = new Defense($this->getAgility());
         $this->defenseAgainstShooting = new DefenseAgainstShooting($this->getDefense(), $this->getSize());
 
-        $this->woundsLimit = new WoundsLimit($this->getToughness(), $tables->getWoundsTable());
-        $this->fatigueLimit = new FatigueLimit($this->getEndurance(), $tables->getFatigueTable());
+        $this->woundsLimit = new WoundBoundary($this->getToughness(), $tables->getWoundsTable());
+        $this->fatigueLimit = new FatigueBoundary($this->getEndurance(), $tables->getFatigueTable());
     }
 
     /**
@@ -400,17 +400,17 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     }
 
     /**
-     * @return WoundsLimit
+     * @return WoundBoundary
      */
-    public function getWoundsLimit()
+    public function getWoundBoundary()
     {
         return $this->woundsLimit;
     }
 
     /**
-     * @return FatigueLimit
+     * @return FatigueBoundary
      */
-    public function getFatigueLimit()
+    public function getFatigueBoundary()
     {
         return $this->fatigueLimit;
     }

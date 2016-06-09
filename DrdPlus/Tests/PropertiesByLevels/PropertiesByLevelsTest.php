@@ -30,11 +30,11 @@ use DrdPlus\Properties\Derived\Beauty;
 use DrdPlus\Properties\Derived\Dangerousness;
 use DrdPlus\Properties\Derived\Dignity;
 use DrdPlus\Properties\Derived\Endurance;
-use DrdPlus\Properties\Derived\FatigueLimit;
+use DrdPlus\Properties\Derived\FatigueBoundary;
 use DrdPlus\Properties\Derived\Senses;
 use DrdPlus\Properties\Derived\Speed;
 use DrdPlus\Properties\Derived\Toughness;
-use DrdPlus\Properties\Derived\WoundsLimit;
+use DrdPlus\Properties\Derived\WoundBoundary;
 use DrdPlus\Races\Humans\CommonHuman;
 use DrdPlus\Races\Race;
 use DrdPlus\Tables\Tables;
@@ -132,10 +132,10 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         $expectedDefenseAgainstShooting = new DefenseAgainstShooting($expectedDefense, $expectedSize);
         self::assertEquals($expectedDefenseAgainstShooting, $properties->getDefenseAgainstShooting(), "$race $gender");
 
-        $expectedWoundsLimit = new WoundsLimit($expectedToughness, $tables->getWoundsTable());
-        self::assertEquals($expectedWoundsLimit, $properties->getWoundsLimit());
-        $expectedFatigueLimit = new FatigueLimit($expectedEndurance, $tables->getFatigueTable());
-        self::assertEquals($expectedFatigueLimit, $properties->getFatigueLimit());
+        $expectedWoundBoundary = new WoundBoundary($expectedToughness, $tables->getWoundsTable());
+        self::assertEquals($expectedWoundBoundary, $properties->getWoundBoundary());
+        $expectedFatigueBoundary = new FatigueBoundary($expectedEndurance, $tables->getFatigueTable());
+        self::assertEquals($expectedFatigueBoundary, $properties->getFatigueBoundary());
     }
 
     public function getCombination()
