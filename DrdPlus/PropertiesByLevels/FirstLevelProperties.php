@@ -2,7 +2,7 @@
 namespace DrdPlus\PropertiesByLevels;
 
 use Drd\Genders\Gender;
-use DrdPlus\Codes\PropertyCodes;
+use DrdPlus\Codes\PropertyCode;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Base\Agility;
@@ -101,7 +101,7 @@ class FirstLevelProperties extends StrictObject
     )
     {
         $propertyValues = [];
-        foreach (PropertyCodes::getBasePropertyCodes() as $basePropertyCode) {
+        foreach (PropertyCode::getBasePropertyCodes() as $basePropertyCode) {
             $propertyValues[$basePropertyCode] = $this->calculateFirstLevelBaseProperty(
                 $basePropertyCode,
                 $race,
