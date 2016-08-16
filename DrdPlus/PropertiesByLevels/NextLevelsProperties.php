@@ -32,10 +32,6 @@ class NextLevelsProperties extends StrictObject
 
     public function __construct(ProfessionLevels $professionLevels)
     {
-        /**
-         * for check of next level property adjustment
-         * @see \DrdPlus\Cave\UnitBundle\Person\ProfessionLevels\ProfessionLevel::checkNextLevelPropertyAdjustment
-         */
         $this->nextLevelsStrength = Strength::getIt($professionLevels->getNextLevelsStrengthModifier());
         $this->nextLevelsAgility = Agility::getIt($professionLevels->getNextLevelsAgilityModifier());
         $this->nextLevelsKnack = Knack::getIt($professionLevels->getNextLevelsKnackModifier());

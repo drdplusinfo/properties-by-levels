@@ -4,13 +4,15 @@ namespace DrdPlus\Tests\PropertiesByLevels;
 use Drd\Genders\Female;
 use Drd\Genders\Gender;
 use Drd\Genders\Male;
+use DrdPlus\Codes\RaceCode;
+use DrdPlus\Codes\SubRaceCode;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
-use DrdPlus\GameCharacteristics\Combat\Attack;
-use DrdPlus\GameCharacteristics\Combat\Defense;
-use DrdPlus\GameCharacteristics\Combat\DefenseAgainstShooting;
-use DrdPlus\GameCharacteristics\Combat\Shooting;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevel;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
+use DrdPlus\Properties\Combat\AttackNumber;
+use DrdPlus\Properties\Combat\DefenseAgainstShooting;
+use DrdPlus\Properties\Combat\DefenseNumber;
+use DrdPlus\Properties\Combat\Shooting;
 use DrdPlus\PropertiesByLevels\FirstLevelProperties;
 use DrdPlus\PropertiesByLevels\NextLevelsProperties;
 use DrdPlus\PropertiesByLevels\PropertiesByLevels;
@@ -112,7 +114,12 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expectedSize, $properties->getSize(), "$race $gender");
         $expectedSpeed = new Speed(Strength::getIt($expectedStrength), Agility::getIt($expectedAgility), $expectedSize);
         self::assertEquals($expectedSpeed, $properties->getSpeed(), "$race $gender");
-        $expectedSenses = new Senses(Knack::getIt($expectedKnack), $race->getSenses($tables->getRacesTable()));
+        $expectedSenses = new Senses(
+            Knack::getIt($expectedKnack),
+            RaceCode::getIt($race->getRaceCode()),
+            SubRaceCode::getIt($race->getSubraceCode()),
+            $tables->getRacesTable()
+        );
         self::assertEquals($expectedSenses, $properties->getSenses(), "$race $gender");
         $expectedBeauty = new Beauty(Agility::getIt($expectedAgility), Knack::getIt($expectedKnack), Charisma::getIt($expectedCharisma));
         self::assertEquals($expectedBeauty, $properties->getBeauty(), "$race $gender");
@@ -122,13 +129,13 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expectedDignity, $properties->getDignity(), "$race $gender");
 
         $expectedFight = $expectedAgility /* fighter */ + (SumAndRound::ceil($expectedSize->getValue() / 3) - 2);
-        self::assertSame($expectedFight, $properties->getFight()->getValue(), "$race $gender");
-        $expectedAttack = new Attack(Agility::getIt($expectedAgility));
-        self::assertEquals($expectedAttack, $properties->getAttack(), "$race $gender");
+        self::assertSame($expectedFight, $properties->getFightNumber()->getValue(), "$race $gender");
+        $expectedAttack = new AttackNumber(Agility::getIt($expectedAgility));
+        self::assertEquals($expectedAttack, $properties->getAttackNumber(), "$race $gender");
         $expectedShooting = new Shooting(Knack::getIt($expectedKnack));
         self::assertEquals($expectedShooting, $properties->getShooting(), "$race $gender");
-        $expectedDefense = new Defense(Agility::getIt($expectedAgility));
-        self::assertEquals($expectedDefense, $properties->getDefense(), "$race $gender");
+        $expectedDefense = new DefenseNumber(Agility::getIt($expectedAgility));
+        self::assertEquals($expectedDefense, $properties->getDefenseNumber(), "$race $gender");
         $expectedDefenseAgainstShooting = new DefenseAgainstShooting($expectedDefense, $expectedSize);
         self::assertEquals($expectedDefenseAgainstShooting, $properties->getDefenseAgainstShooting(), "$race $gender");
 

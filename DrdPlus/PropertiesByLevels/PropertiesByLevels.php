@@ -2,13 +2,10 @@
 namespace DrdPlus\PropertiesByLevels;
 
 use Drd\Genders\Gender;
+use DrdPlus\Codes\ProfessionCode;
+use DrdPlus\Codes\RaceCode;
+use DrdPlus\Codes\SubRaceCode;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
-use DrdPlus\GameCharacteristics\Combat\Attack;
-use DrdPlus\GameCharacteristics\Combat\BasePropertiesInterface;
-use DrdPlus\GameCharacteristics\Combat\Defense;
-use DrdPlus\GameCharacteristics\Combat\DefenseAgainstShooting;
-use DrdPlus\GameCharacteristics\Combat\Fight;
-use DrdPlus\GameCharacteristics\Combat\Shooting;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\Charisma;
@@ -20,6 +17,12 @@ use DrdPlus\Properties\Body\Age;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
+use DrdPlus\Properties\Combat\AttackNumber;
+use DrdPlus\Properties\Combat\BasePropertiesInterface;
+use DrdPlus\Properties\Combat\DefenseAgainstShooting;
+use DrdPlus\Properties\Combat\DefenseNumber;
+use DrdPlus\Properties\Combat\FightNumber;
+use DrdPlus\Properties\Combat\Shooting;
 use DrdPlus\Properties\Derived\Beauty;
 use DrdPlus\Properties\Derived\Dangerousness;
 use DrdPlus\Properties\Derived\Dignity;
@@ -96,17 +99,17 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     /** @var Dignity */
     private $dignity;
 
-    /** @var Fight */
-    private $fight;
+    /** @var FightNumber */
+    private $fightNumber;
 
-    /** @var Attack */
-    private $attack;
+    /** @var AttackNumber */
+    private $attackNumber;
 
     /** @var Shooting */
     private $shooting;
 
-    /** @var Defense */
-    private $defense;
+    /** @var DefenseNumber */
+    private $defenseNumber;
 
     /** @var DefenseAgainstShooting */
     private $defenseAgainstShooting;
@@ -182,18 +185,24 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
         $this->speed = new Speed($this->getStrength(), $this->getAgility(), $this->getSize());
         $this->senses = new Senses(
             $this->getKnack(),
-            $race->getSenses($tables->getRacesTable())
+            RaceCode::getIt($race->getRaceCode()),
+            SubRaceCode::getIt($race->getSubraceCode()),
+            $tables->getRacesTable()
         );
         // aspects of visage
         $this->beauty = new Beauty($this->getAgility(), $this->getKnack(), $this->getCharisma());
         $this->dangerousness = new Dangerousness($this->getStrength(), $this->getWill(), $this->getCharisma());
         $this->dignity = new Dignity($this->getIntelligence(), $this->getWill(), $this->getCharisma());
 
-        $this->fight = new Fight($professionLevels->getFirstLevel()->getProfession(), $this, $this->getSize());
-        $this->attack = new Attack($this->getAgility());
+        $this->fightNumber = new FightNumber(
+            ProfessionCode::getIt($professionLevels->getFirstLevel()->getProfession()->getValue()),
+            $this,
+            $this->getSize()
+        );
+        $this->attackNumber = new AttackNumber($this->getAgility());
         $this->shooting = new Shooting($this->getKnack());
-        $this->defense = new Defense($this->getAgility());
-        $this->defenseAgainstShooting = new DefenseAgainstShooting($this->getDefense(), $this->getSize());
+        $this->defenseNumber = new DefenseNumber($this->getAgility());
+        $this->defenseAgainstShooting = new DefenseAgainstShooting($this->getDefenseNumber(), $this->getSize());
 
         $this->woundsLimit = new WoundBoundary($this->getToughness(), $tables->getWoundsTable());
         $this->fatigueLimit = new FatigueBoundary($this->getEndurance(), $tables->getFatigueTable());
@@ -360,19 +369,19 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     }
 
     /**
-     * @return Fight
+     * @return FightNumber
      */
-    public function getFight()
+    public function getFightNumber()
     {
-        return $this->fight;
+        return $this->fightNumber;
     }
 
     /**
-     * @return Attack
+     * @return AttackNumber
      */
-    public function getAttack()
+    public function getAttackNumber()
     {
-        return $this->attack;
+        return $this->attackNumber;
     }
 
     /**
@@ -384,11 +393,11 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     }
 
     /**
-     * @return Defense
+     * @return DefenseNumber
      */
-    public function getDefense()
+    public function getDefenseNumber()
     {
-        return $this->defense;
+        return $this->defenseNumber;
     }
 
     /**

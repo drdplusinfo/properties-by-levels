@@ -14,7 +14,6 @@
     "doctrine/annotations": "~1.2",
     "drd-plus/exceptionalities": "dev-master",
     "drd-plus/profession-levels": "dev-master",
-    "drd-plus/game-characteristics": "dev-master",
     "drd-plus/properties": "dev-master",
     "drd-plus/races": "dev-master",
     "drd-plus/tables": "dev-master"
