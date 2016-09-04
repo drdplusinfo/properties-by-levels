@@ -1,21 +1,23 @@
 language: php
 php:
+  - 7.1
   - 7.0
   - 5.6
   - 5.5
   - nightly
   - hhvm
-  - hhvm-nightly
 
 matrix:
   allow_failures:
     - php: nightly
-    - php: hhvm-nightly
 
 before_script:
-  - if [[ $TRAVIS_PHP_VERSION =~ ^[0-9]+[.][0-9]+$ ]]; then phpenv config-rm xdebug.ini; fi
-  - composer self-update
-  - composer update --no-interaction --prefer-dist
+  - composer selfupdate
+  - COMPOSER_ROOT_VERSION=dev-master composer update --no-interaction --prefer-dist
+  - COMPOSER_ROOT_VERSION=dev-master composer require --dev codeclimate/php-test-reporter:dev-master
 
 script:
-  - ./vendor/phpunit/phpunit/phpunit -v
+  - ./vendor/phpunit/phpunit/phpunit -v --coverage-clover build/logs/clover.xml
+
+after_script:
+  - CODECLIMATE_REPO_TOKEN=4cf27c0fe9faf5af6dad6a133c79db4847683cab6f16f296056df0e73c990359 ./vendor/bin/test-reporter
