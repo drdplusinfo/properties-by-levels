@@ -61,6 +61,17 @@ class FirstLevelProperties extends StrictObject
     /** @var Age */
     private $firstLevelAge;
 
+    /**
+     * @param Race $race
+     * @param Gender $gender
+     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param ProfessionLevels $professionLevels
+     * @param WeightInKg $weightInKgAdjustment
+     * @param HeightInCm $heightInCm
+     * @param Age $age
+     * @param Tables $tables
+     * @throws Exceptions\TooLowStrengthAdjustment
+     */
     public function __construct(
         Race $race,
         Gender $gender,
@@ -131,6 +142,15 @@ class FirstLevelProperties extends StrictObject
         $this->firstLevelCharisma = $this->getLimitedProperty($race, $gender, $tables, $this->firstLevelUnlimitedCharisma);
     }
 
+    /**
+     * @param $propertyCode
+     * @param Race $race
+     * @param Gender $gender
+     * @param Tables $tables
+     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param ProfessionLevels $professionLevels
+     * @return int
+     */
     private function calculateFirstLevelBaseProperty(
         $propertyCode,
         Race $race,
@@ -232,6 +252,13 @@ class FirstLevelProperties extends StrictObject
         return $this->firstLevelUnlimitedCharisma->getValue() - $this->getFirstLevelCharisma()->getValue();
     }
 
+    /**
+     * @param Race $race
+     * @param Gender $gender
+     * @param WeightInKg $weightInKgAdjustment
+     * @param Tables $tables
+     * @return WeightInKg
+     */
     private function createFirstLevelWeightInKg(
         Race $race,
         Gender $gender,
@@ -242,6 +269,15 @@ class FirstLevelProperties extends StrictObject
         return WeightInKg::getIt($race->getWeightInKg($gender, $tables) + $weightInKgAdjustment->getValue());
     }
 
+    /**
+     * @param Race $race
+     * @param Gender $gender
+     * @param Tables $tables
+     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param ProfessionLevels $professionLevels
+     * @return Size
+     * @throws Exceptions\TooLowStrengthAdjustment
+     */
     private function createFirstLevelSize(
         Race $race,
         Gender $gender,
@@ -261,6 +297,15 @@ class FirstLevelProperties extends StrictObject
         return new Size($sizeValue);
     }
 
+    /**
+     * @param Race $race
+     * @param Gender $gender
+     * @param Tables $tables
+     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param ProfessionLevels $professionLevels
+     * @return int
+     * @throws Exceptions\TooLowStrengthAdjustment
+     */
     private function calculateFirstLevelSize(
         Race $race,
         Gender $gender,
@@ -276,6 +321,11 @@ class FirstLevelProperties extends StrictObject
         return $raceSize + $sizeModifierByStrength;
     }
 
+    /**
+     * @param $firstLevelStrengthAdjustment
+     * @return int
+     * @throws Exceptions\TooLowStrengthAdjustment
+     */
     private function getSizeModifierByStrength($firstLevelStrengthAdjustment)
     {
         if ($firstLevelStrengthAdjustment === 0) {
@@ -292,6 +342,11 @@ class FirstLevelProperties extends StrictObject
         );
     }
 
+    /**
+     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param ProfessionLevels $professionLevels
+     * @return int
+     */
     private function getStrengthModifierSummary(ExceptionalityProperties $exceptionalityProperties, ProfessionLevels $professionLevels)
     {
         return // the race bonus is NOT count for adjustment, doesn't count to size change respectively

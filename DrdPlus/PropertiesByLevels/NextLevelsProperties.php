@@ -14,19 +14,14 @@ class NextLevelsProperties extends StrictObject
 {
     /** @var Strength */
     private $nextLevelsStrength;
-
     /** @var Agility */
     private $nextLevelsAgility;
-
     /** @var Knack */
     private $nextLevelsKnack;
-
     /** @var Will */
     private $nextLevelsWill;
-
     /** @var Intelligence */
     private $nextLevelsIntelligence;
-
     /** @var Charisma */
     private $nextLevelsCharisma;
 

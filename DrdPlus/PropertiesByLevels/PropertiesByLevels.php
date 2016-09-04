@@ -41,85 +41,70 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
 
     /** @var FirstLevelProperties */
     private $firstLevelProperties;
-
     /** @var NextLevelsProperties */
     private $nextLevelsProperties;
-
     /** @var Strength */
     private $strength;
-
     /** @var Agility */
     private $agility;
-
     /** @var Knack */
     private $knack;
-
     /** @var Will */
     private $will;
-
     /** @var Intelligence */
     private $intelligence;
-
     /** @var Charisma */
     private $charisma;
-
     /** @var WeightInKg */
     private $weightInKgAdjustment;
-
     /** @var WeightInKg */
     private $weightInKg;
-
     /** @var HeightInCm */
     private $heightInCm;
-
     /** @var Age */
     private $age;
-
     /** @var Toughness */
     private $toughness;
-
     /** @var Endurance */
     private $endurance;
-
     /** @var Size */
     private $size;
-
     /** @var Speed */
     private $speed;
-
     /** @var Senses */
     private $senses;
-
     /** @var Beauty */
     private $beauty;
-
     /** @var Dangerousness */
     private $dangerousness;
-
     /** @var Dignity */
     private $dignity;
-
     /** @var FightNumber */
     private $fightNumber;
-
     /** @var AttackNumber */
     private $attackNumber;
-
     /** @var Shooting */
     private $shooting;
-
     /** @var DefenseNumber */
     private $defenseNumber;
-
     /** @var DefenseAgainstShooting */
     private $defenseAgainstShooting;
-
     /** @var WoundBoundary */
     private $woundsLimit;
-
     /** @var FatigueBoundary */
     private $fatigueLimit;
 
+    /**
+     * @param Race $race
+     * @param Gender $gender
+     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param ProfessionLevels $professionLevels
+     * @param WeightInKg $weightInKgAdjustment
+     * @param HeightInCm $heightInCm
+     * @param Age $age
+     * @param Tables $tables
+     * @throws Exceptions\TooLowStrengthAdjustment
+     */
     public function __construct(
         Race $race,
         Gender $gender,
@@ -194,6 +179,7 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
         $this->dangerousness = new Dangerousness($this->getStrength(), $this->getWill(), $this->getCharisma());
         $this->dignity = new Dignity($this->getIntelligence(), $this->getWill(), $this->getCharisma());
 
+        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $this->fightNumber = new FightNumber(
             ProfessionCode::getIt($professionLevels->getFirstLevel()->getProfession()->getValue()),
             $this,
