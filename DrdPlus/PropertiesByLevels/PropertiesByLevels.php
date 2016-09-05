@@ -19,7 +19,7 @@ use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
 use DrdPlus\Properties\Combat\AttackNumber;
 use DrdPlus\Properties\Combat\BasePropertiesInterface;
-use DrdPlus\Properties\Combat\DefenseAgainstShooting;
+use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
 use DrdPlus\Properties\Combat\DefenseNumber;
 use DrdPlus\Properties\Combat\FightNumber;
 use DrdPlus\Properties\Combat\Shooting;
@@ -87,7 +87,7 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     private $shooting;
     /** @var DefenseNumber */
     private $defenseNumber;
-    /** @var DefenseAgainstShooting */
+    /** @var DefenseNumberAgainstShooting */
     private $defenseAgainstShooting;
     /** @var WoundBoundary */
     private $woundsLimit;
@@ -188,7 +188,7 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
         $this->attackNumber = new AttackNumber($this->getAgility());
         $this->shooting = new Shooting($this->getKnack());
         $this->defenseNumber = new DefenseNumber($this->getAgility());
-        $this->defenseAgainstShooting = new DefenseAgainstShooting($this->getDefenseNumber(), $this->getSize());
+        $this->defenseAgainstShooting = new DefenseNumberAgainstShooting($this->getDefenseNumber(), $this->getSize());
 
         $this->woundsLimit = new WoundBoundary($this->getToughness(), $tables->getWoundsTable());
         $this->fatigueLimit = new FatigueBoundary($this->getEndurance(), $tables->getFatigueTable());
@@ -387,7 +387,7 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     }
 
     /**
-     * @return DefenseAgainstShooting
+     * @return DefenseNumberAgainstShooting
      */
     public function getDefenseAgainstShooting()
     {

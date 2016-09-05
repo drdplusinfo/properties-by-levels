@@ -10,7 +10,7 @@ use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevel;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Combat\AttackNumber;
-use DrdPlus\Properties\Combat\DefenseAgainstShooting;
+use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
 use DrdPlus\Properties\Combat\DefenseNumber;
 use DrdPlus\Properties\Combat\Shooting;
 use DrdPlus\PropertiesByLevels\FirstLevelProperties;
@@ -136,7 +136,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expectedShooting, $properties->getShooting(), "$race $gender");
         $expectedDefense = new DefenseNumber(Agility::getIt($expectedAgility));
         self::assertEquals($expectedDefense, $properties->getDefenseNumber(), "$race $gender");
-        $expectedDefenseAgainstShooting = new DefenseAgainstShooting($expectedDefense, $expectedSize);
+        $expectedDefenseAgainstShooting = new DefenseNumberAgainstShooting($expectedDefense, $expectedSize);
         self::assertEquals($expectedDefenseAgainstShooting, $properties->getDefenseAgainstShooting(), "$race $gender");
 
         $expectedWoundBoundary = new WoundBoundary($expectedToughness, $tables->getWoundsTable());
