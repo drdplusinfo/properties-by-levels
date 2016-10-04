@@ -294,7 +294,7 @@ class FirstLevelProperties extends StrictObject
             $professionLevels
         );
 
-        return new Size($sizeValue);
+        return Size::getIt($sizeValue);
     }
 
     /**
