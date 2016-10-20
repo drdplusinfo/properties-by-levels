@@ -9,7 +9,7 @@ use DrdPlus\Codes\SubRaceCode;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevel;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
-use DrdPlus\Properties\Combat\AttackNumber;
+use DrdPlus\Properties\Combat\Attack;
 use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
 use DrdPlus\Properties\Combat\DefenseNumber;
 use DrdPlus\Properties\Combat\Shooting;
@@ -130,8 +130,8 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
 
         $expectedFight = $expectedAgility /* fighter */ + (SumAndRound::ceil($expectedSize->getValue() / 3) - 2);
         self::assertSame($expectedFight, $properties->getFightNumber()->getValue(), "$race $gender");
-        $expectedAttack = new AttackNumber(Agility::getIt($expectedAgility));
-        self::assertEquals($expectedAttack, $properties->getAttackNumber(), "$race $gender");
+        $expectedAttack = new Attack(Agility::getIt($expectedAgility));
+        self::assertEquals($expectedAttack, $properties->getAttack(), "$race $gender");
         $expectedShooting = new Shooting(Knack::getIt($expectedKnack));
         self::assertEquals($expectedShooting, $properties->getShooting(), "$race $gender");
         $expectedDefense = new DefenseNumber(Agility::getIt($expectedAgility));

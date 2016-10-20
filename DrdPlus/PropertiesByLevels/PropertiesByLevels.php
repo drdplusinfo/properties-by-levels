@@ -17,7 +17,7 @@ use DrdPlus\Properties\Body\Age;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
-use DrdPlus\Properties\Combat\AttackNumber;
+use DrdPlus\Properties\Combat\Attack;
 use DrdPlus\Properties\Combat\BasePropertiesInterface;
 use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
 use DrdPlus\Properties\Combat\DefenseNumber;
@@ -81,8 +81,8 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     private $dignity;
     /** @var FightNumber */
     private $fightNumber;
-    /** @var AttackNumber */
-    private $attackNumber;
+    /** @var Attack */
+    private $attack;
     /** @var Shooting */
     private $shooting;
     /** @var DefenseNumber */
@@ -185,7 +185,7 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
             $this,
             $this->getSize()
         );
-        $this->attackNumber = new AttackNumber($this->getAgility());
+        $this->attack = new Attack($this->getAgility());
         $this->shooting = new Shooting($this->getKnack());
         $this->defenseNumber = new DefenseNumber($this->getAgility());
         $this->defenseAgainstShooting = new DefenseNumberAgainstShooting($this->getDefenseNumber(), $this->getSize());
@@ -363,11 +363,11 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     }
 
     /**
-     * @return AttackNumber
+     * @return Attack
      */
-    public function getAttackNumber()
+    public function getAttack()
     {
-        return $this->attackNumber;
+        return $this->attack;
     }
 
     /**
