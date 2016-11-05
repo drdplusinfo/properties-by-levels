@@ -286,39 +286,14 @@ class FirstLevelProperties extends StrictObject
         ProfessionLevels $professionLevels
     )
     {
-        $sizeValue = $this->calculateFirstLevelSize(
-            $race,
-            $gender,
-            $tables,
-            $exceptionalityProperties,
-            $professionLevels
+        // the race bonus is NOT count for adjustment, doesn't count to size change respectively
+        $sizeModifierByStrength = $this->getSizeModifierByStrength(
+            $exceptionalityProperties->getStrength()->getValue()
+            + $professionLevels->getFirstLevelStrengthModifier()
         );
-
-        return Size::getIt($sizeValue);
-    }
-
-    /**
-     * @param Race $race
-     * @param Gender $gender
-     * @param Tables $tables
-     * @param ExceptionalityProperties $exceptionalityProperties
-     * @param ProfessionLevels $professionLevels
-     * @return int
-     * @throws Exceptions\TooLowStrengthAdjustment
-     */
-    private function calculateFirstLevelSize(
-        Race $race,
-        Gender $gender,
-        Tables $tables,
-        ExceptionalityProperties $exceptionalityProperties,
-        ProfessionLevels $professionLevels
-    )
-    {
-        $strengthModifierSummary = $this->getStrengthModifierSummary($exceptionalityProperties, $professionLevels);
-        $sizeModifierByStrength = $this->getSizeModifierByStrength($strengthModifierSummary);
         $raceSize = $race->getSize($gender, $tables);
 
-        return $raceSize + $sizeModifierByStrength;
+        return Size::getIt($raceSize + $sizeModifierByStrength);
     }
 
     /**
@@ -340,18 +315,6 @@ class FirstLevelProperties extends StrictObject
         throw new Exceptions\TooLowStrengthAdjustment(
             'First level strength adjustment can not be lesser than zero. Given ' . $firstLevelStrengthAdjustment
         );
-    }
-
-    /**
-     * @param ExceptionalityProperties $exceptionalityProperties
-     * @param ProfessionLevels $professionLevels
-     * @return int
-     */
-    private function getStrengthModifierSummary(ExceptionalityProperties $exceptionalityProperties, ProfessionLevels $professionLevels)
-    {
-        return // the race bonus is NOT count for adjustment, doesn't count to size change respectively
-            $exceptionalityProperties->getStrength()->getValue()
-            + $professionLevels->getFirstLevelStrengthModifier();
     }
 
     /**
