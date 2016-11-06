@@ -9,6 +9,7 @@ use DrdPlus\Codes\SubRaceCode;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevel;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
+use DrdPlus\Properties\Body\Height;
 use DrdPlus\Properties\Combat\Attack;
 use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
 use DrdPlus\Properties\Combat\DefenseNumber;
@@ -105,6 +106,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertSame($weightInKgAdjustment, $properties->getWeightInKgAdjustment());
         self::assertGreaterThan($weightInKgAdjustment->getValue(), $properties->getWeightInKg()->getValue(), "$race $gender");
         self::assertSame($heightInCm, $properties->getHeightInCm());
+        self::assertEquals($expectedHeight = new Height($heightInCm, $tables->getDistanceTable()), $properties->getHeight());
         self::assertSame($age, $properties->getAge());
         $expectedToughness = new Toughness(Strength::getIt($expectedStrength), $race->getRaceCode(), $race->getSubraceCode(), $tables->getRacesTable());
         self::assertEquals($expectedToughness, $properties->getToughness(), "$race $gender");
@@ -112,7 +114,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expectedEndurance, $properties->getEndurance(), "$race $gender");
         $expectedSize = Size::getIt($race->getSize($gender, $tables) + 1); /* size bonus by strength */
         self::assertEquals($expectedSize, $properties->getSize(), "$race $gender");
-        $expectedSpeed = new Speed(Strength::getIt($expectedStrength), Agility::getIt($expectedAgility), $expectedSize);
+        $expectedSpeed = new Speed(Strength::getIt($expectedStrength), Agility::getIt($expectedAgility), $expectedHeight);
         self::assertEquals($expectedSpeed, $properties->getSpeed(), "$race $gender");
         $expectedSenses = new Senses(
             Knack::getIt($expectedKnack),
@@ -128,8 +130,9 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         $expectedDignity = new Dignity(Intelligence::getIt($expectedIntelligence), Will::getIt($expectedWill), Charisma::getIt($expectedCharisma));
         self::assertEquals($expectedDignity, $properties->getDignity(), "$race $gender");
 
-        $expectedFight = $expectedAgility /* fighter */ + (SumAndRound::ceil($expectedSize->getValue() / 3) - 2);
-        self::assertSame($expectedFight, $properties->getFightNumber()->getValue(), "$race $gender");
+        self::assertLessThan(4, $expectedHeight->getValue());
+        $expectedFight = $expectedAgility /* fighter */ + (SumAndRound::ceil($expectedHeight->getValue() / 3) - 2);
+        self::assertSame($expectedFight, $properties->getFightNumber()->getValue(), "$race $gender with height $expectedHeight");
         $expectedAttack = new Attack(Agility::getIt($expectedAgility));
         self::assertEquals($expectedAttack, $properties->getAttack(), "$race $gender");
         $expectedShooting = new Shooting(Knack::getIt($expectedKnack));

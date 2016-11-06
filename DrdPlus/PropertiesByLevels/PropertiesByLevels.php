@@ -14,6 +14,7 @@ use DrdPlus\Properties\Base\Knack;
 use DrdPlus\Properties\Base\Strength;
 use DrdPlus\Properties\Base\Will;
 use DrdPlus\Properties\Body\Age;
+use DrdPlus\Properties\Body\Height;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
@@ -61,6 +62,8 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     private $weightInKg;
     /** @var HeightInCm */
     private $heightInCm;
+    /** @var Height */
+    private $height;
     /** @var Age */
     private $age;
     /** @var Toughness */
@@ -152,10 +155,11 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
             $this->firstLevelProperties->getFirstLevelCharisma()->getValue()
             + $this->nextLevelsProperties->getNextLevelsCharisma()->getValue()
         );
-        // there is no more weight, height and age adjustments (yet) than on first level
+        // there is no more weight, height and age adjustments than on first level
         $this->weightInKgAdjustment = $this->firstLevelProperties->getFirstLevelWeightInKgAdjustment();
         $this->weightInKg = $this->firstLevelProperties->getFirstLevelWeightInKg();
         $this->heightInCm = $this->firstLevelProperties->getFirstLevelHeightInCm();
+        $this->height = $this->firstLevelProperties->getFirstLevelHeight();
         $this->age = $this->firstLevelProperties->getFirstLevelAge();
 
         // delivered properties
@@ -167,7 +171,7 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
         );
         // there is no more size adjustment than the first level one
         $this->size = $this->firstLevelProperties->getFirstLevelSize();
-        $this->speed = new Speed($this->getStrength(), $this->getAgility(), $this->getSize());
+        $this->speed = new Speed($this->getStrength(), $this->getAgility(), $this->getHeight());
         $this->senses = new Senses(
             $this->getKnack(),
             RaceCode::getIt($race->getRaceCode()),
@@ -183,7 +187,7 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
         $this->fightNumber = new FightNumber(
             ProfessionCode::getIt($professionLevels->getFirstLevel()->getProfession()->getValue()),
             $this,
-            $this->getSize()
+            $this->getHeight()
         );
         $this->attack = new Attack($this->getAgility());
         $this->shooting = new Shooting($this->getKnack());
@@ -280,6 +284,14 @@ class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
     public function getHeightInCm()
     {
         return $this->heightInCm;
+    }
+
+    /**
+     * @return Height
+     */
+    public function getHeight()
+    {
+        return $this->height;
     }
 
     /**

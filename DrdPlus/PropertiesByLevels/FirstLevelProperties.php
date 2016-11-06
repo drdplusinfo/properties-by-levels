@@ -13,6 +13,7 @@ use DrdPlus\Properties\Base\Knack;
 use DrdPlus\Properties\Base\Strength;
 use DrdPlus\Properties\Base\Will;
 use DrdPlus\Properties\Body\Age;
+use DrdPlus\Properties\Body\Height;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
@@ -58,6 +59,8 @@ class FirstLevelProperties extends StrictObject
     private $firstLevelSize;
     /** @var HeightInCm */
     private $firstLevelHeightInCm;
+    /** @var Height */
+    private $firstLevelHeight;
     /** @var Age */
     private $firstLevelAge;
 
@@ -100,6 +103,7 @@ class FirstLevelProperties extends StrictObject
             $professionLevels
         );
         $this->firstLevelHeightInCm = $heightInCm;
+        $this->firstLevelHeight = new Height($heightInCm, $tables->getDistanceTable());
         $this->firstLevelAge = $age;
     }
 
@@ -143,13 +147,14 @@ class FirstLevelProperties extends StrictObject
     }
 
     /**
-     * @param $propertyCode
+     * @param string $propertyCode
      * @param Race $race
      * @param Gender $gender
      * @param Tables $tables
      * @param ExceptionalityProperties $exceptionalityProperties
      * @param ProfessionLevels $professionLevels
      * @return int
+     * @throws \DrdPlus\Races\Exceptions\UnknownPropertyCode
      */
     private function calculateFirstLevelBaseProperty(
         $propertyCode,
@@ -172,6 +177,7 @@ class FirstLevelProperties extends StrictObject
      * @param Tables $tables
      * @param BaseProperty $baseProperty
      * @return BaseProperty
+     * @throws \DrdPlus\Races\Exceptions\UnknownPropertyCode
      */
     private function getLimitedProperty(Race $race, Gender $gender, Tables $tables, BaseProperty $baseProperty)
     {
@@ -188,8 +194,8 @@ class FirstLevelProperties extends StrictObject
      * @param Gender $gender
      * @param Tables $tables
      * @param BaseProperty $baseProperty
-     *
      * @return int
+     * @throws \DrdPlus\Races\Exceptions\UnknownPropertyCode
      */
     private function getBasePropertyLimit(Race $race, Gender $gender, Tables $tables, BaseProperty $baseProperty)
     {
@@ -395,6 +401,14 @@ class FirstLevelProperties extends StrictObject
     public function getFirstLevelHeightInCm()
     {
         return $this->firstLevelHeightInCm;
+    }
+
+    /**
+     * @return Height
+     */
+    public function getFirstLevelHeight()
+    {
+        return $this->firstLevelHeight;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace DrdPlus\Tests\PropertiesByLevels;
 use Drd\Genders\Female;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
+use DrdPlus\Properties\Body\Height;
 use DrdPlus\PropertiesByLevels\FirstLevelProperties;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\BaseProperty;
@@ -99,6 +100,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
         );
 
         self::assertSame($heightInCm, $firstLevelProperties->getFirstLevelHeightInCm());
+        self::assertEquals(new Height($heightInCm, $tables->getDistanceTable()), $firstLevelProperties->getFirstLevelHeight());
         self::assertSame($age, $firstLevelProperties->getFirstLevelAge());
     }
 
