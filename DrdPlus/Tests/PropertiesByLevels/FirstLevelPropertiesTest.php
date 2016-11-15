@@ -62,27 +62,33 @@ class FirstLevelPropertiesTest extends TestWithMockery
         self::assertSame($exceptionalityProperties, $firstLevelProperties->getExceptionalityProperties());
 
         $expectedStrength = min($strength, 3) - 1; /* female */
-        self::assertEquals(Strength::getIt($expectedStrength), $firstLevelProperties->getFirstLevelStrength());
+        self::assertInstanceOf(Strength::class, $firstLevelProperties->getFirstLevelStrength());
+        self::assertSame($expectedStrength, $firstLevelProperties->getFirstLevelStrength()->getValue());
         self::assertSame(max(0, $strength - 3), $firstLevelProperties->getStrengthLossBecauseOfLimit());
 
         $expectedAgility = min($agility, 3);
-        self::assertEquals(Agility::getIt($expectedAgility), $firstLevelProperties->getFirstLevelAgility());
+        self::assertInstanceOf(Agility::class, $firstLevelProperties->getFirstLevelAgility());
+        self::assertEquals($expectedAgility, $firstLevelProperties->getFirstLevelAgility()->getValue());
         self::assertSame(max(0, $agility - 3), $firstLevelProperties->getAgilityLossBecauseOfLimit());
 
         $expectedKnack = min($knack, 3);
-        self::assertEquals(Knack::getIt($expectedKnack), $firstLevelProperties->getFirstLevelKnack());
+        self::assertInstanceOf(Knack::class, $firstLevelProperties->getFirstLevelKnack());
+        self::assertEquals($expectedKnack, $firstLevelProperties->getFirstLevelKnack()->getValue());
         self::assertSame(max(0, $knack - 3), $firstLevelProperties->getKnackLossBecauseOfLimit());
 
         $expectedWill = min($will, 3);
-        self::assertEquals(Will::getIt($expectedWill), $firstLevelProperties->getFirstLevelWill());
+        self::assertInstanceOf(Will::class, $firstLevelProperties->getFirstLevelWill());
+        self::assertEquals($expectedWill, $firstLevelProperties->getFirstLevelWill()->getValue());
         self::assertSame(max(0, $will - 3), $firstLevelProperties->getWillLossBecauseOfLimit());
 
         $expectedIntelligence = min($intelligence, 3);
-        self::assertEquals(Intelligence::getIt($expectedIntelligence), $firstLevelProperties->getFirstLevelIntelligence());
+        self::assertInstanceOf(Intelligence::class, $firstLevelProperties->getFirstLevelIntelligence());
+        self::assertEquals($expectedIntelligence, $firstLevelProperties->getFirstLevelIntelligence()->getValue());
         self::assertSame(max(0, $intelligence - 3), $firstLevelProperties->getIntelligenceLossBecauseOfLimit());
 
         $expectedCharisma = min($charisma, 3) + 1; /* female */
-        self::assertEquals(Charisma::getIt($expectedCharisma), $firstLevelProperties->getFirstLevelCharisma());
+        self::assertInstanceOf(Charisma::class, $firstLevelProperties->getFirstLevelCharisma());
+        self::assertEquals($expectedCharisma, $firstLevelProperties->getFirstLevelCharisma()->getValue());
         self::assertSame(max(0, $charisma - 3), $firstLevelProperties->getCharismaLossBecauseOfLimit());
 
         $expectedSize = -1;/* female */
@@ -91,7 +97,8 @@ class FirstLevelPropertiesTest extends TestWithMockery
         } else if ($strength > 1) {
             $expectedSize++;
         }
-        self::assertEquals(Size::getIt($expectedSize), $firstLevelProperties->getFirstLevelSize());
+        self::assertInstanceOf(Size::class, $firstLevelProperties->getFirstLevelSize());
+        self::assertSame($expectedSize, $firstLevelProperties->getFirstLevelSize()->getValue());
 
         self::assertSame($weightInKgAdjustment, $firstLevelProperties->getFirstLevelWeightInKgAdjustment());
         self::assertEquals(
