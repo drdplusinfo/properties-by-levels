@@ -21,12 +21,24 @@ class NextLevelsPropertiesTest extends TestWithMockery
         $sut = new NextLevelsProperties($this->createProfessionLevels(
             $strength = 1, $agility = 2, $knack = 3, $will = 4, $intelligence = 5, $charisma = 6
         ));
-        self::assertSame(Strength::getIt($strength), $sut->getNextLevelsStrength());
-        self::assertSame(Agility::getIt($agility), $sut->getNextLevelsAgility());
-        self::assertSame(Knack::getIt($knack), $sut->getNextLevelsKnack());
-        self::assertSame(Will::getIt($will), $sut->getNextLevelsWill());
-        self::assertSame(Intelligence::getIt($intelligence), $sut->getNextLevelsIntelligence());
-        self::assertSame(Charisma::getIt($charisma), $sut->getNextLevelsCharisma());
+
+        self::assertInstanceOf(Strength::class, $sut->getNextLevelsStrength());
+        self::assertSame($strength, $sut->getNextLevelsStrength()->getValue());
+
+        self::assertInstanceOf(Agility::class, $sut->getNextLevelsAgility());
+        self::assertSame($agility, $sut->getNextLevelsAgility()->getValue());
+
+        self::assertInstanceOf(Knack::class, $sut->getNextLevelsKnack());
+        self::assertSame($knack, $sut->getNextLevelsKnack()->getValue());
+
+        self::assertInstanceOf(Will::class, $sut->getNextLevelsWill());
+        self::assertSame($will, $sut->getNextLevelsWill()->getValue());
+
+        self::assertInstanceOf(Intelligence::class, $sut->getNextLevelsIntelligence());
+        self::assertSame($intelligence, $sut->getNextLevelsIntelligence()->getValue());
+
+        self::assertInstanceOf(Charisma::class, $sut->getNextLevelsCharisma());
+        self::assertSame($charisma, $sut->getNextLevelsCharisma()->getValue());
     }
 
     /**
