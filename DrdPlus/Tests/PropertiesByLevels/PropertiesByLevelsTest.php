@@ -113,9 +113,11 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         $expectedEndurance = new Endurance(Strength::getIt($expectedStrength), Will::getIt($expectedWill));
         self::assertEquals($expectedEndurance, $properties->getEndurance(), "$race $gender");
         $expectedSize = Size::getIt($race->getSize($gender, $tables) + 1); /* size bonus by strength */
-        self::assertEquals($expectedSize, $properties->getSize(), "$race $gender");
+        self::assertInstanceOf(Size::class, $properties->getSize(), "$race $gender");
+        self::assertSame($expectedSize->getValue(), $properties->getSize()->getValue(), "$race $gender");
         $expectedSpeed = new Speed(Strength::getIt($expectedStrength), Agility::getIt($expectedAgility), $expectedHeight);
-        self::assertEquals($expectedSpeed, $properties->getSpeed(), "$race $gender");
+        self::assertInstanceOf(Speed::class, $properties->getSpeed(), "$race $gender");
+        self::assertSame($expectedSpeed->getValue(), $properties->getSpeed()->getValue(), "$race $gender");
         $expectedSenses = new Senses(
             Knack::getIt($expectedKnack),
             RaceCode::getIt($race->getRaceCode()),
