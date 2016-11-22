@@ -13,6 +13,7 @@ use DrdPlus\Properties\Body\Height;
 use DrdPlus\Properties\Combat\Attack;
 use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
 use DrdPlus\Properties\Combat\DefenseNumber;
+use DrdPlus\Properties\Combat\FightNumber;
 use DrdPlus\Properties\Combat\Shooting;
 use DrdPlus\PropertiesByLevels\FirstLevelProperties;
 use DrdPlus\PropertiesByLevels\NextLevelsProperties;
@@ -109,9 +110,11 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expectedHeight = new Height($heightInCm, $tables->getDistanceTable()), $properties->getHeight());
         self::assertSame($age, $properties->getAge());
         $expectedToughness = new Toughness(Strength::getIt($expectedStrength), $race->getRaceCode(), $race->getSubraceCode(), $tables->getRacesTable());
-        self::assertEquals($expectedToughness, $properties->getToughness(), "$race $gender");
+        self::assertInstanceOf(Toughness::class, $properties->getToughness());
+        self::assertSame($expectedToughness->getValue(), $properties->getToughness()->getValue(), "$race $gender");
         $expectedEndurance = new Endurance(Strength::getIt($expectedStrength), Will::getIt($expectedWill));
-        self::assertEquals($expectedEndurance, $properties->getEndurance(), "$race $gender");
+        self::assertInstanceOf(Endurance::class, $properties->getEndurance());
+        self::assertSame($expectedEndurance->getValue(), $properties->getEndurance()->getValue(), "$race $gender");
         $expectedSize = Size::getIt($race->getSize($gender, $tables) + 1); /* size bonus by strength */
         self::assertInstanceOf(Size::class, $properties->getSize(), "$race $gender");
         self::assertSame($expectedSize->getValue(), $properties->getSize()->getValue(), "$race $gender");
@@ -124,30 +127,41 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
             SubRaceCode::getIt($race->getSubraceCode()),
             $tables->getRacesTable()
         );
-        self::assertEquals($expectedSenses, $properties->getSenses(), "$race $gender");
+        self::assertInstanceOf(Senses::class, $properties->getSenses());
+        self::assertSame($expectedSenses->getValue(), $properties->getSenses()->getValue(), "$race $gender");
         $expectedBeauty = new Beauty(Agility::getIt($expectedAgility), Knack::getIt($expectedKnack), Charisma::getIt($expectedCharisma));
-        self::assertEquals($expectedBeauty, $properties->getBeauty(), "$race $gender");
+        self::assertInstanceOf(Beauty::class, $properties->getBeauty());
+        self::assertSame($expectedBeauty->getValue(), $properties->getBeauty()->getValue(), "$race $gender");
         $expectedDangerousness = new Dangerousness(Strength::getIt($expectedStrength), Will::getIt($expectedWill), Charisma::getIt($expectedCharisma));
-        self::assertEquals($expectedDangerousness, $properties->getDangerousness(), "$race $gender");
+        self::assertInstanceOf(Dangerousness::class, $properties->getDangerousness());
+        self::assertSame($expectedDangerousness->getValue(), $properties->getDangerousness()->getValue(), "$race $gender");
         $expectedDignity = new Dignity(Intelligence::getIt($expectedIntelligence), Will::getIt($expectedWill), Charisma::getIt($expectedCharisma));
-        self::assertEquals($expectedDignity, $properties->getDignity(), "$race $gender");
+        self::assertInstanceOf(Dignity::class, $properties->getDignity());
+        self::assertSame($expectedDignity->getValue(), $properties->getDignity()->getValue(), "$race $gender");
 
         self::assertLessThan(4, $expectedHeight->getValue());
-        $expectedFight = $expectedAgility /* fighter */ + (SumAndRound::ceil($expectedHeight->getValue() / 3) - 2);
-        self::assertSame($expectedFight, $properties->getFightNumber()->getValue(), "$race $gender with height $expectedHeight");
+        $expectedFightValue = $expectedAgility /* fighter */ + (SumAndRound::ceil($expectedHeight->getValue() / 3) - 2);
+        self::assertInstanceOf(FightNumber::class, $properties->getFightNumber());
+        self::assertSame($expectedFightValue, $properties->getFightNumber()->getValue(), "$race $gender with height $expectedHeight");
         $expectedAttack = new Attack(Agility::getIt($expectedAgility));
-        self::assertEquals($expectedAttack, $properties->getAttack(), "$race $gender");
+        self::assertInstanceOf(Attack::class, $properties->getAttack());
+        self::assertSame($expectedAttack->getValue(), $properties->getAttack()->getValue(), "$race $gender");
         $expectedShooting = new Shooting(Knack::getIt($expectedKnack));
-        self::assertEquals($expectedShooting, $properties->getShooting(), "$race $gender");
+        self::assertInstanceOf(Shooting::class, $properties->getShooting());
+        self::assertSame($expectedShooting->getValue(), $properties->getShooting()->getValue(), "$race $gender");
         $expectedDefense = new DefenseNumber(Agility::getIt($expectedAgility));
-        self::assertEquals($expectedDefense, $properties->getDefenseNumber(), "$race $gender");
+        self::assertInstanceOf(DefenseNumber::class, $properties->getDefenseNumber());
+        self::assertSame($expectedDefense->getValue(), $properties->getDefenseNumber()->getValue(), "$race $gender");
         $expectedDefenseAgainstShooting = new DefenseNumberAgainstShooting($expectedDefense, $expectedSize);
-        self::assertEquals($expectedDefenseAgainstShooting, $properties->getDefenseAgainstShooting(), "$race $gender");
+        self::assertInstanceOf(DefenseNumberAgainstShooting::class, $properties->getDefenseAgainstShooting());
+        self::assertSame($expectedDefenseAgainstShooting->getValue(), $properties->getDefenseAgainstShooting()->getValue(), "$race $gender");
 
         $expectedWoundBoundary = new WoundBoundary($expectedToughness, $tables->getWoundsTable());
-        self::assertEquals($expectedWoundBoundary, $properties->getWoundBoundary());
+        self::assertInstanceOf(WoundBoundary::class, $properties->getWoundBoundary());
+        self::assertSame($expectedWoundBoundary->getValue(), $properties->getWoundBoundary()->getValue());
         $expectedFatigueBoundary = new FatigueBoundary($expectedEndurance, $tables->getFatigueTable());
-        self::assertEquals($expectedFatigueBoundary, $properties->getFatigueBoundary());
+        self::assertInstanceOf(FatigueBoundary::class, $properties->getFatigueBoundary());
+        self::assertSame($expectedFatigueBoundary->getValue(), $properties->getFatigueBoundary()->getValue());
     }
 
     public function getCombination()

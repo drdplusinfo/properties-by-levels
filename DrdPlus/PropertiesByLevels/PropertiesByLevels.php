@@ -19,7 +19,7 @@ use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
 use DrdPlus\Properties\Combat\Attack;
-use DrdPlus\Properties\Combat\BasePropertiesInterface;
+use DrdPlus\Properties\Combat\BaseProperties;
 use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
 use DrdPlus\Properties\Combat\DefenseNumber;
 use DrdPlus\Properties\Combat\FightNumber;
@@ -37,7 +37,7 @@ use DrdPlus\Races\Race;
 use DrdPlus\Tables\Tables;
 use Granam\Strict\Object\StrictObject;
 
-class PropertiesByLevels extends StrictObject implements BasePropertiesInterface
+class PropertiesByLevels extends StrictObject implements BaseProperties
 {
 
     /** @var FirstLevelProperties */
