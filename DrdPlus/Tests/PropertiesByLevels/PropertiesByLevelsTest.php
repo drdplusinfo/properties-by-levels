@@ -1,9 +1,9 @@
 <?php
 namespace DrdPlus\Tests\PropertiesByLevels;
 
-use Drd\Genders\Female;
-use Drd\Genders\Gender;
-use Drd\Genders\Male;
+use DrdPlus\Genders\Female;
+use DrdPlus\Genders\Gender;
+use DrdPlus\Genders\Male;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;

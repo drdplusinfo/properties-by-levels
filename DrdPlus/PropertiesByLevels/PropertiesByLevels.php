@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\PropertiesByLevels;
 
-use Drd\Genders\Gender;
+use DrdPlus\Genders\Gender;
 use DrdPlus\Codes\ProfessionCode;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;

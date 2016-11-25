@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\PropertiesByLevels;
 
-use Drd\Genders\Gender;
+use DrdPlus\Genders\Gender;
 use DrdPlus\Codes\PropertyCode;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;

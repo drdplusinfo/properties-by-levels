@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\Tests\PropertiesByLevels;
 
-use Drd\Genders\Female;
+use DrdPlus\Genders\Female;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Body\Height;
