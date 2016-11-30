@@ -1,3 +1,5 @@
-[![Build Status](https://travis-ci.org/jaroslavtyc/drd-plus-person-properties.svg?branch=master)](https://travis-ci.org/jaroslavtyc/drd-plus-person-properties)
+# Person properties across his levels
 
-Sum of each property for an person and their first level and next levels parts for DrD+
+What are your properties on first level? And what increments have you get on next levels?
+
+[![Build Status](https://travis-ci.org/jaroslavtyc/drd-plus-properties-by-levels.svg?branch=master)](https://travis-ci.org/jaroslavtyc/drd-plus-properties-by-levels)
