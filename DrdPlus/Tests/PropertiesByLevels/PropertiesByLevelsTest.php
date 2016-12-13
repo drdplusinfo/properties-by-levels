@@ -1,9 +1,7 @@
 <?php
 namespace DrdPlus\Tests\PropertiesByLevels;
 
-use DrdPlus\Genders\Female;
-use DrdPlus\Genders\Gender;
-use DrdPlus\Genders\Male;
+use DrdPlus\Codes\GenderCode;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
@@ -52,7 +50,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
      * @dataProvider getCombination
      *
      * @param Race $race
-     * @param Gender $gender
+     * @param GenderCode $genderCode
      * @param ExceptionalityProperties $exceptionalityProperties
      * @param ProfessionLevels $professionLevels
      * @param Tables $tables
@@ -68,7 +66,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
      */
     public function I_can_create_properties_for_any_combination(
         Race $race,
-        Gender $gender,
+        GenderCode $genderCode,
         ExceptionalityProperties $exceptionalityProperties,
         ProfessionLevels $professionLevels,
         Tables $tables,
@@ -85,7 +83,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
     {
         $properties = new PropertiesByLevels(
             $race,
-            $gender,
+            $genderCode,
             $exceptionalityProperties,
             $professionLevels,
             $weightInKgAdjustment,
@@ -97,30 +95,30 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(FirstLevelProperties::class, $properties->getFirstLevelProperties());
         self::assertInstanceOf(NextLevelsProperties::class, $properties->getNextLevelsProperties());
 
-        self::assertSame($expectedStrength, $properties->getStrength()->getValue(), "$race $gender");
-        self::assertSame($expectedAgility, $properties->getAgility()->getValue(), "$race $gender");
-        self::assertSame($expectedKnack, $properties->getKnack()->getValue(), "$race $gender");
-        self::assertSame($expectedWill, $properties->getWill()->getValue(), "$race $gender");
-        self::assertSame($expectedIntelligence, $properties->getIntelligence()->getValue(), "$race $gender");
-        self::assertSame($expectedCharisma, $properties->getCharisma()->getValue(), "$race $gender");
+        self::assertSame($expectedStrength, $properties->getStrength()->getValue(), "$race $genderCode");
+        self::assertSame($expectedAgility, $properties->getAgility()->getValue(), "$race $genderCode");
+        self::assertSame($expectedKnack, $properties->getKnack()->getValue(), "$race $genderCode");
+        self::assertSame($expectedWill, $properties->getWill()->getValue(), "$race $genderCode");
+        self::assertSame($expectedIntelligence, $properties->getIntelligence()->getValue(), "$race $genderCode");
+        self::assertSame($expectedCharisma, $properties->getCharisma()->getValue(), "$race $genderCode");
 
         self::assertSame($weightInKgAdjustment, $properties->getWeightInKgAdjustment());
-        self::assertGreaterThan($weightInKgAdjustment->getValue(), $properties->getWeightInKg()->getValue(), "$race $gender");
+        self::assertGreaterThan($weightInKgAdjustment->getValue(), $properties->getWeightInKg()->getValue(), "$race $genderCode");
         self::assertSame($heightInCm, $properties->getHeightInCm());
         self::assertEquals($expectedHeight = new Height($heightInCm, $tables->getDistanceTable()), $properties->getHeight());
         self::assertSame($age, $properties->getAge());
         $expectedToughness = new Toughness(Strength::getIt($expectedStrength), $race->getRaceCode(), $race->getSubraceCode(), $tables->getRacesTable());
         self::assertInstanceOf(Toughness::class, $properties->getToughness());
-        self::assertSame($expectedToughness->getValue(), $properties->getToughness()->getValue(), "$race $gender");
+        self::assertSame($expectedToughness->getValue(), $properties->getToughness()->getValue(), "$race $genderCode");
         $expectedEndurance = new Endurance(Strength::getIt($expectedStrength), Will::getIt($expectedWill));
         self::assertInstanceOf(Endurance::class, $properties->getEndurance());
-        self::assertSame($expectedEndurance->getValue(), $properties->getEndurance()->getValue(), "$race $gender");
-        $expectedSize = Size::getIt($race->getSize($gender, $tables) + 1); /* size bonus by strength */
-        self::assertInstanceOf(Size::class, $properties->getSize(), "$race $gender");
-        self::assertSame($expectedSize->getValue(), $properties->getSize()->getValue(), "$race $gender");
+        self::assertSame($expectedEndurance->getValue(), $properties->getEndurance()->getValue(), "$race $genderCode");
+        $expectedSize = Size::getIt($race->getSize($genderCode, $tables) + 1); /* size bonus by strength */
+        self::assertInstanceOf(Size::class, $properties->getSize(), "$race $genderCode");
+        self::assertSame($expectedSize->getValue(), $properties->getSize()->getValue(), "$race $genderCode");
         $expectedSpeed = new Speed(Strength::getIt($expectedStrength), Agility::getIt($expectedAgility), $expectedHeight);
-        self::assertInstanceOf(Speed::class, $properties->getSpeed(), "$race $gender");
-        self::assertSame($expectedSpeed->getValue(), $properties->getSpeed()->getValue(), "$race $gender");
+        self::assertInstanceOf(Speed::class, $properties->getSpeed(), "$race $genderCode");
+        self::assertSame($expectedSpeed->getValue(), $properties->getSpeed()->getValue(), "$race $genderCode");
         $expectedSenses = new Senses(
             Knack::getIt($expectedKnack),
             RaceCode::getIt($race->getRaceCode()),
@@ -128,33 +126,33 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
             $tables->getRacesTable()
         );
         self::assertInstanceOf(Senses::class, $properties->getSenses());
-        self::assertSame($expectedSenses->getValue(), $properties->getSenses()->getValue(), "$race $gender");
+        self::assertSame($expectedSenses->getValue(), $properties->getSenses()->getValue(), "$race $genderCode");
         $expectedBeauty = new Beauty(Agility::getIt($expectedAgility), Knack::getIt($expectedKnack), Charisma::getIt($expectedCharisma));
         self::assertInstanceOf(Beauty::class, $properties->getBeauty());
-        self::assertSame($expectedBeauty->getValue(), $properties->getBeauty()->getValue(), "$race $gender");
+        self::assertSame($expectedBeauty->getValue(), $properties->getBeauty()->getValue(), "$race $genderCode");
         $expectedDangerousness = new Dangerousness(Strength::getIt($expectedStrength), Will::getIt($expectedWill), Charisma::getIt($expectedCharisma));
         self::assertInstanceOf(Dangerousness::class, $properties->getDangerousness());
-        self::assertSame($expectedDangerousness->getValue(), $properties->getDangerousness()->getValue(), "$race $gender");
+        self::assertSame($expectedDangerousness->getValue(), $properties->getDangerousness()->getValue(), "$race $genderCode");
         $expectedDignity = new Dignity(Intelligence::getIt($expectedIntelligence), Will::getIt($expectedWill), Charisma::getIt($expectedCharisma));
         self::assertInstanceOf(Dignity::class, $properties->getDignity());
-        self::assertSame($expectedDignity->getValue(), $properties->getDignity()->getValue(), "$race $gender");
+        self::assertSame($expectedDignity->getValue(), $properties->getDignity()->getValue(), "$race $genderCode");
 
         self::assertLessThan(4, $expectedHeight->getValue());
         $expectedFightValue = $expectedAgility /* fighter */ + (SumAndRound::ceil($expectedHeight->getValue() / 3) - 2);
         self::assertInstanceOf(FightNumber::class, $properties->getFightNumber());
-        self::assertSame($expectedFightValue, $properties->getFightNumber()->getValue(), "$race $gender with height $expectedHeight");
+        self::assertSame($expectedFightValue, $properties->getFightNumber()->getValue(), "$race $genderCode with height $expectedHeight");
         $expectedAttack = new Attack(Agility::getIt($expectedAgility));
         self::assertInstanceOf(Attack::class, $properties->getAttack());
-        self::assertSame($expectedAttack->getValue(), $properties->getAttack()->getValue(), "$race $gender");
+        self::assertSame($expectedAttack->getValue(), $properties->getAttack()->getValue(), "$race $genderCode");
         $expectedShooting = new Shooting(Knack::getIt($expectedKnack));
         self::assertInstanceOf(Shooting::class, $properties->getShooting());
-        self::assertSame($expectedShooting->getValue(), $properties->getShooting()->getValue(), "$race $gender");
+        self::assertSame($expectedShooting->getValue(), $properties->getShooting()->getValue(), "$race $genderCode");
         $expectedDefense = new DefenseNumber(Agility::getIt($expectedAgility));
         self::assertInstanceOf(DefenseNumber::class, $properties->getDefenseNumber());
-        self::assertSame($expectedDefense->getValue(), $properties->getDefenseNumber()->getValue(), "$race $gender");
+        self::assertSame($expectedDefense->getValue(), $properties->getDefenseNumber()->getValue(), "$race $genderCode");
         $expectedDefenseAgainstShooting = new DefenseNumberAgainstShooting($expectedDefense, $expectedSize);
         self::assertInstanceOf(DefenseNumberAgainstShooting::class, $properties->getDefenseAgainstShooting());
-        self::assertSame($expectedDefenseAgainstShooting->getValue(), $properties->getDefenseAgainstShooting()->getValue(), "$race $gender");
+        self::assertSame($expectedDefenseAgainstShooting->getValue(), $properties->getDefenseAgainstShooting()->getValue(), "$race $genderCode");
 
         $expectedWoundBoundary = new WoundBoundary($expectedToughness, $tables->getWoundsTable());
         self::assertInstanceOf(WoundBoundary::class, $properties->getWoundBoundary());
@@ -166,8 +164,8 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
 
     public function getCombination()
     {
-        $male = Male::getIt();
-        $female = Female::getIt();
+        $male = GenderCode::getIt(GenderCode::MALE);
+        $female = GenderCode::getIt(GenderCode::FEMALE);
         $exceptionalityProperties = $this->createExceptionalityProperties();
         $professionLevels = $this->createProfessionLevels();
         $tables = new Tables();
@@ -198,7 +196,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return ExceptionalityProperties
+     * @return ExceptionalityProperties|\Mockery\MockInterface
      */
     private function createExceptionalityProperties()
     {
@@ -238,7 +236,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return ProfessionLevels
+     * @return ProfessionLevels|\Mockery\MockInterface
      */
     private function createProfessionLevels()
     {

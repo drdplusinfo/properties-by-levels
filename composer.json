@@ -10,14 +10,13 @@
   },
   "require": {
     "php": ">=5.5.0",
+    "roave/security-advisories": "dev-master",
     "doctrine/annotations": "~1.2",
-    "drd-plus/genders": "dev-master",
     "drd-plus/exceptionalities": "dev-master",
     "drd-plus/profession-levels": "dev-master",
     "drd-plus/properties": "dev-master",
     "drd-plus/races": "dev-master",
-    "drd-plus/tables": "dev-master",
-    "roave/security-advisories": "dev-master"
+    "drd-plus/tables": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": ">=4.4",

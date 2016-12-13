@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\PropertiesByLevels;
 
-use DrdPlus\Genders\Gender;
+use DrdPlus\Codes\GenderCode;
 use DrdPlus\Codes\ProfessionCode;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;
@@ -99,7 +99,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
 
     /**
      * @param Race $race
-     * @param Gender $gender
+     * @param GenderCode $genderCode
      * @param ExceptionalityProperties $exceptionalityProperties
      * @param ProfessionLevels $professionLevels
      * @param WeightInKg $weightInKgAdjustment
@@ -110,7 +110,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
      */
     public function __construct(
         Race $race,
-        Gender $gender,
+        GenderCode $genderCode,
         ExceptionalityProperties $exceptionalityProperties,
         ProfessionLevels $professionLevels,
         WeightInKg $weightInKgAdjustment,
@@ -121,7 +121,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
     {
         $this->firstLevelProperties = new FirstLevelProperties(
             $race,
-            $gender,
+            $genderCode,
             $exceptionalityProperties,
             $professionLevels,
             $weightInKgAdjustment,

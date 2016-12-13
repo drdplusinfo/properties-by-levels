@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\Tests\PropertiesByLevels;
 
-use DrdPlus\Genders\Female;
+use DrdPlus\Codes\GenderCode;
 use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Body\Height;
@@ -39,7 +39,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
     )
     {
         $race = CommonHuman::getIt();
-        $gender = Female::getIt();
+        $female = GenderCode::getIt(GenderCode::FEMALE);
         $exceptionalityProperties = $this->createExceptionalityProperties(
             $strength, $agility, $knack, $will, $intelligence, $charisma
         );
@@ -51,7 +51,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
 
         $firstLevelProperties = new FirstLevelProperties(
             $race,
-            $gender,
+            $female,
             $exceptionalityProperties,
             $professionLevels,
             $weightInKgAdjustment,
@@ -208,7 +208,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
 
         new FirstLevelProperties(
             CommonHuman::getIt(),
-            Female::getIt(),
+            GenderCode::getIt(GenderCode::MALE),
             $exceptionalityProperties,
             $this->createProfessionLevels(),
             WeightInKg::getIt(0),
