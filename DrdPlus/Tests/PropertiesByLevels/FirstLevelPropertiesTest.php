@@ -20,6 +20,7 @@ use DrdPlus\Properties\Body\WeightInKg;
 use DrdPlus\Races\Humans\CommonHuman;
 use DrdPlus\Tables\Tables;
 use Granam\Tests\Tools\TestWithMockery;
+use Granam\Tools\ValueDescriber;
 
 class FirstLevelPropertiesTest extends TestWithMockery
 {
@@ -131,10 +132,15 @@ class FirstLevelPropertiesTest extends TestWithMockery
      * @param $will
      * @param $intelligence
      * @param $charisma
-     * @return ExceptionalityProperties
+     * @return ExceptionalityProperties|\Mockery\MockInterface
      */
     private function createExceptionalityProperties(
-        $strength, $agility, $knack, $will, $intelligence, $charisma
+        $strength,
+        $agility,
+        $knack,
+        $will,
+        $intelligence,
+        $charisma
     )
     {
         $exceptionalityProperties = $this->mockery(ExceptionalityProperties::class);
@@ -155,7 +161,10 @@ class FirstLevelPropertiesTest extends TestWithMockery
                     case Charisma::CHARISMA :
                         return $this->createProperty($charisma);
                     default :
-                        throw new \LogicException;
+                        throw new \LogicException(
+                            'Unexpected base property to return by ExceptionalityProperties: '
+                            . ValueDescriber::describe($propertyCode)
+                        );
                 }
             });
         $exceptionalityProperties->shouldReceive('getStrength')
@@ -174,7 +183,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
     }
 
     /**
-     * @return ProfessionLevels
+     * @return ProfessionLevels|\Mockery\MockInterface
      */
     private function createProfessionLevels()
     {

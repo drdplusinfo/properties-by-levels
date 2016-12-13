@@ -116,7 +116,7 @@ class FirstLevelProperties extends StrictObject
     )
     {
         $propertyValues = [];
-        foreach (PropertyCode::getBasePropertyCodes() as $basePropertyCode) {
+        foreach (PropertyCode::getBasePropertyPossibleValues() as $basePropertyCode) {
             $propertyValues[$basePropertyCode] = $this->calculateFirstLevelBaseProperty(
                 $basePropertyCode,
                 $race,
