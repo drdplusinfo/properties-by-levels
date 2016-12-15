@@ -45,7 +45,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
         );
         $professionLevels = $this->createProfessionLevels();
         $weightInKgAdjustment = WeightInKg::getIt(12.3);
-        $heightInCm = HeightInCm::getIt(123.45);
+        $heightInCmAdjustment = HeightInCm::getIt(123.45);
         $age = Age::getIt(32);
         $tables = new Tables();
 
@@ -55,7 +55,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $exceptionalityProperties,
             $professionLevels,
             $weightInKgAdjustment,
-            $heightInCm,
+            $heightInCmAdjustment,
             $age,
             $tables
         );
@@ -107,8 +107,15 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $firstLevelProperties->getFirstLevelWeightInKg()
         );
 
-        self::assertSame($heightInCm, $firstLevelProperties->getFirstLevelHeightInCm());
-        self::assertEquals(new Height($heightInCm, $tables->getDistanceTable()), $firstLevelProperties->getFirstLevelHeight());
+        self::assertSame($heightInCmAdjustment, $firstLevelProperties->getFirstLevelHeightInCmAdjustment());
+        self::assertSame(
+            $heightInCm = HeightInCm::getIt(180 + $heightInCmAdjustment->getValue()),
+            $firstLevelProperties->getFirstLevelHeightInCm()
+        );
+        self::assertEquals(
+            new Height($heightInCm, $tables->getDistanceTable()),
+            $firstLevelProperties->getFirstLevelHeight()
+        );
         self::assertSame($age, $firstLevelProperties->getFirstLevelAge());
     }
 

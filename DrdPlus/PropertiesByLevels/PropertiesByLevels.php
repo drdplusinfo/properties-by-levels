@@ -56,22 +56,10 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
     private $intelligence;
     /** @var Charisma */
     private $charisma;
-    /** @var WeightInKg */
-    private $weightInKgAdjustment;
-    /** @var WeightInKg */
-    private $weightInKg;
-    /** @var HeightInCm */
-    private $heightInCm;
-    /** @var Height */
-    private $height;
-    /** @var Age */
-    private $age;
     /** @var Toughness */
     private $toughness;
     /** @var Endurance */
     private $endurance;
-    /** @var Size */
-    private $size;
     /** @var Speed */
     private $speed;
     /** @var Senses */
@@ -155,22 +143,12 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
             $this->firstLevelProperties->getFirstLevelCharisma()->getValue()
             + $this->nextLevelsProperties->getNextLevelsCharisma()->getValue()
         );
-        // there is no more weight, height and age adjustments than on first level
-        $this->weightInKgAdjustment = $this->firstLevelProperties->getFirstLevelWeightInKgAdjustment();
-        $this->weightInKg = $this->firstLevelProperties->getFirstLevelWeightInKg();
-        $this->heightInCm = $this->firstLevelProperties->getFirstLevelHeightInCm();
-        $this->height = $this->firstLevelProperties->getFirstLevelHeight();
-        $this->age = $this->firstLevelProperties->getFirstLevelAge();
 
         // delivered properties
         $this->toughness = new Toughness(
             $this->getStrength(), $race->getRaceCode(), $race->getSubraceCode(), $tables->getRacesTable()
         );
-        $this->endurance = new Endurance(
-            $this->getStrength(), $this->getWill()
-        );
-        // there is no more size adjustment than the first level one
-        $this->size = $this->firstLevelProperties->getFirstLevelSize();
+        $this->endurance = new Endurance($this->getStrength(), $this->getWill());
         $this->speed = new Speed($this->getStrength(), $this->getAgility(), $this->getHeight());
         $this->senses = new Senses(
             $this->getKnack(),
@@ -267,7 +245,8 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
      */
     public function getWeightInKgAdjustment()
     {
-        return $this->weightInKgAdjustment;
+        // there is no more weight adjustments than on first level
+        return $this->firstLevelProperties->getFirstLevelWeightInKgAdjustment();
     }
 
     /**
@@ -275,7 +254,17 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
      */
     public function getWeightInKg()
     {
-        return $this->weightInKg;
+        // there is no more weight adjustments than on first level
+        return $this->firstLevelProperties->getFirstLevelWeightInKg();
+    }
+
+    /**
+     * @return HeightInCm
+     */
+    public function getHeightInCmAdjustment()
+    {
+        // there is no more height adjustments than on first level
+        return $this->firstLevelProperties->getFirstLevelHeightInCmAdjustment();
     }
 
     /**
@@ -283,7 +272,8 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
      */
     public function getHeightInCm()
     {
-        return $this->heightInCm;
+        // there is no more height adjustments than on first level
+        return $this->firstLevelProperties->getFirstLevelHeightInCm();
     }
 
     /**
@@ -291,7 +281,8 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
      */
     public function getHeight()
     {
-        return $this->height;
+        // there is no more height adjustments than on first level
+        return $this->firstLevelProperties->getFirstLevelHeight();
     }
 
     /**
@@ -299,7 +290,8 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
      */
     public function getAge()
     {
-        return $this->age;
+        // there is no more age adjustments than on first level (yet)
+        return $this->firstLevelProperties->getFirstLevelAge();
     }
 
     /**
@@ -323,7 +315,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
      */
     public function getSize()
     {
-        return $this->size;
+        return $this->firstLevelProperties->getFirstLevelSize();
     }
 
     /**

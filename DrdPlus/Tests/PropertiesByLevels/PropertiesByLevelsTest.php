@@ -55,7 +55,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
      * @param ProfessionLevels $professionLevels
      * @param Tables $tables
      * @param WeightInKg $weightInKgAdjustment
-     * @param HeightInCm $heightInCm
+     * @param HeightInCm $heightInCmAdjustment
      * @param Age $age
      * @param int $expectedStrength
      * @param int $expectedAgility
@@ -71,7 +71,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         ProfessionLevels $professionLevels,
         Tables $tables,
         WeightInKg $weightInKgAdjustment,
-        HeightInCm $heightInCm,
+        HeightInCm $heightInCmAdjustment,
         Age $age,
         $expectedStrength,
         $expectedAgility,
@@ -87,7 +87,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
             $exceptionalityProperties,
             $professionLevels,
             $weightInKgAdjustment,
-            $heightInCm,
+            $heightInCmAdjustment,
             $age,
             $tables
         );
@@ -104,8 +104,9 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
 
         self::assertSame($weightInKgAdjustment, $properties->getWeightInKgAdjustment());
         self::assertGreaterThan($weightInKgAdjustment->getValue(), $properties->getWeightInKg()->getValue(), "$race $genderCode");
-        self::assertSame($heightInCm, $properties->getHeightInCm());
-        self::assertEquals($expectedHeight = new Height($heightInCm, $tables->getDistanceTable()), $properties->getHeight());
+        self::assertSame($heightInCmAdjustment, $properties->getHeightInCmAdjustment());
+        self::assertGreaterThan($heightInCmAdjustment->getValue(), $properties->getHeightInCm()->getValue(), "$race $genderCode");
+        self::assertEquals($expectedHeight = new Height($properties->getHeightInCm(), $tables->getDistanceTable()), $properties->getHeight());
         self::assertSame($age, $properties->getAge());
         $expectedToughness = new Toughness(Strength::getIt($expectedStrength), $race->getRaceCode(), $race->getSubraceCode(), $tables->getRacesTable());
         self::assertInstanceOf(Toughness::class, $properties->getToughness());
@@ -137,7 +138,6 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(Dignity::class, $properties->getDignity());
         self::assertSame($expectedDignity->getValue(), $properties->getDignity()->getValue(), "$race $genderCode");
 
-        self::assertLessThan(4, $expectedHeight->getValue());
         $expectedFightValue = $expectedAgility /* fighter */ + (SumAndRound::ceil($expectedHeight->getValue() / 3) - 2);
         self::assertInstanceOf(FightNumber::class, $properties->getFightNumber());
         self::assertSame($expectedFightValue, $properties->getFightNumber()->getValue(), "$race $genderCode with height $expectedHeight");

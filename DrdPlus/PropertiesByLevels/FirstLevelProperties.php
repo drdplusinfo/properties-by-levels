@@ -58,6 +58,8 @@ class FirstLevelProperties extends StrictObject
     /** @var Size */
     private $firstLevelSize;
     /** @var HeightInCm */
+    private $firstLevelHeightInCmAdjustment;
+    /** @var HeightInCm */
     private $firstLevelHeightInCm;
     /** @var Height */
     private $firstLevelHeight;
@@ -70,7 +72,7 @@ class FirstLevelProperties extends StrictObject
      * @param ExceptionalityProperties $exceptionalityProperties
      * @param ProfessionLevels $professionLevels
      * @param WeightInKg $weightInKgAdjustment
-     * @param HeightInCm $heightInCm
+     * @param HeightInCm $heightInCmAdjustment
      * @param Age $age
      * @param Tables $tables
      * @throws Exceptions\TooLowStrengthAdjustment
@@ -81,7 +83,7 @@ class FirstLevelProperties extends StrictObject
         ExceptionalityProperties $exceptionalityProperties,
         ProfessionLevels $professionLevels,
         WeightInKg $weightInKgAdjustment,
-        HeightInCm $heightInCm,
+        HeightInCm $heightInCmAdjustment,
         Age $age,
         Tables $tables
     )
@@ -102,8 +104,11 @@ class FirstLevelProperties extends StrictObject
             $exceptionalityProperties,
             $professionLevels
         );
-        $this->firstLevelHeightInCm = $heightInCm;
-        $this->firstLevelHeight = new Height($heightInCm, $tables->getDistanceTable());
+        $this->firstLevelHeightInCmAdjustment = $heightInCmAdjustment;
+        $this->firstLevelHeightInCm = HeightInCm::getIt(
+            $race->getHeightInCm($tables->getRacesTable()) + $heightInCmAdjustment->getValue()
+        );
+        $this->firstLevelHeight = new Height($this->firstLevelHeightInCm, $tables->getDistanceTable());
         $this->firstLevelAge = $age;
     }
 
@@ -393,6 +398,14 @@ class FirstLevelProperties extends StrictObject
     public function getFirstLevelSize()
     {
         return $this->firstLevelSize;
+    }
+
+    /**
+     * @return HeightInCm
+     */
+    public function getFirstLevelHeightInCmAdjustment()
+    {
+        return $this->firstLevelHeightInCmAdjustment;
     }
 
     /**
