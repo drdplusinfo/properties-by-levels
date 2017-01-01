@@ -40,7 +40,7 @@ use DrdPlus\Properties\Derived\WoundBoundary;
 use DrdPlus\Races\Humans\CommonHuman;
 use DrdPlus\Races\Race;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Tools\Calculations\SumAndRound;
+use DrdPlus\Calculations\SumAndRound;
 use Granam\Integer\IntegerObject;
 
 class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
