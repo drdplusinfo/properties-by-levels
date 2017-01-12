@@ -2,9 +2,9 @@
 namespace DrdPlus\Tests\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
-use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Body\Height;
+use DrdPlus\PropertiesByFate\PropertiesByFate;
 use DrdPlus\PropertiesByLevels\FirstLevelProperties;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\BaseProperty;
@@ -40,7 +40,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
     {
         $race = CommonHuman::getIt();
         $female = GenderCode::getIt(GenderCode::FEMALE);
-        $exceptionalityProperties = $this->createExceptionalityProperties(
+        $propertiesByFate = $this->createPropertiesByFate(
             $strength, $agility, $knack, $will, $intelligence, $charisma
         );
         $professionLevels = $this->createProfessionLevels();
@@ -52,7 +52,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
         $firstLevelProperties = new FirstLevelProperties(
             $race,
             $female,
-            $exceptionalityProperties,
+            $propertiesByFate,
             $professionLevels,
             $weightInKgAdjustment,
             $heightInCmAdjustment,
@@ -60,7 +60,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $tables
         );
 
-        self::assertSame($exceptionalityProperties, $firstLevelProperties->getExceptionalityProperties());
+        self::assertSame($propertiesByFate, $firstLevelProperties->getPropertiesByFate());
 
         $expectedStrength = min($strength, 3) - 1; /* female */
         self::assertInstanceOf(Strength::class, $firstLevelProperties->getFirstLevelStrength());
@@ -139,9 +139,9 @@ class FirstLevelPropertiesTest extends TestWithMockery
      * @param $will
      * @param $intelligence
      * @param $charisma
-     * @return ExceptionalityProperties|\Mockery\MockInterface
+     * @return PropertiesByFate|\Mockery\MockInterface
      */
-    private function createExceptionalityProperties(
+    private function createPropertiesByFate(
         $strength,
         $agility,
         $knack,
@@ -150,8 +150,8 @@ class FirstLevelPropertiesTest extends TestWithMockery
         $charisma
     )
     {
-        $exceptionalityProperties = $this->mockery(ExceptionalityProperties::class);
-        $exceptionalityProperties->shouldReceive('getProperty')
+        $propertiesByFate = $this->mockery(PropertiesByFate::class);
+        $propertiesByFate->shouldReceive('getProperty')
             ->andReturnUsing(function ($propertyCode)
             use ($strength, $agility, $knack, $will, $intelligence, $charisma) {
                 switch ($propertyCode) {
@@ -169,15 +169,15 @@ class FirstLevelPropertiesTest extends TestWithMockery
                         return $this->createProperty($charisma);
                     default :
                         throw new \LogicException(
-                            'Unexpected base property to return by ExceptionalityProperties: '
+                            'Unexpected base property to return by PropertiesByFate: '
                             . ValueDescriber::describe($propertyCode)
                         );
                 }
             });
-        $exceptionalityProperties->shouldReceive('getStrength')
+        $propertiesByFate->shouldReceive('getStrength')
             ->andReturn($this->createProperty($strength));
 
-        return $exceptionalityProperties;
+        return $propertiesByFate;
     }
 
     private function createProperty($propertyValue)
@@ -209,14 +209,14 @@ class FirstLevelPropertiesTest extends TestWithMockery
      */
     public function I_can_not_get_it_with_too_low_strength()
     {
-        $exceptionalityProperties = $this->createExceptionalityProperties(
+        $propertiesByFate = $this->createPropertiesByFate(
             -1, 0, 0, 0, 0, 0
         );
 
         new FirstLevelProperties(
             CommonHuman::getIt(),
             GenderCode::getIt(GenderCode::MALE),
-            $exceptionalityProperties,
+            $propertiesByFate,
             $this->createProfessionLevels(),
             WeightInKg::getIt(0),
             HeightInCm::getIt(123),

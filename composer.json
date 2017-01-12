@@ -12,7 +12,7 @@
     "php": ">=5.5.0",
     "roave/security-advisories": "dev-master",
     "doctrine/annotations": "~1.2",
-    "drd-plus/exceptionalities": "dev-master",
+    "drd-plus/properties-by-levels": "dev-master",
     "drd-plus/profession-levels": "dev-master",
     "drd-plus/properties": "dev-master",
     "drd-plus/races": "dev-master",

@@ -5,7 +5,6 @@ use DrdPlus\Codes\GenderCode;
 use DrdPlus\Codes\ProfessionCode;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;
-use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\Charisma;
@@ -33,6 +32,7 @@ use DrdPlus\Properties\Derived\Senses;
 use DrdPlus\Properties\Derived\Speed;
 use DrdPlus\Properties\Derived\Toughness;
 use DrdPlus\Properties\Derived\WoundBoundary;
+use DrdPlus\PropertiesByFate\PropertiesByFate;
 use DrdPlus\Races\Race;
 use DrdPlus\Tables\Tables;
 use Granam\Strict\Object\StrictObject;
@@ -88,7 +88,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
     /**
      * @param Race $race
      * @param GenderCode $genderCode
-     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param PropertiesByFate $propertiesByFate
      * @param ProfessionLevels $professionLevels
      * @param WeightInKg $weightInKgAdjustment
      * @param HeightInCm $heightInCm
@@ -99,7 +99,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
     public function __construct(
         Race $race,
         GenderCode $genderCode,
-        ExceptionalityProperties $exceptionalityProperties,
+        PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels,
         WeightInKg $weightInKgAdjustment,
         HeightInCm $heightInCm,
@@ -110,7 +110,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
         $this->firstLevelProperties = new FirstLevelProperties(
             $race,
             $genderCode,
-            $exceptionalityProperties,
+            $propertiesByFate,
             $professionLevels,
             $weightInKgAdjustment,
             $heightInCm,

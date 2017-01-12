@@ -2,9 +2,9 @@
 namespace DrdPlus\Tests\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
+use DrdPlus\Codes\PropertyCode;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;
-use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevel;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Body\Height;
@@ -13,6 +13,7 @@ use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
 use DrdPlus\Properties\Combat\DefenseNumber;
 use DrdPlus\Properties\Combat\FightNumber;
 use DrdPlus\Properties\Combat\Shooting;
+use DrdPlus\PropertiesByFate\PropertiesByFate;
 use DrdPlus\PropertiesByLevels\FirstLevelProperties;
 use DrdPlus\PropertiesByLevels\NextLevelsProperties;
 use DrdPlus\PropertiesByLevels\PropertiesByLevels;
@@ -51,7 +52,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
      *
      * @param Race $race
      * @param GenderCode $genderCode
-     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param PropertiesByFate $propertiesByFate
      * @param ProfessionLevels $professionLevels
      * @param Tables $tables
      * @param WeightInKg $weightInKgAdjustment
@@ -67,7 +68,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
     public function I_can_create_properties_for_any_combination(
         Race $race,
         GenderCode $genderCode,
-        ExceptionalityProperties $exceptionalityProperties,
+        PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels,
         Tables $tables,
         WeightInKg $weightInKgAdjustment,
@@ -84,7 +85,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         $properties = new PropertiesByLevels(
             $race,
             $genderCode,
-            $exceptionalityProperties,
+            $propertiesByFate,
             $professionLevels,
             $weightInKgAdjustment,
             $heightInCmAdjustment,
@@ -166,7 +167,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
     {
         $male = GenderCode::getIt(GenderCode::MALE);
         $female = GenderCode::getIt(GenderCode::FEMALE);
-        $exceptionalityProperties = $this->createExceptionalityProperties();
+        $propertiesByFate = $this->createPropertiesByFate();
         $professionLevels = $this->createProfessionLevels();
         $tables = new Tables();
         $weightInKgAdjustment = WeightInKg::getIt(0.001);
@@ -181,12 +182,12 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
 
         return [
             [
-                $commonHuman = CommonHuman::getIt(), $male, $exceptionalityProperties, $professionLevels, $tables,
+                $commonHuman = CommonHuman::getIt(), $male, $propertiesByFate, $professionLevels, $tables,
                 $weightInKgAdjustment, $heightInCm, $age, $baseOfExpectedStrength, $baseOfExpectedAgility, $baseOfExpectedKnack,
                 $baseOfExpectedWill, $baseOfExpectedIntelligence, $baseOfExpectedCharisma,
             ],
             [
-                $commonHuman, $female, $exceptionalityProperties, $professionLevels, $tables, $weightInKgAdjustment,
+                $commonHuman, $female, $propertiesByFate, $professionLevels, $tables, $weightInKgAdjustment,
                 $heightInCm, $age,
                 $baseOfExpectedStrength - 1 /* human female */, $baseOfExpectedAgility, $baseOfExpectedKnack,
                 $baseOfExpectedWill, $baseOfExpectedIntelligence, $baseOfExpectedCharisma + 1 /* human female */,
@@ -196,43 +197,43 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return ExceptionalityProperties|\Mockery\MockInterface
+     * @return PropertiesByFate|\Mockery\MockInterface
      */
-    private function createExceptionalityProperties()
+    private function createPropertiesByFate()
     {
-        $exceptionalityProperties = \Mockery::mock(ExceptionalityProperties::class);
-        $exceptionalityProperties->shouldReceive('getProperty')
-            ->with(Strength::STRENGTH)
+        $propertiesByFate = \Mockery::mock(PropertiesByFate::class);
+        $propertiesByFate->shouldReceive('getProperty')
+            ->with(PropertyCode::getIt(PropertyCode::STRENGTH))
             ->andReturn($strength = new IntegerObject(123));
-        $exceptionalityProperties->shouldReceive('getStrength')
+        $propertiesByFate->shouldReceive('getStrength')
             ->andReturn($strength);
-        $exceptionalityProperties->shouldReceive('getProperty')
-            ->with(Agility::AGILITY)
+        $propertiesByFate->shouldReceive('getProperty')
+            ->with(PropertyCode::getIt(PropertyCode::AGILITY))
             ->andReturn($agility = new IntegerObject(234));
-        $exceptionalityProperties->shouldReceive('getAgility')
+        $propertiesByFate->shouldReceive('getAgility')
             ->andReturn($agility);
-        $exceptionalityProperties->shouldReceive('getProperty')
-            ->with(Knack::KNACK)
+        $propertiesByFate->shouldReceive('getProperty')
+            ->with(PropertyCode::getIt(PropertyCode::KNACK))
             ->andReturn($knack = new IntegerObject(345));
-        $exceptionalityProperties->shouldReceive('getKnack')
+        $propertiesByFate->shouldReceive('getKnack')
             ->andReturn($knack);
-        $exceptionalityProperties->shouldReceive('getProperty')
-            ->with(Will::WILL)
+        $propertiesByFate->shouldReceive('getProperty')
+            ->with(PropertyCode::getIt(PropertyCode::WILL))
             ->andReturn($will = new IntegerObject(456));
-        $exceptionalityProperties->shouldReceive('getWill')
+        $propertiesByFate->shouldReceive('getWill')
             ->andReturn($will);
-        $exceptionalityProperties->shouldReceive('getProperty')
-            ->with(Intelligence::INTELLIGENCE)
+        $propertiesByFate->shouldReceive('getProperty')
+            ->with(PropertyCode::getIt(PropertyCode::INTELLIGENCE))
             ->andReturn($intelligence = new IntegerObject(567));
-        $exceptionalityProperties->shouldReceive('getIntelligence')
+        $propertiesByFate->shouldReceive('getIntelligence')
             ->andReturn($intelligence);
-        $exceptionalityProperties->shouldReceive('getProperty')
-            ->with(Charisma::CHARISMA)
+        $propertiesByFate->shouldReceive('getProperty')
+            ->with(PropertyCode::getIt(PropertyCode::CHARISMA))
             ->andReturn($charisma = new IntegerObject(678));
-        $exceptionalityProperties->shouldReceive('getCharisma')
+        $propertiesByFate->shouldReceive('getCharisma')
             ->andReturn($charisma);
 
-        return $exceptionalityProperties;
+        return $propertiesByFate;
     }
 
     /**

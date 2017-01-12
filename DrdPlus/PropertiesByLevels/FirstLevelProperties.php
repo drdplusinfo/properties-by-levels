@@ -3,7 +3,6 @@ namespace DrdPlus\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
 use DrdPlus\Codes\PropertyCode;
-use DrdPlus\Exceptionalities\Properties\ExceptionalityProperties;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\BaseProperty;
@@ -17,6 +16,7 @@ use DrdPlus\Properties\Body\Height;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
+use DrdPlus\PropertiesByFate\PropertiesByFate;
 use DrdPlus\Races\Race;
 use DrdPlus\Tables\Tables;
 use Granam\Strict\Object\StrictObject;
@@ -25,8 +25,8 @@ class FirstLevelProperties extends StrictObject
 {
     const INITIAL_PROPERTY_INCREASE_LIMIT = 3;
 
-    /** @var ExceptionalityProperties */
-    private $exceptionalityProperties;
+    /** @var PropertiesByFate */
+    private $propertiesByFate;
     /** @var Strength */
     private $firstLevelUnlimitedStrength;
     /** @var Strength */
@@ -69,7 +69,7 @@ class FirstLevelProperties extends StrictObject
     /**
      * @param Race $race
      * @param GenderCode $genderCode
-     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param PropertiesByFate $propertiesByFate
      * @param ProfessionLevels $professionLevels
      * @param WeightInKg $weightInKgAdjustment
      * @param HeightInCm $heightInCmAdjustment
@@ -80,7 +80,7 @@ class FirstLevelProperties extends StrictObject
     public function __construct(
         Race $race,
         GenderCode $genderCode,
-        ExceptionalityProperties $exceptionalityProperties,
+        PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels,
         WeightInKg $weightInKgAdjustment,
         HeightInCm $heightInCmAdjustment,
@@ -88,8 +88,8 @@ class FirstLevelProperties extends StrictObject
         Tables $tables
     )
     {
-        $this->exceptionalityProperties = $exceptionalityProperties;
-        $this->setUpBaseProperties($race, $genderCode, $exceptionalityProperties, $professionLevels, $tables);
+        $this->propertiesByFate = $propertiesByFate;
+        $this->setUpBaseProperties($race, $genderCode, $propertiesByFate, $professionLevels, $tables);
         $this->firstLevelWeightInKgAdjustment = $weightInKgAdjustment;
         $this->firstLevelWeightInKg = $this->createFirstLevelWeightInKg(
             $race,
@@ -101,7 +101,7 @@ class FirstLevelProperties extends StrictObject
             $race,
             $genderCode,
             $tables,
-            $exceptionalityProperties,
+            $propertiesByFate,
             $professionLevels
         );
         $this->firstLevelHeightInCmAdjustment = $heightInCmAdjustment;
@@ -115,7 +115,7 @@ class FirstLevelProperties extends StrictObject
     private function setUpBaseProperties(
         Race $race,
         GenderCode $genderCode,
-        ExceptionalityProperties $exceptionalityProperties,
+        PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels,
         Tables $tables
     )
@@ -123,11 +123,11 @@ class FirstLevelProperties extends StrictObject
         $propertyValues = [];
         foreach (PropertyCode::getBasePropertyPossibleValues() as $basePropertyCode) {
             $propertyValues[$basePropertyCode] = $this->calculateFirstLevelBaseProperty(
-                $basePropertyCode,
+                PropertyCode::getIt($basePropertyCode),
                 $race,
                 $genderCode,
                 $tables,
-                $exceptionalityProperties,
+                $propertiesByFate,
                 $professionLevels
             );
         }
@@ -152,27 +152,27 @@ class FirstLevelProperties extends StrictObject
     }
 
     /**
-     * @param string $propertyCode
+     * @param PropertyCode $propertyCode
      * @param Race $race
      * @param GenderCode $genderCode
      * @param Tables $tables
-     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param PropertiesByFate $propertiesByFate
      * @param ProfessionLevels $professionLevels
      * @return int
      * @throws \DrdPlus\Races\Exceptions\UnknownPropertyCode
      */
     private function calculateFirstLevelBaseProperty(
-        $propertyCode,
+        PropertyCode $propertyCode,
         Race $race,
         GenderCode $genderCode,
         Tables $tables,
-        ExceptionalityProperties $exceptionalityProperties,
+        PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels
     )
     {
         return
             $race->getProperty($propertyCode, $genderCode, $tables)
-            + $exceptionalityProperties->getProperty($propertyCode)->getValue()
+            + $propertiesByFate->getProperty($propertyCode)->getValue()
             + $professionLevels->getFirstLevelPropertyModifier($propertyCode);
     }
 
@@ -208,11 +208,11 @@ class FirstLevelProperties extends StrictObject
     }
 
     /**
-     * @return ExceptionalityProperties
+     * @return PropertiesByFate
      */
-    public function getExceptionalityProperties()
+    public function getPropertiesByFate()
     {
-        return $this->exceptionalityProperties;
+        return $this->propertiesByFate;
     }
 
     /**
@@ -284,7 +284,7 @@ class FirstLevelProperties extends StrictObject
      * @param Race $race
      * @param GenderCode $genderCode
      * @param Tables $tables
-     * @param ExceptionalityProperties $exceptionalityProperties
+     * @param PropertiesByFate $propertiesByFate
      * @param ProfessionLevels $professionLevels
      * @return Size
      * @throws Exceptions\TooLowStrengthAdjustment
@@ -293,13 +293,13 @@ class FirstLevelProperties extends StrictObject
         Race $race,
         GenderCode $genderCode,
         Tables $tables,
-        ExceptionalityProperties $exceptionalityProperties,
+        PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels
     )
     {
         // the race bonus is NOT count for adjustment, doesn't count to size change respectively
         $sizeModifierByStrength = $this->getSizeModifierByStrength(
-            $exceptionalityProperties->getStrength()->getValue()
+            $propertiesByFate->getStrength()->getValue()
             + $professionLevels->getFirstLevelStrengthModifier()
         );
         $raceSize = $race->getSize($genderCode, $tables);
