@@ -2,6 +2,7 @@
 namespace DrdPlus\Tests\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
+use DrdPlus\Codes\PropertyCode;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Body\Height;
 use DrdPlus\PropertiesByFate\PropertiesByFate;
@@ -155,17 +156,17 @@ class FirstLevelPropertiesTest extends TestWithMockery
             ->andReturnUsing(function ($propertyCode)
             use ($strength, $agility, $knack, $will, $intelligence, $charisma) {
                 switch ($propertyCode) {
-                    case Strength::STRENGTH :
+                    case PropertyCode::STRENGTH :
                         return $this->createProperty($strength);
-                    case Agility::AGILITY :
+                    case PropertyCode::AGILITY :
                         return $this->createProperty($agility);
-                    case Knack::KNACK :
+                    case PropertyCode::KNACK :
                         return $this->createProperty($knack);
-                    case Will::WILL :
+                    case PropertyCode::WILL :
                         return $this->createProperty($will);
-                    case Intelligence::INTELLIGENCE :
+                    case PropertyCode::INTELLIGENCE :
                         return $this->createProperty($intelligence);
-                    case Charisma::CHARISMA :
+                    case PropertyCode::CHARISMA :
                         return $this->createProperty($charisma);
                     default :
                         throw new \LogicException(

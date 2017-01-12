@@ -132,22 +132,22 @@ class FirstLevelProperties extends StrictObject
             );
         }
 
-        $this->firstLevelUnlimitedStrength = Strength::getIt($propertyValues[Strength::STRENGTH]);
+        $this->firstLevelUnlimitedStrength = Strength::getIt($propertyValues[PropertyCode::STRENGTH]);
         $this->firstLevelStrength = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedStrength);
 
-        $this->firstLevelUnlimitedAgility = Agility::getIt($propertyValues[Agility::AGILITY]);
+        $this->firstLevelUnlimitedAgility = Agility::getIt($propertyValues[PropertyCode::AGILITY]);
         $this->firstLevelAgility = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedAgility);
 
-        $this->firstLevelUnlimitedKnack = Knack::getIt($propertyValues[Knack::KNACK]);
+        $this->firstLevelUnlimitedKnack = Knack::getIt($propertyValues[PropertyCode::KNACK]);
         $this->firstLevelKnack = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedKnack);
 
-        $this->firstLevelUnlimitedWill = Will::getIt($propertyValues[Will::WILL]);
+        $this->firstLevelUnlimitedWill = Will::getIt($propertyValues[PropertyCode::WILL]);
         $this->firstLevelWill = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedWill);
 
-        $this->firstLevelUnlimitedIntelligence = Intelligence::getIt($propertyValues[Intelligence::INTELLIGENCE]);
+        $this->firstLevelUnlimitedIntelligence = Intelligence::getIt($propertyValues[PropertyCode::INTELLIGENCE]);
         $this->firstLevelIntelligence = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedIntelligence);
 
-        $this->firstLevelUnlimitedCharisma = Charisma::getIt($propertyValues[Charisma::CHARISMA]);
+        $this->firstLevelUnlimitedCharisma = Charisma::getIt($propertyValues[PropertyCode::CHARISMA]);
         $this->firstLevelCharisma = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedCharisma);
     }
 

@@ -2,6 +2,7 @@
 namespace DrdPlus\Tests\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
+use DrdPlus\Codes\ProfessionCode;
 use DrdPlus\Codes\PropertyCode;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;
@@ -18,7 +19,6 @@ use DrdPlus\PropertiesByLevels\FirstLevelProperties;
 use DrdPlus\PropertiesByLevels\NextLevelsProperties;
 use DrdPlus\PropertiesByLevels\PropertiesByLevels;
 use DrdPlus\Professions\Profession;
-use DrdPlus\Professions\Fighter;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\Charisma;
 use DrdPlus\Properties\Base\Intelligence;
@@ -49,7 +49,6 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider getCombination
-     *
      * @param Race $race
      * @param GenderCode $genderCode
      * @param PropertiesByFate $propertiesByFate
@@ -243,32 +242,32 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
     {
         $professionLevels = \Mockery::mock(ProfessionLevels::class);
         $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
-            ->with(Strength::STRENGTH)
+            ->with(PropertyCode::STRENGTH)
             ->andReturn($strength = 1234);
         $professionLevels->shouldReceive('getFirstLevelStrengthModifier')
             ->andReturn($strength);
         $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
-            ->with(Agility::AGILITY)
+            ->with(PropertyCode::AGILITY)
             ->andReturn($agility = 2345);
         $professionLevels->shouldReceive('getFirstLevelAgilityModifier')
             ->andReturn($agility);
         $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
-            ->with(Knack::KNACK)
+            ->with(PropertyCode::KNACK)
             ->andReturn($knack = 3456);
         $professionLevels->shouldReceive('getFirstLevelKnackModifier')
             ->andReturn($knack);
         $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
-            ->with(Will::WILL)
+            ->with(PropertyCode::WILL)
             ->andReturn($will = 3456);
         $professionLevels->shouldReceive('getFirstLevelWillModifier')
             ->andReturn($will);
         $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
-            ->with(Intelligence::INTELLIGENCE)
+            ->with(PropertyCode::INTELLIGENCE)
             ->andReturn($intelligence = 5678);
         $professionLevels->shouldReceive('getFirstLevelIntelligenceModifier')
             ->andReturn($intelligence);
         $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
-            ->with(Charisma::CHARISMA)
+            ->with(PropertyCode::CHARISMA)
             ->andReturn($charisma = 6789);
         $professionLevels->shouldReceive('getFirstLevelPropertyModifier')
             ->andReturn($charisma);
@@ -291,7 +290,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         $firstLevel->shouldReceive('getProfession')
             ->andReturn($profession = \Mockery::mock(Profession::class));
         $profession->shouldReceive('getValue')
-            ->andReturn(Fighter::FIGHTER);
+            ->andReturn(ProfessionCode::FIGHTER);
 
         return $professionLevels;
     }
