@@ -40,11 +40,12 @@ use DrdPlus\Properties\Derived\Toughness;
 use DrdPlus\Properties\Derived\WoundBoundary;
 use DrdPlus\Races\Humans\CommonHuman;
 use DrdPlus\Races\Race;
+use DrdPlus\Tables\Body\CorrectionByHeightTable;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Calculations\SumAndRound;
 use Granam\Integer\IntegerObject;
+use Granam\Tests\Tools\TestWithMockery;
 
-class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
+class PropertiesByLevelsTest extends TestWithMockery
 {
     /**
      * @test
@@ -63,6 +64,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
      * @param int $expectedWill
      * @param int $expectedIntelligence
      * @param int $expectedCharisma
+     * @param int $expectedFight
      */
     public function I_can_create_properties_for_any_combination(
         Race $race,
@@ -78,7 +80,8 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         $expectedKnack,
         $expectedWill,
         $expectedIntelligence,
-        $expectedCharisma
+        $expectedCharisma,
+        $expectedFight
     )
     {
         $properties = new PropertiesByLevels(
@@ -106,9 +109,9 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertGreaterThan($weightInKgAdjustment->getValue(), $properties->getWeightInKg()->getValue(), "$race $genderCode");
         self::assertSame($heightInCmAdjustment, $properties->getHeightInCmAdjustment());
         self::assertGreaterThan($heightInCmAdjustment->getValue(), $properties->getHeightInCm()->getValue(), "$race $genderCode");
-        self::assertEquals($expectedHeight = new Height($properties->getHeightInCm(), $tables->getDistanceTable()), $properties->getHeight());
+        self::assertEquals($expectedHeight = new Height($properties->getHeightInCm(), $tables), $properties->getHeight());
         self::assertSame($age, $properties->getAge());
-        $expectedToughness = new Toughness(Strength::getIt($expectedStrength), $race->getRaceCode(), $race->getSubraceCode(), $tables->getRacesTable());
+        $expectedToughness = new Toughness(Strength::getIt($expectedStrength), $race->getRaceCode(), $race->getSubraceCode(), $tables);
         self::assertInstanceOf(Toughness::class, $properties->getToughness());
         self::assertSame($expectedToughness->getValue(), $properties->getToughness()->getValue(), "$race $genderCode");
         $expectedEndurance = new Endurance(Strength::getIt($expectedStrength), Will::getIt($expectedWill));
@@ -124,7 +127,7 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
             Knack::getIt($expectedKnack),
             RaceCode::getIt($race->getRaceCode()),
             SubRaceCode::getIt($race->getSubraceCode()),
-            $tables->getRacesTable()
+            $tables
         );
         self::assertInstanceOf(Senses::class, $properties->getSenses());
         self::assertSame($expectedSenses->getValue(), $properties->getSenses()->getValue(), "$race $genderCode");
@@ -138,9 +141,8 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(Dignity::class, $properties->getDignity());
         self::assertSame($expectedDignity->getValue(), $properties->getDignity()->getValue(), "$race $genderCode");
 
-        $expectedFightValue = $expectedAgility /* fighter */ + (SumAndRound::ceil($expectedHeight->getValue() / 3) - 2);
         self::assertInstanceOf(FightNumber::class, $properties->getFightNumber());
-        self::assertSame($expectedFightValue, $properties->getFightNumber()->getValue(), "$race $genderCode with height $expectedHeight");
+        self::assertSame($expectedFight, $properties->getFightNumber()->getValue(), "$race $genderCode with height $expectedHeight");
         $expectedAttack = new Attack(Agility::getIt($expectedAgility));
         self::assertInstanceOf(Attack::class, $properties->getAttack());
         self::assertSame($expectedAttack->getValue(), $properties->getAttack()->getValue(), "$race $genderCode");
@@ -154,10 +156,10 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(DefenseNumberAgainstShooting::class, $properties->getDefenseAgainstShooting());
         self::assertSame($expectedDefenseAgainstShooting->getValue(), $properties->getDefenseAgainstShooting()->getValue(), "$race $genderCode");
 
-        $expectedWoundBoundary = new WoundBoundary($expectedToughness, $tables->getWoundsTable());
+        $expectedWoundBoundary = new WoundBoundary($expectedToughness, $tables);
         self::assertInstanceOf(WoundBoundary::class, $properties->getWoundBoundary());
         self::assertSame($expectedWoundBoundary->getValue(), $properties->getWoundBoundary()->getValue());
-        $expectedFatigueBoundary = new FatigueBoundary($expectedEndurance, $tables->getFatigueTable());
+        $expectedFatigueBoundary = new FatigueBoundary($expectedEndurance, $tables);
         self::assertInstanceOf(FatigueBoundary::class, $properties->getFatigueBoundary());
         self::assertSame($expectedFatigueBoundary->getValue(), $properties->getFatigueBoundary()->getValue());
     }
@@ -168,9 +170,9 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         $female = GenderCode::getIt(GenderCode::FEMALE);
         $propertiesByFate = $this->createPropertiesByFate();
         $professionLevels = $this->createProfessionLevels();
-        $tables = new Tables();
-        $weightInKgAdjustment = WeightInKg::getIt(0.001);
         $heightInCm = HeightInCm::getIt(123.4);
+        $tables = $this->createTables($correctionFromHeight = 369);
+        $weightInKgAdjustment = WeightInKg::getIt(0.001);
         $age = Age::getIt(15);
         $baseOfExpectedStrength = $professionLevels->getNextLevelsStrengthModifier() + 3; /* default max strength increment */
         $baseOfExpectedAgility = $professionLevels->getNextLevelsAgilityModifier() + 3; /* default max agility increment */
@@ -178,21 +180,41 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
         $baseOfExpectedWill = $professionLevels->getNextLevelsWillModifier() + 3; /* default max knack increment */
         $baseOfExpectedIntelligence = $professionLevels->getNextLevelsIntelligenceModifier() + 3; /* default max knack increment */
         $baseOfExpectedCharisma = $professionLevels->getNextLevelsCharismaModifier() + 3; /* default max charisma increment */
+        $expectedHeight = new Height($heightInCm, $tables);
+        $expectedFight = $baseOfExpectedAgility /* fighter */ + $correctionFromHeight;
 
         return [
             [
-                $commonHuman = CommonHuman::getIt(), $male, $propertiesByFate, $professionLevels, $tables,
+                CommonHuman::getIt(), $male, $propertiesByFate, $professionLevels, $tables,
                 $weightInKgAdjustment, $heightInCm, $age, $baseOfExpectedStrength, $baseOfExpectedAgility, $baseOfExpectedKnack,
-                $baseOfExpectedWill, $baseOfExpectedIntelligence, $baseOfExpectedCharisma,
+                $baseOfExpectedWill, $baseOfExpectedIntelligence, $baseOfExpectedCharisma, $expectedFight
             ],
             [
-                $commonHuman, $female, $propertiesByFate, $professionLevels, $tables, $weightInKgAdjustment,
+                CommonHuman::getIt(), $female, $propertiesByFate, $professionLevels, $tables, $weightInKgAdjustment,
                 $heightInCm, $age,
                 $baseOfExpectedStrength - 1 /* human female */, $baseOfExpectedAgility, $baseOfExpectedKnack,
                 $baseOfExpectedWill, $baseOfExpectedIntelligence, $baseOfExpectedCharisma + 1 /* human female */,
+                $expectedFight
             ],
             // ... no reason to check every race
         ];
+    }
+
+    /**
+     * @param int $correctionByHeight
+     * @return \Mockery\MockInterface|Tables
+     */
+    private function createTables($correctionByHeight)
+    {
+        $tables = $this->mockery(Tables::class);
+        $tables->shouldReceive('getCorrectionByHeightTable')
+            ->andReturn($correctionByHeightTable = $this->mockery(CorrectionByHeightTable::class));
+        $correctionByHeightTable->shouldReceive('getCorrectionByHeight')
+            ->with($this->type(Height::class))
+            ->andReturn($correctionByHeight);
+        $tables->shouldDeferMissing();
+
+        return $tables;
     }
 
     /**
@@ -291,6 +313,10 @@ class PropertiesByLevelsTest extends \PHPUnit_Framework_TestCase
             ->andReturn($profession = \Mockery::mock(Profession::class));
         $profession->shouldReceive('getValue')
             ->andReturn(ProfessionCode::FIGHTER);
+        $profession->shouldReceive('__toString')
+            ->andReturn(ProfessionCode::FIGHTER);
+        $profession->shouldReceive('getCode')
+            ->andReturn(ProfessionCode::getIt(ProfessionCode::FIGHTER));
 
         return $professionLevels;
     }

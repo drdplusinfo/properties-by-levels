@@ -108,7 +108,7 @@ class FirstLevelProperties extends StrictObject
         $this->firstLevelHeightInCm = HeightInCm::getIt(
             $race->getHeightInCm($tables->getRacesTable()) + $heightInCmAdjustment->getValue()
         );
-        $this->firstLevelHeight = new Height($this->firstLevelHeightInCm, $tables->getDistanceTable());
+        $this->firstLevelHeight = new Height($this->firstLevelHeightInCm, $tables);
         $this->firstLevelAge = $age;
     }
 

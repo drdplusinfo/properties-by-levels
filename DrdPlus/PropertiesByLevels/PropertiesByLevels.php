@@ -2,7 +2,6 @@
 namespace DrdPlus\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
-use DrdPlus\Codes\ProfessionCode;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
@@ -146,7 +145,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
 
         // delivered properties
         $this->toughness = new Toughness(
-            $this->getStrength(), $race->getRaceCode(), $race->getSubraceCode(), $tables->getRacesTable()
+            $this->getStrength(), $race->getRaceCode(), $race->getSubraceCode(), $tables
         );
         $this->endurance = new Endurance($this->getStrength(), $this->getWill());
         $this->speed = new Speed($this->getStrength(), $this->getAgility(), $this->getHeight());
@@ -154,7 +153,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
             $this->getKnack(),
             RaceCode::getIt($race->getRaceCode()),
             SubRaceCode::getIt($race->getSubraceCode()),
-            $tables->getRacesTable()
+            $tables
         );
         // aspects of visage
         $this->beauty = new Beauty($this->getAgility(), $this->getKnack(), $this->getCharisma());
@@ -163,17 +162,18 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $this->fightNumber = new FightNumber(
-            ProfessionCode::getIt($professionLevels->getFirstLevel()->getProfession()->getValue()),
+            $professionLevels->getFirstLevel()->getProfession()->getCode(),
             $this,
-            $this->getHeight()
+            $this->getHeight(),
+            $tables
         );
         $this->attack = new Attack($this->getAgility());
         $this->shooting = new Shooting($this->getKnack());
         $this->defenseNumber = new DefenseNumber($this->getAgility());
         $this->defenseAgainstShooting = new DefenseNumberAgainstShooting($this->getDefenseNumber(), $this->getSize());
 
-        $this->woundsLimit = new WoundBoundary($this->getToughness(), $tables->getWoundsTable());
-        $this->fatigueLimit = new FatigueBoundary($this->getEndurance(), $tables->getFatigueTable());
+        $this->woundsLimit = new WoundBoundary($this->getToughness(), $tables);
+        $this->fatigueLimit = new FatigueBoundary($this->getEndurance(), $tables);
     }
 
     /**
