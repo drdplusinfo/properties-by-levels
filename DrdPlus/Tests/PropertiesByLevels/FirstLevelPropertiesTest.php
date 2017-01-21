@@ -48,7 +48,6 @@ class FirstLevelPropertiesTest extends TestWithMockery
         $weightInKgAdjustment = WeightInKg::getIt(12.3);
         $heightInCmAdjustment = HeightInCm::getIt(123.45);
         $age = Age::getIt(32);
-        $tables = Tables::getIt();
 
         $firstLevelProperties = new FirstLevelProperties(
             $race,
@@ -58,7 +57,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $weightInKgAdjustment,
             $heightInCmAdjustment,
             $age,
-            $tables
+            Tables::getIt()
         );
 
         self::assertSame($propertiesByFate, $firstLevelProperties->getPropertiesByFate());
@@ -114,7 +113,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $firstLevelProperties->getFirstLevelHeightInCm()
         );
         self::assertEquals(
-            new Height($heightInCm, $tables),
+            new Height($heightInCm, Tables::getIt()),
             $firstLevelProperties->getFirstLevelHeight()
         );
         self::assertSame($age, $firstLevelProperties->getFirstLevelAge());

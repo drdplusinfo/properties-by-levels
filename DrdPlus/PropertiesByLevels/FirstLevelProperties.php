@@ -106,12 +106,19 @@ class FirstLevelProperties extends StrictObject
         );
         $this->firstLevelHeightInCmAdjustment = $heightInCmAdjustment;
         $this->firstLevelHeightInCm = HeightInCm::getIt(
-            $race->getHeightInCm($tables->getRacesTable()) + $heightInCmAdjustment->getValue()
+            $race->getHeightInCm($tables) + $heightInCmAdjustment->getValue()
         );
         $this->firstLevelHeight = new Height($this->firstLevelHeightInCm, $tables);
         $this->firstLevelAge = $age;
     }
 
+    /**
+     * @param Race $race
+     * @param GenderCode $genderCode
+     * @param PropertiesByFate $propertiesByFate
+     * @param ProfessionLevels $professionLevels
+     * @param Tables $tables
+     */
     private function setUpBaseProperties(
         Race $race,
         GenderCode $genderCode,
@@ -122,6 +129,7 @@ class FirstLevelProperties extends StrictObject
     {
         $propertyValues = [];
         foreach (PropertyCode::getBasePropertyPossibleValues() as $basePropertyCode) {
+            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             $propertyValues[$basePropertyCode] = $this->calculateFirstLevelBaseProperty(
                 PropertyCode::getIt($basePropertyCode),
                 $race,
@@ -133,21 +141,27 @@ class FirstLevelProperties extends StrictObject
         }
 
         $this->firstLevelUnlimitedStrength = Strength::getIt($propertyValues[PropertyCode::STRENGTH]);
+        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $this->firstLevelStrength = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedStrength);
 
         $this->firstLevelUnlimitedAgility = Agility::getIt($propertyValues[PropertyCode::AGILITY]);
+        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $this->firstLevelAgility = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedAgility);
 
         $this->firstLevelUnlimitedKnack = Knack::getIt($propertyValues[PropertyCode::KNACK]);
+        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $this->firstLevelKnack = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedKnack);
 
         $this->firstLevelUnlimitedWill = Will::getIt($propertyValues[PropertyCode::WILL]);
+        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $this->firstLevelWill = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedWill);
 
         $this->firstLevelUnlimitedIntelligence = Intelligence::getIt($propertyValues[PropertyCode::INTELLIGENCE]);
+        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $this->firstLevelIntelligence = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedIntelligence);
 
         $this->firstLevelUnlimitedCharisma = Charisma::getIt($propertyValues[PropertyCode::CHARISMA]);
+        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $this->firstLevelCharisma = $this->getLimitedProperty($race, $genderCode, $tables, $this->firstLevelUnlimitedCharisma);
     }
 
@@ -170,6 +184,7 @@ class FirstLevelProperties extends StrictObject
         ProfessionLevels $professionLevels
     )
     {
+        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return
             $race->getProperty($propertyCode, $genderCode, $tables)
             + $propertiesByFate->getProperty($propertyCode)->getValue()

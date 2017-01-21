@@ -180,7 +180,6 @@ class PropertiesByLevelsTest extends TestWithMockery
         $baseOfExpectedWill = $professionLevels->getNextLevelsWillModifier() + 3; /* default max knack increment */
         $baseOfExpectedIntelligence = $professionLevels->getNextLevelsIntelligenceModifier() + 3; /* default max knack increment */
         $baseOfExpectedCharisma = $professionLevels->getNextLevelsCharismaModifier() + 3; /* default max charisma increment */
-        $expectedHeight = new Height($heightInCm, $tables);
         $expectedFight = $baseOfExpectedAgility /* fighter */ + $correctionFromHeight;
 
         return [
@@ -207,6 +206,8 @@ class PropertiesByLevelsTest extends TestWithMockery
     private function createTables($correctionByHeight)
     {
         $tables = $this->mockery(Tables::class);
+        $tables->shouldReceive('__toString')
+            ->andReturn('We are mocked tables so note it for your description');
         $tables->shouldReceive('getCorrectionByHeightTable')
             ->andReturn($correctionByHeightTable = $this->mockery(CorrectionByHeightTable::class));
         $correctionByHeightTable->shouldReceive('getCorrectionByHeight')
