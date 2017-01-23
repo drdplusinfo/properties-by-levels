@@ -3,7 +3,7 @@ namespace DrdPlus\Tests\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
 use DrdPlus\Codes\ProfessionCode;
-use DrdPlus\Codes\PropertyCode;
+use DrdPlus\Codes\Properties\PropertyCode;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevel;
@@ -12,7 +12,7 @@ use DrdPlus\Properties\Body\Height;
 use DrdPlus\Properties\Combat\Attack;
 use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
 use DrdPlus\Properties\Combat\DefenseNumber;
-use DrdPlus\Properties\Combat\FightNumber;
+use DrdPlus\Properties\Combat\Fight;
 use DrdPlus\Properties\Combat\Shooting;
 use DrdPlus\PropertiesByFate\PropertiesByFate;
 use DrdPlus\PropertiesByLevels\FirstLevelProperties;
@@ -141,8 +141,8 @@ class PropertiesByLevelsTest extends TestWithMockery
         self::assertInstanceOf(Dignity::class, $properties->getDignity());
         self::assertSame($expectedDignity->getValue(), $properties->getDignity()->getValue(), "$race $genderCode");
 
-        self::assertInstanceOf(FightNumber::class, $properties->getFightNumber());
-        self::assertSame($expectedFight, $properties->getFightNumber()->getValue(), "$race $genderCode with height $expectedHeight");
+        self::assertInstanceOf(Fight::class, $properties->getFight());
+        self::assertSame($expectedFight, $properties->getFight()->getValue(), "$race $genderCode with height $expectedHeight");
         $expectedAttack = new Attack(Agility::getIt($expectedAgility));
         self::assertInstanceOf(Attack::class, $properties->getAttack());
         self::assertSame($expectedAttack->getValue(), $properties->getAttack()->getValue(), "$race $genderCode");

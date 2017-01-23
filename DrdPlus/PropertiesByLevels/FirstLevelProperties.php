@@ -2,7 +2,7 @@
 namespace DrdPlus\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
-use DrdPlus\Codes\PropertyCode;
+use DrdPlus\Codes\Properties\PropertyCode;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Base\Agility;
 use DrdPlus\Properties\Base\BaseProperty;

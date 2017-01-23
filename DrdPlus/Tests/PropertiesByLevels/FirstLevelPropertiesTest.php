@@ -2,7 +2,7 @@
 namespace DrdPlus\Tests\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
-use DrdPlus\Codes\PropertyCode;
+use DrdPlus\Codes\Properties\PropertyCode;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Body\Height;
 use DrdPlus\PropertiesByFate\PropertiesByFate;

@@ -20,7 +20,7 @@ use DrdPlus\Properties\Combat\Attack;
 use DrdPlus\Properties\Combat\BaseProperties;
 use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
 use DrdPlus\Properties\Combat\DefenseNumber;
-use DrdPlus\Properties\Combat\FightNumber;
+use DrdPlus\Properties\Combat\Fight;
 use DrdPlus\Properties\Combat\Shooting;
 use DrdPlus\Properties\Derived\Beauty;
 use DrdPlus\Properties\Derived\Dangerousness;
@@ -69,8 +69,8 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
     private $dangerousness;
     /** @var Dignity */
     private $dignity;
-    /** @var FightNumber */
-    private $fightNumber;
+    /** @var Fight */
+    private $fight;
     /** @var Attack */
     private $attack;
     /** @var Shooting */
@@ -161,7 +161,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
         $this->dignity = new Dignity($this->getIntelligence(), $this->getWill(), $this->getCharisma());
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        $this->fightNumber = new FightNumber(
+        $this->fight = new Fight(
             $professionLevels->getFirstLevel()->getProfession()->getCode(),
             $this,
             $this->getHeight(),
@@ -359,11 +359,11 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
     }
 
     /**
-     * @return FightNumber
+     * @return Fight
      */
-    public function getFightNumber()
+    public function getFight()
     {
-        return $this->fightNumber;
+        return $this->fight;
     }
 
     /**
