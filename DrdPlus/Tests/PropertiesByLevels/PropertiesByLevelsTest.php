@@ -148,7 +148,7 @@ class PropertiesByLevelsTest extends TestWithMockery
         $expectedShooting = Shooting::getIt(Knack::getIt($expectedKnack));
         self::assertInstanceOf(Shooting::class, $properties->getShooting());
         self::assertSame($expectedShooting->getValue(), $properties->getShooting()->getValue(), "$race $genderCode");
-        $expectedDefense = Defense::getIt(Agility::getIt($expectedAgility));
+        $expectedDefense = Defense::getIt(Agility::getIt($expectedAgility), $expectedSize);
         self::assertInstanceOf(Defense::class, $properties->getDefense());
         self::assertSame($expectedDefense->getValue(), $properties->getDefense()->getValue(), "$race $genderCode");
 

@@ -167,7 +167,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
         );
         $this->attack = Attack::getIt($this->getAgility());
         $this->shooting = Shooting::getIt($this->getKnack());
-        $this->defense = Defense::getIt($this->getAgility());
+        $this->defense = Defense::getIt($this->getAgility(), $this->getSize());
 
         $this->woundsLimit = WoundBoundary::getIt($this->getToughness(), $tables);
         $this->fatigueLimit = FatigueBoundary::getIt($this->getEndurance(), $tables);
