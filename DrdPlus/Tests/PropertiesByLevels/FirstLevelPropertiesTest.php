@@ -113,7 +113,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $firstLevelProperties->getFirstLevelHeightInCm()
         );
         self::assertEquals(
-            new Height($heightInCm, Tables::getIt()),
+            Height::getIt($heightInCm, Tables::getIt()),
             $firstLevelProperties->getFirstLevelHeight()
         );
         self::assertSame($age, $firstLevelProperties->getFirstLevelAge());

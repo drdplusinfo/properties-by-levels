@@ -18,7 +18,7 @@ use DrdPlus\Properties\Body\Size;
 use DrdPlus\Properties\Body\WeightInKg;
 use DrdPlus\Properties\Combat\Attack;
 use DrdPlus\Properties\Combat\BaseProperties;
-use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
+use DrdPlus\Properties\Combat\Defense;
 use DrdPlus\Properties\Combat\DefenseNumber;
 use DrdPlus\Properties\Combat\Fight;
 use DrdPlus\Properties\Combat\Shooting;
@@ -76,9 +76,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
     /** @var Shooting */
     private $shooting;
     /** @var DefenseNumber */
-    private $defenseNumber;
-    /** @var DefenseNumberAgainstShooting */
-    private $defenseAgainstShooting;
+    private $defense;
     /** @var WoundBoundary */
     private $woundsLimit;
     /** @var FatigueBoundary */
@@ -144,36 +142,35 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
         );
 
         // delivered properties
-        $this->toughness = new Toughness(
+        $this->toughness = Toughness::getIt(
             $this->getStrength(), $race->getRaceCode(), $race->getSubraceCode(), $tables
         );
-        $this->endurance = new Endurance($this->getStrength(), $this->getWill());
-        $this->speed = new Speed($this->getStrength(), $this->getAgility(), $this->getHeight());
-        $this->senses = new Senses(
+        $this->endurance = Endurance::getIt($this->getStrength(), $this->getWill());
+        $this->speed = Speed::getIt($this->getStrength(), $this->getAgility(), $this->getHeight());
+        $this->senses = Senses::getIt(
             $this->getKnack(),
             RaceCode::getIt($race->getRaceCode()),
             SubRaceCode::getIt($race->getSubraceCode()),
             $tables
         );
         // aspects of visage
-        $this->beauty = new Beauty($this->getAgility(), $this->getKnack(), $this->getCharisma());
-        $this->dangerousness = new Dangerousness($this->getStrength(), $this->getWill(), $this->getCharisma());
-        $this->dignity = new Dignity($this->getIntelligence(), $this->getWill(), $this->getCharisma());
+        $this->beauty = Beauty::getIt($this->getAgility(), $this->getKnack(), $this->getCharisma());
+        $this->dangerousness = Dangerousness::getIt($this->getStrength(), $this->getWill(), $this->getCharisma());
+        $this->dignity = Dignity::getIt($this->getIntelligence(), $this->getWill(), $this->getCharisma());
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        $this->fight = new Fight(
+        $this->fight = Fight::getIt(
             $professionLevels->getFirstLevel()->getProfession()->getCode(),
             $this,
             $this->getHeight(),
             $tables
         );
-        $this->attack = new Attack($this->getAgility());
-        $this->shooting = new Shooting($this->getKnack());
-        $this->defenseNumber = new DefenseNumber($this->getAgility());
-        $this->defenseAgainstShooting = new DefenseNumberAgainstShooting($this->getDefenseNumber(), $this->getSize());
+        $this->attack = Attack::getIt($this->getAgility());
+        $this->shooting = Shooting::getIt($this->getKnack());
+        $this->defense = Defense::getIt($this->getAgility());
 
-        $this->woundsLimit = new WoundBoundary($this->getToughness(), $tables);
-        $this->fatigueLimit = new FatigueBoundary($this->getEndurance(), $tables);
+        $this->woundsLimit = WoundBoundary::getIt($this->getToughness(), $tables);
+        $this->fatigueLimit = FatigueBoundary::getIt($this->getEndurance(), $tables);
     }
 
     /**
@@ -383,19 +380,11 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
     }
 
     /**
-     * @return DefenseNumber
+     * @return Defense
      */
-    public function getDefenseNumber()
+    public function getDefense()
     {
-        return $this->defenseNumber;
-    }
-
-    /**
-     * @return DefenseNumberAgainstShooting
-     */
-    public function getDefenseAgainstShooting()
-    {
-        return $this->defenseAgainstShooting;
+        return $this->defense;
     }
 
     /**

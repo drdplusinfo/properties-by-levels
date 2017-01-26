@@ -10,8 +10,7 @@ use DrdPlus\Person\ProfessionLevels\ProfessionLevel;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Body\Height;
 use DrdPlus\Properties\Combat\Attack;
-use DrdPlus\Properties\Combat\DefenseNumberAgainstShooting;
-use DrdPlus\Properties\Combat\DefenseNumber;
+use DrdPlus\Properties\Combat\Defense;
 use DrdPlus\Properties\Combat\Fight;
 use DrdPlus\Properties\Combat\Shooting;
 use DrdPlus\PropertiesByFate\PropertiesByFate;
@@ -109,21 +108,21 @@ class PropertiesByLevelsTest extends TestWithMockery
         self::assertGreaterThan($weightInKgAdjustment->getValue(), $properties->getWeightInKg()->getValue(), "$race $genderCode");
         self::assertSame($heightInCmAdjustment, $properties->getHeightInCmAdjustment());
         self::assertGreaterThan($heightInCmAdjustment->getValue(), $properties->getHeightInCm()->getValue(), "$race $genderCode");
-        self::assertEquals($expectedHeight = new Height($properties->getHeightInCm(), $tables), $properties->getHeight());
+        self::assertEquals($expectedHeight = Height::getIt($properties->getHeightInCm(), $tables), $properties->getHeight());
         self::assertSame($age, $properties->getAge());
-        $expectedToughness = new Toughness(Strength::getIt($expectedStrength), $race->getRaceCode(), $race->getSubraceCode(), $tables);
+        $expectedToughness = Toughness::getIt(Strength::getIt($expectedStrength), $race->getRaceCode(), $race->getSubraceCode(), $tables);
         self::assertInstanceOf(Toughness::class, $properties->getToughness());
         self::assertSame($expectedToughness->getValue(), $properties->getToughness()->getValue(), "$race $genderCode");
-        $expectedEndurance = new Endurance(Strength::getIt($expectedStrength), Will::getIt($expectedWill));
+        $expectedEndurance = Endurance::getIt(Strength::getIt($expectedStrength), Will::getIt($expectedWill));
         self::assertInstanceOf(Endurance::class, $properties->getEndurance());
         self::assertSame($expectedEndurance->getValue(), $properties->getEndurance()->getValue(), "$race $genderCode");
         $expectedSize = Size::getIt($race->getSize($genderCode, $tables) + 1); /* size bonus by strength */
         self::assertInstanceOf(Size::class, $properties->getSize(), "$race $genderCode");
         self::assertSame($expectedSize->getValue(), $properties->getSize()->getValue(), "$race $genderCode");
-        $expectedSpeed = new Speed(Strength::getIt($expectedStrength), Agility::getIt($expectedAgility), $expectedHeight);
+        $expectedSpeed = Speed::getIt(Strength::getIt($expectedStrength), Agility::getIt($expectedAgility), $expectedHeight);
         self::assertInstanceOf(Speed::class, $properties->getSpeed(), "$race $genderCode");
         self::assertSame($expectedSpeed->getValue(), $properties->getSpeed()->getValue(), "$race $genderCode");
-        $expectedSenses = new Senses(
+        $expectedSenses = Senses::getIt(
             Knack::getIt($expectedKnack),
             RaceCode::getIt($race->getRaceCode()),
             SubRaceCode::getIt($race->getSubraceCode()),
@@ -131,35 +130,32 @@ class PropertiesByLevelsTest extends TestWithMockery
         );
         self::assertInstanceOf(Senses::class, $properties->getSenses());
         self::assertSame($expectedSenses->getValue(), $properties->getSenses()->getValue(), "$race $genderCode");
-        $expectedBeauty = new Beauty(Agility::getIt($expectedAgility), Knack::getIt($expectedKnack), Charisma::getIt($expectedCharisma));
+        $expectedBeauty = Beauty::getIt(Agility::getIt($expectedAgility), Knack::getIt($expectedKnack), Charisma::getIt($expectedCharisma));
         self::assertInstanceOf(Beauty::class, $properties->getBeauty());
         self::assertSame($expectedBeauty->getValue(), $properties->getBeauty()->getValue(), "$race $genderCode");
-        $expectedDangerousness = new Dangerousness(Strength::getIt($expectedStrength), Will::getIt($expectedWill), Charisma::getIt($expectedCharisma));
+        $expectedDangerousness = Dangerousness::getIt(Strength::getIt($expectedStrength), Will::getIt($expectedWill), Charisma::getIt($expectedCharisma));
         self::assertInstanceOf(Dangerousness::class, $properties->getDangerousness());
         self::assertSame($expectedDangerousness->getValue(), $properties->getDangerousness()->getValue(), "$race $genderCode");
-        $expectedDignity = new Dignity(Intelligence::getIt($expectedIntelligence), Will::getIt($expectedWill), Charisma::getIt($expectedCharisma));
+        $expectedDignity = Dignity::getIt(Intelligence::getIt($expectedIntelligence), Will::getIt($expectedWill), Charisma::getIt($expectedCharisma));
         self::assertInstanceOf(Dignity::class, $properties->getDignity());
         self::assertSame($expectedDignity->getValue(), $properties->getDignity()->getValue(), "$race $genderCode");
 
         self::assertInstanceOf(Fight::class, $properties->getFight());
         self::assertSame($expectedFight, $properties->getFight()->getValue(), "$race $genderCode with height $expectedHeight");
-        $expectedAttack = new Attack(Agility::getIt($expectedAgility));
+        $expectedAttack = Attack::getIt(Agility::getIt($expectedAgility));
         self::assertInstanceOf(Attack::class, $properties->getAttack());
         self::assertSame($expectedAttack->getValue(), $properties->getAttack()->getValue(), "$race $genderCode");
-        $expectedShooting = new Shooting(Knack::getIt($expectedKnack));
+        $expectedShooting = Shooting::getIt(Knack::getIt($expectedKnack));
         self::assertInstanceOf(Shooting::class, $properties->getShooting());
         self::assertSame($expectedShooting->getValue(), $properties->getShooting()->getValue(), "$race $genderCode");
-        $expectedDefense = new DefenseNumber(Agility::getIt($expectedAgility));
-        self::assertInstanceOf(DefenseNumber::class, $properties->getDefenseNumber());
-        self::assertSame($expectedDefense->getValue(), $properties->getDefenseNumber()->getValue(), "$race $genderCode");
-        $expectedDefenseAgainstShooting = new DefenseNumberAgainstShooting($expectedDefense, $expectedSize);
-        self::assertInstanceOf(DefenseNumberAgainstShooting::class, $properties->getDefenseAgainstShooting());
-        self::assertSame($expectedDefenseAgainstShooting->getValue(), $properties->getDefenseAgainstShooting()->getValue(), "$race $genderCode");
+        $expectedDefense = Defense::getIt(Agility::getIt($expectedAgility));
+        self::assertInstanceOf(Defense::class, $properties->getDefense());
+        self::assertSame($expectedDefense->getValue(), $properties->getDefense()->getValue(), "$race $genderCode");
 
-        $expectedWoundBoundary = new WoundBoundary($expectedToughness, $tables);
+        $expectedWoundBoundary = WoundBoundary::getIt($expectedToughness, $tables);
         self::assertInstanceOf(WoundBoundary::class, $properties->getWoundBoundary());
         self::assertSame($expectedWoundBoundary->getValue(), $properties->getWoundBoundary()->getValue());
-        $expectedFatigueBoundary = new FatigueBoundary($expectedEndurance, $tables);
+        $expectedFatigueBoundary = FatigueBoundary::getIt($expectedEndurance, $tables);
         self::assertInstanceOf(FatigueBoundary::class, $properties->getFatigueBoundary());
         self::assertSame($expectedFatigueBoundary->getValue(), $properties->getFatigueBoundary()->getValue());
     }
@@ -186,14 +182,14 @@ class PropertiesByLevelsTest extends TestWithMockery
             [
                 CommonHuman::getIt(), $male, $propertiesByFate, $professionLevels, $tables,
                 $weightInKgAdjustment, $heightInCm, $age, $baseOfExpectedStrength, $baseOfExpectedAgility, $baseOfExpectedKnack,
-                $baseOfExpectedWill, $baseOfExpectedIntelligence, $baseOfExpectedCharisma, $expectedFight
+                $baseOfExpectedWill, $baseOfExpectedIntelligence, $baseOfExpectedCharisma, $expectedFight,
             ],
             [
                 CommonHuman::getIt(), $female, $propertiesByFate, $professionLevels, $tables, $weightInKgAdjustment,
                 $heightInCm, $age,
                 $baseOfExpectedStrength - 1 /* human female */, $baseOfExpectedAgility, $baseOfExpectedKnack,
                 $baseOfExpectedWill, $baseOfExpectedIntelligence, $baseOfExpectedCharisma + 1 /* human female */,
-                $expectedFight
+                $expectedFight,
             ],
             // ... no reason to check every race
         ];
