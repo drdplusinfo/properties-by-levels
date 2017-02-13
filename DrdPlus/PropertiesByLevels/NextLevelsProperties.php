@@ -25,6 +25,9 @@ class NextLevelsProperties extends StrictObject
     /** @var Charisma */
     private $nextLevelsCharisma;
 
+    /**
+     * @param ProfessionLevels $professionLevels
+     */
     public function __construct(ProfessionLevels $professionLevels)
     {
         $this->nextLevelsStrength = Strength::getIt($professionLevels->getNextLevelsStrengthModifier());
