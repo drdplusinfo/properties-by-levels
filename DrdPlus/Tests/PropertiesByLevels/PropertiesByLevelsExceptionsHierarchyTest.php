@@ -1,15 +1,21 @@
 <?php
 namespace DrdPlus\Tests\PropertiesByLevels;
 
-use Granam\Tests\Exceptions\Tools\AbstractExceptionsHierarchyTest;
+use Granam\Tests\ExceptionsHierarchy\Exceptions\AbstractExceptionsHierarchyTest;
 
-class ExceptionsHierarchyTest extends AbstractExceptionsHierarchyTest
+class PropertiesByLevelsExceptionsHierarchyTest extends AbstractExceptionsHierarchyTest
 {
+    /**
+     * @return string
+     */
     protected function getTestedNamespace()
     {
         return $this->getRootNamespace();
     }
 
+    /**
+     * @return string
+     */
     protected function getRootNamespace()
     {
         return str_replace('\Tests', '', __NAMESPACE__);
