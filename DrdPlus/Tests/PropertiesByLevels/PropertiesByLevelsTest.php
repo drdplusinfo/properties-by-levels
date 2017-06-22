@@ -6,6 +6,7 @@ use DrdPlus\Codes\ProfessionCode;
 use DrdPlus\Codes\Properties\PropertyCode;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;
+use DrdPlus\Person\ProfessionLevels\ProfessionFirstLevel;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevel;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Body\Height;
@@ -305,7 +306,7 @@ class PropertiesByLevelsTest extends TestWithMockery
             ->andReturn(67890);
 
         $professionLevels->shouldReceive('getFirstLevel')
-            ->andReturn($firstLevel = \Mockery::mock(ProfessionLevel::class));
+            ->andReturn($firstLevel = \Mockery::mock(ProfessionFirstLevel::class));
         $firstLevel->shouldReceive('getProfession')
             ->andReturn($profession = \Mockery::mock(Profession::class));
         $profession->shouldReceive('getValue')
