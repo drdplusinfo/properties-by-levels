@@ -7,7 +7,6 @@ use DrdPlus\Codes\Properties\PropertyCode;
 use DrdPlus\Codes\RaceCode;
 use DrdPlus\Codes\SubRaceCode;
 use DrdPlus\Person\ProfessionLevels\ProfessionFirstLevel;
-use DrdPlus\Person\ProfessionLevels\ProfessionLevel;
 use DrdPlus\Person\ProfessionLevels\ProfessionLevels;
 use DrdPlus\Properties\Body\Height;
 use DrdPlus\Properties\Combat\Attack;
@@ -28,7 +27,7 @@ use DrdPlus\Properties\Base\Will;
 use DrdPlus\Properties\Body\Age;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
-use DrdPlus\Properties\Body\WeightInKg;
+use DrdPlus\Properties\Body\BodyWeightInKg;
 use DrdPlus\Properties\Derived\Beauty;
 use DrdPlus\Properties\Derived\Dangerousness;
 use DrdPlus\Properties\Derived\Dignity;
@@ -55,7 +54,7 @@ class PropertiesByLevelsTest extends TestWithMockery
      * @param PropertiesByFate $propertiesByFate
      * @param ProfessionLevels $professionLevels
      * @param Tables $tables
-     * @param WeightInKg $weightInKgAdjustment
+     * @param BodyWeightInKg $weightInKgAdjustment
      * @param HeightInCm $heightInCmAdjustment
      * @param Age $age
      * @param int $expectedStrength
@@ -72,7 +71,7 @@ class PropertiesByLevelsTest extends TestWithMockery
         PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels,
         Tables $tables,
-        WeightInKg $weightInKgAdjustment,
+        BodyWeightInKg $weightInKgAdjustment,
         HeightInCm $heightInCmAdjustment,
         Age $age,
         $expectedStrength,
@@ -105,7 +104,7 @@ class PropertiesByLevelsTest extends TestWithMockery
         self::assertSame($expectedIntelligence, $properties->getIntelligence()->getValue(), "$race $genderCode");
         self::assertSame($expectedCharisma, $properties->getCharisma()->getValue(), "$race $genderCode");
 
-        self::assertSame($weightInKgAdjustment, $properties->getWeightInKgAdjustment());
+        self::assertSame($weightInKgAdjustment, $properties->getBodyWeightInKgAdjustment());
         self::assertGreaterThan($weightInKgAdjustment->getValue(), $properties->getWeightInKg()->getValue(), "$race $genderCode");
         self::assertSame($heightInCmAdjustment, $properties->getHeightInCmAdjustment());
         self::assertGreaterThan($heightInCmAdjustment->getValue(), $properties->getHeightInCm()->getValue(), "$race $genderCode");
@@ -149,7 +148,7 @@ class PropertiesByLevelsTest extends TestWithMockery
         $expectedShooting = Shooting::getIt(Knack::getIt($expectedKnack));
         self::assertInstanceOf(Shooting::class, $properties->getShooting());
         self::assertSame($expectedShooting->getValue(), $properties->getShooting()->getValue(), "$race $genderCode");
-        $expectedDefense = Defense::getIt(Agility::getIt($expectedAgility), $expectedSize);
+        $expectedDefense = Defense::getIt(Agility::getIt($expectedAgility));
         self::assertInstanceOf(Defense::class, $properties->getDefense());
         self::assertSame($expectedDefense->getValue(), $properties->getDefense()->getValue(), "$race $genderCode");
 
@@ -169,7 +168,7 @@ class PropertiesByLevelsTest extends TestWithMockery
         $professionLevels = $this->createProfessionLevels();
         $heightInCm = HeightInCm::getIt(123.4);
         $tables = $this->createTables($correctionFromHeight = 369);
-        $weightInKgAdjustment = WeightInKg::getIt(0.001);
+        $weightInKgAdjustment = BodyWeightInKg::getIt(0.001);
         $age = Age::getIt(15);
         $baseOfExpectedStrength = $professionLevels->getNextLevelsStrengthModifier() + 3; /* default max strength increment */
         $baseOfExpectedAgility = $professionLevels->getNextLevelsAgilityModifier() + 3; /* default max agility increment */

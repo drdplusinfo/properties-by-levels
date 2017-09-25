@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1); // on PHP 7+ are standard PHP methods strict to types of given parameters
+
 namespace DrdPlus\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
@@ -15,7 +17,7 @@ use DrdPlus\Properties\Body\Age;
 use DrdPlus\Properties\Body\Height;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
-use DrdPlus\Properties\Body\WeightInKg;
+use DrdPlus\Properties\Body\BodyWeightInKg;
 use DrdPlus\Properties\Combat\Attack;
 use DrdPlus\Properties\Combat\BaseProperties;
 use DrdPlus\Properties\Combat\Defense;
@@ -87,7 +89,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
      * @param GenderCode $genderCode
      * @param PropertiesByFate $propertiesByFate
      * @param ProfessionLevels $professionLevels
-     * @param WeightInKg $weightInKgAdjustment
+     * @param BodyWeightInKg $weightInKgAdjustment
      * @param HeightInCm $heightInCm
      * @param Age $age
      * @param Tables $tables
@@ -98,7 +100,7 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
         GenderCode $genderCode,
         PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels,
-        WeightInKg $weightInKgAdjustment,
+        BodyWeightInKg $weightInKgAdjustment,
         HeightInCm $heightInCm,
         Age $age,
         Tables $tables
@@ -167,238 +169,154 @@ class PropertiesByLevels extends StrictObject implements BaseProperties
         );
         $this->attack = Attack::getIt($this->getAgility());
         $this->shooting = Shooting::getIt($this->getKnack());
-        $this->defense = Defense::getIt($this->getAgility(), $this->getSize());
+        $this->defense = Defense::getIt($this->getAgility());
 
         $this->woundsLimit = WoundBoundary::getIt($this->getToughness(), $tables);
         $this->fatigueLimit = FatigueBoundary::getIt($this->getEndurance(), $tables);
     }
 
-    /**
-     * @return FirstLevelProperties
-     */
-    public function getFirstLevelProperties()
+    public function getFirstLevelProperties(): FirstLevelProperties
     {
         return $this->firstLevelProperties;
     }
 
-    /**
-     * @return NextLevelsProperties
-     */
-    public function getNextLevelsProperties()
+    public function getNextLevelsProperties(): NextLevelsProperties
     {
         return $this->nextLevelsProperties;
     }
 
-    /**
-     * @return Strength
-     */
-    public function getStrength()
+    public function getStrength(): Strength
     {
         return $this->strength;
     }
 
-    /**
-     * @return Agility
-     */
-    public function getAgility()
+    public function getAgility(): Agility
     {
         return $this->agility;
     }
 
-    /**
-     * @return Knack
-     */
-    public function getKnack()
+    public function getKnack(): Knack
     {
         return $this->knack;
     }
 
-    /**
-     * @return Will
-     */
-    public function getWill()
+    public function getWill(): Will
     {
         return $this->will;
     }
 
-    /**
-     * @return Intelligence
-     */
-    public function getIntelligence()
+    public function getIntelligence(): Intelligence
     {
         return $this->intelligence;
     }
 
-    /**
-     * @return Charisma
-     */
-    public function getCharisma()
+    public function getCharisma(): Charisma
     {
         return $this->charisma;
     }
 
-    /**
-     * @return WeightInKg
-     */
-    public function getWeightInKgAdjustment()
+    public function getBodyWeightInKgAdjustment(): BodyWeightInKg
     {
         // there is no more weight adjustments than on first level
-        return $this->firstLevelProperties->getFirstLevelWeightInKgAdjustment();
+        return $this->firstLevelProperties->getFirstLevelBodyWeightInKgAdjustment();
     }
 
-    /**
-     * @return WeightInKg
-     */
-    public function getWeightInKg()
+    public function getWeightInKg(): BodyWeightInKg
     {
         // there is no more weight adjustments than on first level
         return $this->firstLevelProperties->getFirstLevelWeightInKg();
     }
 
-    /**
-     * @return HeightInCm
-     */
-    public function getHeightInCmAdjustment()
+    public function getHeightInCmAdjustment(): HeightInCm
     {
         // there is no more height adjustments than on first level
         return $this->firstLevelProperties->getFirstLevelHeightInCmAdjustment();
     }
 
-    /**
-     * @return HeightInCm
-     */
-    public function getHeightInCm()
+    public function getHeightInCm(): HeightInCm
     {
         // there is no more height adjustments than on first level
         return $this->firstLevelProperties->getFirstLevelHeightInCm();
     }
 
-    /**
-     * @return Height
-     */
-    public function getHeight()
+    public function getHeight(): Height
     {
         // there is no more height adjustments than on first level
         return $this->firstLevelProperties->getFirstLevelHeight();
     }
 
-    /**
-     * @return Age
-     */
-    public function getAge()
+    public function getAge(): Age
     {
         // there is no more age adjustments than on first level (yet)
         return $this->firstLevelProperties->getFirstLevelAge();
     }
 
-    /**
-     * @return Toughness
-     */
-    public function getToughness()
+    public function getToughness(): Toughness
     {
         return $this->toughness;
     }
 
-    /**
-     * @return Endurance
-     */
-    public function getEndurance()
+    public function getEndurance(): Endurance
     {
         return $this->endurance;
     }
 
-    /**
-     * @return Size
-     */
-    public function getSize()
+    public function getSize(): Size
     {
         return $this->firstLevelProperties->getFirstLevelSize();
     }
 
-    /**
-     * @return Speed
-     */
-    public function getSpeed()
+    public function getSpeed(): Speed
     {
         return $this->speed;
     }
 
-    /**
-     * @return Senses
-     */
-    public function getSenses()
+    public function getSenses(): Senses
     {
         return $this->senses;
     }
 
-    /**
-     * @return Beauty
-     */
-    public function getBeauty()
+    public function getBeauty(): Beauty
     {
         return $this->beauty;
     }
 
-    /**
-     * @return Dangerousness
-     */
-    public function getDangerousness()
+    public function getDangerousness(): Dangerousness
     {
         return $this->dangerousness;
     }
 
-    /**
-     * @return Dignity
-     */
-    public function getDignity()
+    public function getDignity(): Dignity
     {
         return $this->dignity;
     }
 
-    /**
-     * @return Fight
-     */
-    public function getFight()
+    public function getFight(): Fight
     {
         return $this->fight;
     }
 
-    /**
-     * @return Attack
-     */
-    public function getAttack()
+    public function getAttack(): Attack
     {
         return $this->attack;
     }
 
-    /**
-     * @return Shooting
-     */
-    public function getShooting()
+    public function getShooting(): Shooting
     {
         return $this->shooting;
     }
 
-    /**
-     * @return Defense
-     */
-    public function getDefense()
+    public function getDefense(): Defense
     {
         return $this->defense;
     }
 
-    /**
-     * @return WoundBoundary
-     */
-    public function getWoundBoundary()
+    public function getWoundBoundary(): WoundBoundary
     {
         return $this->woundsLimit;
     }
 
-    /**
-     * @return FatigueBoundary
-     */
-    public function getFatigueBoundary()
+    public function getFatigueBoundary(): FatigueBoundary
     {
         return $this->fatigueLimit;
     }

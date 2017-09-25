@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1); // on PHP 7+ are standard PHP methods strict to types of given parameters
+
 namespace DrdPlus\PropertiesByLevels;
 
 use DrdPlus\Codes\GenderCode;
@@ -15,7 +17,7 @@ use DrdPlus\Properties\Body\Age;
 use DrdPlus\Properties\Body\Height;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
-use DrdPlus\Properties\Body\WeightInKg;
+use DrdPlus\Properties\Body\BodyWeightInKg;
 use DrdPlus\PropertiesByFate\PropertiesByFate;
 use DrdPlus\Races\Race;
 use DrdPlus\Tables\Tables;
@@ -51,9 +53,9 @@ class FirstLevelProperties extends StrictObject
     private $firstLevelUnlimitedCharisma;
     /** @var Charisma */
     private $firstLevelCharisma;
-    /** @var WeightInKg */
+    /** @var BodyWeightInKg */
     private $firstLevelWeightInKgAdjustment;
-    /** @var WeightInKg */
+    /** @var BodyWeightInKg */
     private $firstLevelWeightInKg;
     /** @var Size */
     private $firstLevelSize;
@@ -71,7 +73,7 @@ class FirstLevelProperties extends StrictObject
      * @param GenderCode $genderCode
      * @param PropertiesByFate $propertiesByFate
      * @param ProfessionLevels $professionLevels
-     * @param WeightInKg $weightInKgAdjustment
+     * @param BodyWeightInKg $weightInKgAdjustment
      * @param HeightInCm $heightInCmAdjustment
      * @param Age $age
      * @param Tables $tables
@@ -82,7 +84,7 @@ class FirstLevelProperties extends StrictObject
         GenderCode $genderCode,
         PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels,
-        WeightInKg $weightInKgAdjustment,
+        BodyWeightInKg $weightInKgAdjustment,
         HeightInCm $heightInCmAdjustment,
         Age $age,
         Tables $tables
@@ -91,7 +93,7 @@ class FirstLevelProperties extends StrictObject
         $this->propertiesByFate = $propertiesByFate;
         $this->setUpBaseProperties($race, $genderCode, $propertiesByFate, $professionLevels, $tables);
         $this->firstLevelWeightInKgAdjustment = $weightInKgAdjustment;
-        $this->firstLevelWeightInKg = $this->createFirstLevelWeightInKg(
+        $this->firstLevelWeightInKg = $this->createFirstLevelBodyWeightInKg(
             $race,
             $genderCode,
             $weightInKgAdjustment,
@@ -182,7 +184,7 @@ class FirstLevelProperties extends StrictObject
         Tables $tables,
         PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels
-    )
+    ): int
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return
@@ -199,7 +201,7 @@ class FirstLevelProperties extends StrictObject
      * @return BaseProperty
      * @throws \DrdPlus\Races\Exceptions\UnknownPropertyCode
      */
-    private function getLimitedProperty(Race $race, GenderCode $genderCode, Tables $tables, BaseProperty $baseProperty)
+    private function getLimitedProperty(Race $race, GenderCode $genderCode, Tables $tables, BaseProperty $baseProperty): BaseProperty
     {
         $limit = $this->getBasePropertyLimit($race, $genderCode, $tables, $baseProperty);
         if ($baseProperty->getValue() <= $limit) {
@@ -217,7 +219,7 @@ class FirstLevelProperties extends StrictObject
      * @return int
      * @throws \DrdPlus\Races\Exceptions\UnknownPropertyCode
      */
-    private function getBasePropertyLimit(Race $race, GenderCode $genderCode, Tables $tables, BaseProperty $baseProperty)
+    private function getBasePropertyLimit(Race $race, GenderCode $genderCode, Tables $tables, BaseProperty $baseProperty): int
     {
         return $race->getProperty($baseProperty->getCode(), $genderCode, $tables) + self::INITIAL_PROPERTY_INCREASE_LIMIT;
     }
@@ -225,7 +227,7 @@ class FirstLevelProperties extends StrictObject
     /**
      * @return PropertiesByFate
      */
-    public function getPropertiesByFate()
+    public function getPropertiesByFate(): PropertiesByFate
     {
         return $this->propertiesByFate;
     }
@@ -233,7 +235,7 @@ class FirstLevelProperties extends StrictObject
     /**
      * @return int 0+
      */
-    public function getStrengthLossBecauseOfLimit()
+    public function getStrengthLossBecauseOfLimit(): int
     {
         return $this->firstLevelUnlimitedStrength->getValue() - $this->getFirstLevelStrength()->getValue();
     }
@@ -241,7 +243,7 @@ class FirstLevelProperties extends StrictObject
     /**
      * @return int 0+
      */
-    public function getAgilityLossBecauseOfLimit()
+    public function getAgilityLossBecauseOfLimit(): int
     {
         return $this->firstLevelUnlimitedAgility->getValue() - $this->getFirstLevelAgility()->getValue();
     }
@@ -249,7 +251,7 @@ class FirstLevelProperties extends StrictObject
     /**
      * @return int 0+
      */
-    public function getKnackLossBecauseOfLimit()
+    public function getKnackLossBecauseOfLimit(): int
     {
         return $this->firstLevelUnlimitedKnack->getValue() - $this->getFirstLevelKnack()->getValue();
     }
@@ -257,7 +259,7 @@ class FirstLevelProperties extends StrictObject
     /**
      * @return int 0+
      */
-    public function getWillLossBecauseOfLimit()
+    public function getWillLossBecauseOfLimit(): int
     {
         return $this->firstLevelUnlimitedWill->getValue() - $this->getFirstLevelWill()->getValue();
     }
@@ -265,7 +267,7 @@ class FirstLevelProperties extends StrictObject
     /**
      * @return int 0+
      */
-    public function getIntelligenceLossBecauseOfLimit()
+    public function getIntelligenceLossBecauseOfLimit(): int
     {
         return $this->firstLevelUnlimitedIntelligence->getValue() - $this->getFirstLevelIntelligence()->getValue();
     }
@@ -273,7 +275,7 @@ class FirstLevelProperties extends StrictObject
     /**
      * @return int 0+
      */
-    public function getCharismaLossBecauseOfLimit()
+    public function getCharismaLossBecauseOfLimit(): int
     {
         return $this->firstLevelUnlimitedCharisma->getValue() - $this->getFirstLevelCharisma()->getValue();
     }
@@ -281,18 +283,18 @@ class FirstLevelProperties extends StrictObject
     /**
      * @param Race $race
      * @param GenderCode $genderCode
-     * @param WeightInKg $weightInKgAdjustment
+     * @param BodyWeightInKg $weightInKgAdjustment
      * @param Tables $tables
-     * @return WeightInKg
+     * @return BodyWeightInKg
      */
-    private function createFirstLevelWeightInKg(
+    private function createFirstLevelBodyWeightInKg(
         Race $race,
         GenderCode $genderCode,
-        WeightInKg $weightInKgAdjustment,
+        BodyWeightInKg $weightInKgAdjustment,
         Tables $tables
-    )
+    ): BodyWeightInKg
     {
-        return WeightInKg::getIt($race->getWeightInKg($genderCode, $tables) + $weightInKgAdjustment->getValue());
+        return BodyWeightInKg::getIt($race->getWeightInKg($genderCode, $tables) + $weightInKgAdjustment->getValue());
     }
 
     /**
@@ -310,7 +312,7 @@ class FirstLevelProperties extends StrictObject
         Tables $tables,
         PropertiesByFate $propertiesByFate,
         ProfessionLevels $professionLevels
-    )
+    ): Size
     {
         // the race bonus is NOT count for adjustment, doesn't count to size change respectively
         $sizeModifierByStrength = $this->getSizeModifierByStrength(
@@ -327,7 +329,7 @@ class FirstLevelProperties extends StrictObject
      * @return int
      * @throws Exceptions\TooLowStrengthAdjustment
      */
-    private function getSizeModifierByStrength($firstLevelStrengthAdjustment)
+    private function getSizeModifierByStrength($firstLevelStrengthAdjustment): int
     {
         if ($firstLevelStrengthAdjustment === 0) {
             return -1;
@@ -343,106 +345,67 @@ class FirstLevelProperties extends StrictObject
         );
     }
 
-    /**
-     * @return Strength
-     */
-    public function getFirstLevelStrength()
+    public function getFirstLevelStrength(): Strength
     {
         return $this->firstLevelStrength;
     }
 
-    /**
-     * @return Agility
-     */
-    public function getFirstLevelAgility()
+    public function getFirstLevelAgility(): Agility
     {
         return $this->firstLevelAgility;
     }
 
-    /**
-     * @return Knack
-     */
-    public function getFirstLevelKnack()
+    public function getFirstLevelKnack(): Knack
     {
         return $this->firstLevelKnack;
     }
 
-    /**
-     * @return Will
-     */
-    public function getFirstLevelWill()
+    public function getFirstLevelWill(): Will
     {
         return $this->firstLevelWill;
     }
 
-    /**
-     * @return Intelligence
-     */
-    public function getFirstLevelIntelligence()
+    public function getFirstLevelIntelligence(): Intelligence
     {
         return $this->firstLevelIntelligence;
     }
 
-    /**
-     * @return Charisma
-     */
-    public function getFirstLevelCharisma()
+    public function getFirstLevelCharisma(): Charisma
     {
         return $this->firstLevelCharisma;
     }
 
-    /**
-     * @return WeightInKg
-     */
-    public function getFirstLevelWeightInKgAdjustment()
+    public function getFirstLevelBodyWeightInKgAdjustment(): BodyWeightInKg
     {
         return $this->firstLevelWeightInKgAdjustment;
     }
 
-    /**
-     * @return WeightInKg
-     */
-    public function getFirstLevelWeightInKg()
+    public function getFirstLevelWeightInKg(): BodyWeightInKg
     {
         return $this->firstLevelWeightInKg;
     }
 
-    /**
-     * @return Size
-     */
-    public function getFirstLevelSize()
+    public function getFirstLevelSize(): Size
     {
         return $this->firstLevelSize;
     }
 
-    /**
-     * @return HeightInCm
-     */
-    public function getFirstLevelHeightInCmAdjustment()
+    public function getFirstLevelHeightInCmAdjustment(): HeightInCm
     {
         return $this->firstLevelHeightInCmAdjustment;
     }
 
-    /**
-     * @return HeightInCm
-     */
-    public function getFirstLevelHeightInCm()
+    public function getFirstLevelHeightInCm(): HeightInCm
     {
         return $this->firstLevelHeightInCm;
     }
 
-    /**
-     * @return Height
-     */
-    public function getFirstLevelHeight()
+    public function getFirstLevelHeight(): Height
     {
         return $this->firstLevelHeight;
     }
 
-    /**
-     * @return Age
-     */
-    public function getFirstLevelAge()
+    public function getFirstLevelAge(): Age
     {
         return $this->firstLevelAge;
     }

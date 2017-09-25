@@ -17,7 +17,7 @@ use DrdPlus\Properties\Base\Will;
 use DrdPlus\Properties\Body\Age;
 use DrdPlus\Properties\Body\HeightInCm;
 use DrdPlus\Properties\Body\Size;
-use DrdPlus\Properties\Body\WeightInKg;
+use DrdPlus\Properties\Body\BodyWeightInKg;
 use DrdPlus\Races\Humans\CommonHuman;
 use DrdPlus\Tables\Tables;
 use Granam\Tests\Tools\TestWithMockery;
@@ -45,7 +45,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
             $strength, $agility, $knack, $will, $intelligence, $charisma
         );
         $professionLevels = $this->createProfessionLevels();
-        $weightInKgAdjustment = WeightInKg::getIt(12.3);
+        $weightInKgAdjustment = BodyWeightInKg::getIt(12.3);
         $heightInCmAdjustment = HeightInCm::getIt(123.45);
         $age = Age::getIt(32);
 
@@ -101,9 +101,9 @@ class FirstLevelPropertiesTest extends TestWithMockery
         self::assertInstanceOf(Size::class, $firstLevelProperties->getFirstLevelSize());
         self::assertSame($expectedSize, $firstLevelProperties->getFirstLevelSize()->getValue());
 
-        self::assertSame($weightInKgAdjustment, $firstLevelProperties->getFirstLevelWeightInKgAdjustment());
+        self::assertSame($weightInKgAdjustment, $firstLevelProperties->getFirstLevelBodyWeightInKgAdjustment());
         self::assertEquals(
-            WeightInKg::getIt(70 + $weightInKgAdjustment->getValue()),
+            BodyWeightInKg::getIt(70 + $weightInKgAdjustment->getValue()),
             $firstLevelProperties->getFirstLevelWeightInKg()
         );
 
@@ -218,7 +218,7 @@ class FirstLevelPropertiesTest extends TestWithMockery
             GenderCode::getIt(GenderCode::MALE),
             $propertiesByFate,
             $this->createProfessionLevels(),
-            WeightInKg::getIt(0),
+            BodyWeightInKg::getIt(0),
             HeightInCm::getIt(123),
             Age::getIt(20),
             Tables::getIt()
