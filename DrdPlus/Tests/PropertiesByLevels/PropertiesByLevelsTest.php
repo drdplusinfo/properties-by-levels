@@ -41,7 +41,6 @@ use DrdPlus\Races\Humans\CommonHuman;
 use DrdPlus\Races\Race;
 use DrdPlus\Tables\Body\CorrectionByHeightTable;
 use DrdPlus\Tables\Tables;
-use Granam\Integer\IntegerObject;
 use Granam\Tests\Tools\TestWithMockery;
 
 class PropertiesByLevelsTest extends TestWithMockery
@@ -74,13 +73,13 @@ class PropertiesByLevelsTest extends TestWithMockery
         BodyWeightInKg $weightInKgAdjustment,
         HeightInCm $heightInCmAdjustment,
         Age $age,
-        $expectedStrength,
-        $expectedAgility,
-        $expectedKnack,
-        $expectedWill,
-        $expectedIntelligence,
-        $expectedCharisma,
-        $expectedFight
+        int $expectedStrength,
+        int $expectedAgility,
+        int $expectedKnack,
+        int $expectedWill,
+        int $expectedIntelligence,
+        int $expectedCharisma,
+        int $expectedFight
     )
     {
         $properties = new PropertiesByLevels(
@@ -222,32 +221,32 @@ class PropertiesByLevelsTest extends TestWithMockery
         $propertiesByFate = \Mockery::mock(PropertiesByFate::class);
         $propertiesByFate->shouldReceive('getProperty')
             ->with(PropertyCode::getIt(PropertyCode::STRENGTH))
-            ->andReturn($strength = new IntegerObject(123));
+            ->andReturn($strength = Strength::getIt(123));
         $propertiesByFate->shouldReceive('getStrength')
             ->andReturn($strength);
         $propertiesByFate->shouldReceive('getProperty')
             ->with(PropertyCode::getIt(PropertyCode::AGILITY))
-            ->andReturn($agility = new IntegerObject(234));
+            ->andReturn($agility = Agility::getIt(234));
         $propertiesByFate->shouldReceive('getAgility')
             ->andReturn($agility);
         $propertiesByFate->shouldReceive('getProperty')
             ->with(PropertyCode::getIt(PropertyCode::KNACK))
-            ->andReturn($knack = new IntegerObject(345));
+            ->andReturn($knack = Knack::getIt(345));
         $propertiesByFate->shouldReceive('getKnack')
             ->andReturn($knack);
         $propertiesByFate->shouldReceive('getProperty')
             ->with(PropertyCode::getIt(PropertyCode::WILL))
-            ->andReturn($will = new IntegerObject(456));
+            ->andReturn($will = Will::getIt(456));
         $propertiesByFate->shouldReceive('getWill')
             ->andReturn($will);
         $propertiesByFate->shouldReceive('getProperty')
             ->with(PropertyCode::getIt(PropertyCode::INTELLIGENCE))
-            ->andReturn($intelligence = new IntegerObject(567));
+            ->andReturn($intelligence = Intelligence::getIt(567));
         $propertiesByFate->shouldReceive('getIntelligence')
             ->andReturn($intelligence);
         $propertiesByFate->shouldReceive('getProperty')
             ->with(PropertyCode::getIt(PropertyCode::CHARISMA))
-            ->andReturn($charisma = new IntegerObject(678));
+            ->andReturn($charisma = Charisma::getIt(678));
         $propertiesByFate->shouldReceive('getCharisma')
             ->andReturn($charisma);
 

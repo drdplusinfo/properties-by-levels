@@ -28,22 +28,25 @@ class FirstLevelPropertiesTest extends TestWithMockery
     /**
      * @test
      * @dataProvider provideBasePropertyValues
-     * @param $strength
-     * @param $agility
-     * @param $knack
-     * @param $will
-     * @param $intelligence
-     * @param $charisma
+     * @param int $strength
+     * @param int $agility
+     * @param int $knack
+     * @param int $will
+     * @param int $intelligence
+     * @param int $charisma
      */
     public function I_can_get_every_property_both_limited_and_unlimited(
-        $strength, $agility, $knack, $will, $intelligence, $charisma
+        int $strength,
+        int $agility,
+        int $knack,
+        int $will,
+        int $intelligence,
+        int $charisma
     )
     {
         $race = CommonHuman::getIt();
         $female = GenderCode::getIt(GenderCode::FEMALE);
-        $propertiesByFate = $this->createPropertiesByFate(
-            $strength, $agility, $knack, $will, $intelligence, $charisma
-        );
+        $propertiesByFate = $this->createPropertiesByFate($strength, $agility, $knack, $will, $intelligence, $charisma);
         $professionLevels = $this->createProfessionLevels();
         $weightInKgAdjustment = BodyWeightInKg::getIt(12.3);
         $heightInCmAdjustment = HeightInCm::getIt(123.45);
@@ -133,21 +136,21 @@ class FirstLevelPropertiesTest extends TestWithMockery
     // negative test with strength adjustment < 0
 
     /**
-     * @param $strength
-     * @param $agility
-     * @param $knack
-     * @param $will
-     * @param $intelligence
-     * @param $charisma
+     * @param int $strength
+     * @param int $agility
+     * @param int $knack
+     * @param int $will
+     * @param int $intelligence
+     * @param int $charisma
      * @return PropertiesByFate|\Mockery\MockInterface
      */
     private function createPropertiesByFate(
-        $strength,
-        $agility,
-        $knack,
-        $will,
-        $intelligence,
-        $charisma
+        int $strength,
+        int $agility,
+        int $knack,
+        int $will,
+        int $intelligence,
+        int $charisma
     )
     {
         $propertiesByFate = $this->mockery(PropertiesByFate::class);
@@ -156,17 +159,17 @@ class FirstLevelPropertiesTest extends TestWithMockery
             use ($strength, $agility, $knack, $will, $intelligence, $charisma) {
                 switch ($propertyCode) {
                     case PropertyCode::STRENGTH :
-                        return $this->createProperty($strength);
+                        return $this->createProperty($strength, Strength::class);
                     case PropertyCode::AGILITY :
-                        return $this->createProperty($agility);
+                        return $this->createProperty($agility, Agility::class);
                     case PropertyCode::KNACK :
-                        return $this->createProperty($knack);
+                        return $this->createProperty($knack, Knack::class);
                     case PropertyCode::WILL :
-                        return $this->createProperty($will);
+                        return $this->createProperty($will, Will::class);
                     case PropertyCode::INTELLIGENCE :
-                        return $this->createProperty($intelligence);
+                        return $this->createProperty($intelligence, Intelligence::class);
                     case PropertyCode::CHARISMA :
-                        return $this->createProperty($charisma);
+                        return $this->createProperty($charisma, Charisma::class);
                     default :
                         throw new \LogicException(
                             'Unexpected base property to return by PropertiesByFate: '
@@ -175,14 +178,15 @@ class FirstLevelPropertiesTest extends TestWithMockery
                 }
             });
         $propertiesByFate->shouldReceive('getStrength')
-            ->andReturn($this->createProperty($strength));
+            ->andReturn($this->createProperty($strength, Strength::class));
 
         return $propertiesByFate;
     }
 
-    private function createProperty($propertyValue)
+    private function createProperty($propertyValue, string $propertyClass)
     {
-        $property = $this->mockery(BaseProperty::class);
+        self::assertTrue(is_a($propertyClass, BaseProperty::class, true));
+        $property = $this->mockery($propertyClass);
         $property->shouldReceive('getValue')
             ->andReturn($propertyValue);
 
