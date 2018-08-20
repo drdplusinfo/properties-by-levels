@@ -1,5 +1,5 @@
 {
-  "name": "drd-plus/properties-by-levels",
+  "name": "drdplus/properties-by-levels",
   "license": "MIT",
   "type": "project",
   "description": "Total properties and by first and next levels of them for Drd+",
@@ -11,11 +11,11 @@
   "require": {
     "php": ">=7.1",
     "doctrine/annotations": "~1.2",
-    "drd-plus/properties-by-fate": "^1.0",
-    "drd-plus/profession-levels": "^1.0",
-    "drd-plus/properties": "^1.0",
-    "drd-plus/races": "^1.0",
-    "drd-plus/tables": "^1.0"
+    "drdplus/properties-by-fate": "^1.0",
+    "drdplus/profession-levels": "^1.0",
+    "drdplus/properties": "^1.0",
+    "drdplus/races": "^1.0",
+    "drdplus/tables": "^1.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
