@@ -1,7 +1,7 @@
 {
   "name": "drdplus/properties-by-levels",
   "license": "MIT",
-  "type": "project",
+  "type": "library",
   "description": "Total properties and by first and next levels of them for Drd+",
   "autoload": {
     "psr-4": {
@@ -22,7 +22,5 @@
     "phpunit/phpunit": "~7.0",
     "mockery/mockery": "~1.0",
     "granam/exceptions-hierarchy": "~4.0"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+  }
 }
