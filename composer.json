@@ -10,12 +10,11 @@
   },
   "require": {
     "php": ">=7.1",
-    "doctrine/annotations": "~1.2",
-    "drdplus/properties-by-fate": "^1.0",
-    "drdplus/profession-levels": "^1.0",
-    "drdplus/properties": "^1.0",
-    "drdplus/races": "^1.0",
-    "drdplus/tables": "^1.0"
+    "drdplus/properties-by-fate": "~2.0",
+    "drdplus/profession-levels": "~2.0",
+    "drdplus/properties": "~2.0",
+    "drdplus/races": "~2.0",
+    "drdplus/tables": "~2.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
